@@ -1,0 +1,204 @@
+<div class="container">
+  <form (ngSubmit)="registerGestante()" id="form-gestante" #registerFormGestante="ngForm"
+    [formGroup]="formRegisterGestante">
+    <div class="mb-3">
+      <div class="bg-white d-flex w-100">
+        <div (click)="showStep(1)" id="step1" class="side-text text-center active step-button w-50 p-2">
+          <a>Etapa 1</a>
+        </div>
+        <div (click)="showStep(2)" id="step2" class="side-text text-center step-button w-50 p-2">
+          <a>Etapa 2</a>
+        </div>
+        <div (click)="showStep(3)" id="step3" class="side-text text-center step-button w-50 p-2">
+          <a>Etapa 3</a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="currentStep === 1">
+      <div class="mb-3">
+        <label for="nome" class="form-label">Nome da Gestante</label>
+        <input type="text" (input)="nameInputField()" class="form-control" id="name" formControlName="gestanteName"
+          name="gestanteName" maxlength="60" placeholder="Digite o nome da gestante" required>
+        <div
+          *ngIf="formRegisterGestante.get('gestanteName')?.invalid && (formRegisterGestante.get('gestanteName')?.dirty || formRegisterGestante.get('gestanteName')?.touched) || formRegisterGestante.get('gestanteName')?.invalid && registerFormGestante.submitted"
+          class="text-danger ms-1">
+          <div *ngIf="formRegisterGestante.get('gestanteName')?.hasError('required')">Campo obrigatório.</div>
+          <div *ngIf="formRegisterGestante.get('gestanteName')?.hasError('whitespace')">Nome Inválido.</div>
+          <div
+            *ngIf="formRegisterGestante.get('gestanteName')?.hasError('minlength') && !formRegisterGestante.get('gestanteName')?.hasError('whitespace')">
+            O nome deve possuir no mínimo 4 caracteres.</div>
+        </div>
+        <div *ngIf="errorName === true" class="text-danger">Nome inválido.</div>
+      </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">E-mail</label>
+          <input type="email" (input)="emailInputField()" class="form-control" id="email"
+            formControlName="gestanteEmail" maxlength="70" name="email" placeholder="Digite o E-mail" required>
+          <div
+            *ngIf="formRegisterGestante.get('gestanteEmail')?.invalid && (formRegisterGestante.get('gestanteEmail')?.dirty || formRegisterGestante.get('gestanteEmail')?.touched) || formRegisterGestante.get('gestanteEmail')?.invalid && registerFormGestante.submitted"
+            class="text-danger ms-1">
+            <div *ngIf="formRegisterGestante.get('gestanteEmail')?.hasError('required')">Campo obrigatório.</div>
+            <div *ngIf="formRegisterGestante.get('gestanteEmail')?.hasError('emailInUse')">Este e-mail já está em uso.
+            </div>
+          </div>
+          <div *ngIf="errorEmail === true" class="text-danger ms-1">E-mail inválido.</div>
+        </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">Endereço</label>
+        <input type="text" class="form-control" id="address" maxlength="50" formControlName="gestanteAddress"
+          name="address" placeholder="Digite o endereço">
+      </div>
+      <div class="mb-3">
+        <label for="birthDate" class="form-label">Data de Nascimento</label>
+        <input type="date" class="form-control" id="birthDate" formControlName="gestanteBirthDate" name="birthDate"
+          required>
+        <div
+          *ngIf="formRegisterGestante.get('gestanteBirthDate')?.invalid && (formRegisterGestante.get('gestanteBirthDate')?.dirty || formRegisterGestante.get('gestanteBirthDate')?.touched) || formRegisterGestante.get('gestanteBirthDate')?.invalid && registerFormGestante.submitted"
+          class="text-danger ms-1">
+          <div *ngIf="formRegisterGestante.get('gestanteBirthDate')?.hasError('required')">Campo obrigatório.</div>
+          <div *ngIf="formRegisterGestante.get('gestanteBirthDate')?.hasError('invalidDate')">Data Inválida: a gestante
+            deve ter entre 12 e 50 anos.</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">Telefone</label>
+        <input type="tel" class="form-control" id="phone" formControlName="gestantePhone" placeholder="Digite o telefone" name="phone" maxlength="15"
+          (input)="formatarTelefone($event)" required>
+        <div
+          *ngIf="formRegisterGestante.get('gestantePhone')?.invalid && (formRegisterGestante.get('gestantePhone')?.dirty || formRegisterGestante.get('gestantePhone')?.touched) || formRegisterGestante.get('gestantePhone')?.invalid && registerFormGestante.submitted"
+          class="text-danger ms-1">
+          <div *ngIf="formRegisterGestante.get('gestantePhone')?.hasError('required')">Campo obrigatório.</div>
+          <div *ngIf="formRegisterGestante.get('gestantePhone')?.hasError('minlength')">Número inválido.</div>
+        </div>
+      </div>
+      <div class="mt-2">
+        <div (click)="showStep(2)" class="side-text text-end p-2">
+          <a class="step-button">Próximo <i class="ms-2 fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="currentStep === 2">
+   
+      <div class="mb-3">
+        <label for="cpf" class="form-label">CPF</label>
+        <input type="text" class="form-control" (input)="cpfInputField()" id="cpf" maxlength="14"
+          formControlName="gestanteCpf" (input)="formatarCpf($event)" name="cpf" placeholder="Digite o CPF" required>
+        <div
+          *ngIf="formRegisterGestante.get('gestanteCpf')?.invalid && (formRegisterGestante.get('gestanteCpf')?.dirty || formRegisterGestante.get('gestanteCpf')?.touched) || formRegisterGestante.get('gestanteCpf')?.invalid && registerFormGestante.submitted"
+          class="text-danger ms-1">
+          <div *ngIf="formRegisterGestante.get('gestanteCpf')?.hasError('required')">Campo obrigatório.</div>
+        </div>
+        <div *ngIf="errorCpf === true" class="text-danger ms-1">CPF inválido</div>
+      </div>
+      <div class="mb-3">
+        <label for="dum" class="form-label">DUM</label>
+        <input type="date" class="form-control" id="dum" formControlName="gestanteDum" name="dum" required>
+        <div
+          *ngIf="formRegisterGestante.get('gestanteDum')?.invalid && (formRegisterGestante.get('gestanteDum')?.dirty || formRegisterGestante.get('gestanteDum')?.touched) || formRegisterGestante.get('gestanteDum')?.invalid && registerFormGestante.submitted"
+          class="text-danger ms-1">
+          <div *ngIf="formRegisterGestante.get('gestanteDum')?.hasError('required')">Campo obrigatório.</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="weight" class="form-label">Peso Atual</label>
+        <input type="number" class="form-control" id="weight" formControlName="gestanteWeight" name="gestanteWeight" placeholder="Digite o peso da gestante"
+          required>
+        <div
+          *ngIf="formRegisterGestante.get('gestanteWeight')?.invalid && (formRegisterGestante.get('gestanteWeight')?.dirty || formRegisterGestante.get('gestanteWeight')?.touched) || formRegisterGestante.get('gestanteWeight')?.invalid && registerFormGestante.submitted"
+          class="text-danger ms-1">
+          <div *ngIf="formRegisterGestante.get('gestanteWeight')?.hasError('required')">Campo obrigatório.</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="height" class="form-label">Altura</label>
+        <input type="number" class="form-control" id="height" formControlName="gestanteHeight" name="gestanteHeight" placeholder="Digite a altura da gestante"
+          required>
+        <div
+          *ngIf="formRegisterGestante.get('gestanteHeight')?.invalid && (formRegisterGestante.get('gestanteHeight')?.dirty || formRegisterGestante.get('gestanteHeight')?.touched) || formRegisterGestante.get('gestanteHeight')?.invalid && registerFormGestante.submitted"
+          class="text-danger ms-1">
+          <div *ngIf="formRegisterGestante.get('gestanteHeight')?.hasError('required')">Campo obrigatório.</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="bloodType" class="form-label">Tipo Sanguíneo</label>
+        <select class="form-select wrapper" id="bloodType" formControlName="gestanteBloodType" name="bloodType"
+          required>
+          <option value="" disabled selected>Selecione um tipo sanguíneo</option>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+        </select>
+        <div
+          *ngIf="formRegisterGestante.get('gestanteBloodType')?.invalid && (formRegisterGestante.get('gestanteBloodType')?.dirty || formRegisterGestante.get('gestanteBloodType')?.touched) || formRegisterGestante.get('gestanteBloodType')?.invalid && registerFormGestante.submitted"
+          class="text-danger ms-1">
+          <div *ngIf="formRegisterGestante.get('gestanteBloodType')?.hasError('required')">Campo obrigatório.</div>
+        </div>
+      </div>
+      <div class="mt-2 d-flex justify-content-between">
+          <div class="side-text p-2 text-start">
+            <a class="step-button" (click)="showStep(1)"><i class="me-2 fa-solid fa-arrow-left"></i>Voltar</a>
+          </div>
+        <div (click)="showStep(3)" class="side-text text-end p-2">
+          <a class="step-button">Próximo <i class="ms-2 fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="currentStep === 3">
+      <div class="mb-3">
+        <label for="numberOfPregnancies" class="form-label">Número de Gestações</label>
+        <input type="number" class="form-control" id="numberOfPregnancies" formControlName="numberOfPregnancies" name="numberOfPregnancies" placeholder="Digite número de gestações" required>
+        <div *ngIf="formRegisterGestante.get('numberOfPregnancies')?.invalid && (formRegisterGestante.get('numberOfPregnancies')?.dirty || formRegisterGestante.get('numberOfPregnancies')?.touched) || formRegisterGestante.get('numberOfPregnancies')?.invalid && registerFormGestante.submitted" class="text-danger ms-1">
+          <div *ngIf="formRegisterGestante.get('numberOfPregnancies')?.hasError('required')">Campo obrigatório.</div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="normalDeliveries" class="form-label">Partos Normais</label>
+        <input type="number" class="form-control" id="normalDeliveries" formControlName="normalDeliveries" name="normalDeliveries" placeholder="Partos normais" required>
+        <div *ngIf="formRegisterGestante.get('normalDeliveries')?.invalid && (formRegisterGestante.get('normalDeliveries')?.dirty || formRegisterGestante.get('normalDeliveries')?.touched) || formRegisterGestante.get('normalDeliveries')?.invalid && registerFormGestante.submitted" class="text-danger ms-1">
+          <div *ngIf="formRegisterGestante.get('normalDeliveries')?.hasError('required')">Campo obrigatório.</div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="cesareanDeliveries" class="form-label">Cesáreas</label>
+        <input type="number" class="form-control" id="cesareanDeliveries" formControlName="cesareanDeliveries" name="cesareanDeliveries" placeholder="Cesáreas" required>
+        <div *ngIf="formRegisterGestante.get('cesareanDeliveries')?.invalid && (formRegisterGestante.get('cesareanDeliveries')?.dirty || formRegisterGestante.get('cesareanDeliveries')?.touched) || formRegisterGestante.get('cesareanDeliveries')?.invalid && registerFormGestante.submitted" class="text-danger ms-1">
+          <div *ngIf="formRegisterGestante.get('cesareanDeliveries')?.hasError('required')">Campo obrigatório.</div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="abortions" class="form-label">Abortos</label>
+        <input type="number" class="form-control" id="abortions" formControlName="abortions" name="abortions" placeholder="Abortos" required>
+        <div *ngIf="formRegisterGestante.get('abortions')?.invalid && (formRegisterGestante.get('abortions')?.dirty || formRegisterGestante.get('abortions')?.touched) || formRegisterGestante.get('abortions')?.invalid && registerFormGestante.submitted" class="text-danger ms-1">
+          <div *ngIf="formRegisterGestante.get('abortions')?.hasError('required')">Campo obrigatório.</div>
+        </div>
+      </div>
+
+      <div class="mb-3 text-center">
+        <button type="submit" id="cad-btn" class="mt-2 btn btn-primary">Cadastrar <i
+            class="fa-solid fa-floppy-disk"></i></button>
+      </div>
+      <div *ngIf="errorSendEmail == true" class="alert alert-danger" role="alert">
+        <div class="text-danger text-center">
+          <span>
+            Cadastro da gestante foi bem-sucedido, mas houve um erro no envio do e-mail com as informações de acesso da gestante Avise-a para usar o CPF dela como senha (sem pontuações) no sistema e feche este formulário.</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="side-text p-2">
+          <a class="step-button" (click)="showStep(2)"><i class="me-2 fa-solid fa-arrow-left"></i>Voltar</a>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

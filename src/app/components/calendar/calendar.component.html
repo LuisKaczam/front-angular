@@ -1,0 +1,217 @@
+<div class="container-fluid g-0 w-100 h-100">
+  <app-header-sidebar (sideNavToggled)="sideNavStatus = $event"></app-header-sidebar>
+  <main class="container-fluid h-100">
+    <div class="row">
+      <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+        <app-sidebar [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+          [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
+      </div>
+      <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
+      (click)="noSideBar()">
+      <div class="row justify-content-center">
+        <div class="mx-auto col-12 col-md-8 col-lg-6 mt-lg-5  mt-0">
+          <div class="mx-auto mx-md-0 ms-md-auto d-md-flex text-center">
+          <div class="card mx-auto shadow-sm w-100">
+            <div class="card-body">
+              <div class="header-calendar d-flex justify-content-between align-items-center align-content-center">
+                <button class="btn btn-outline-primary btn-sm" (click)="changeMonth(-1)">
+                  <i class="fa-solid fa-less-than"></i>
+                </button>
+                <h2 class="month-header side-text">{{ getLocalizedMonth(dateSelect) + ', ' + dateSelect.getFullYear() }}</h2>
+                <button class="btn btn-outline-primary btn-sm" (click)="changeMonth(1)">
+                   <i class="fa-solid fa-greater-than"></i>
+                </button>
+              </div>
+              <div class="calendar-body">
+                <ol class="days-of-week mt-3">
+                  <li *ngFor="let day of week" class="day-name">{{ day | slice:0:3 }}</li>
+                </ol>
+                <ol class="days-of-month">
+                  <li class="item border" [style.gridColumnStart]="first ? day.indexWeek : 'auto'"
+                      *ngFor="let day of monthSelect; let first = first; let i = index"
+                      [ngClass]="{ 'eventDay': eventDay.includes(day.value) }" (click)="clickDay(day, dateSelect.getFullYear())" data-bs-toggle="modal" data-bs-target="#formCalendar">
+                    {{ day.value }}
+                  </li>
+                </ol>
+              </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6 mt-3">
+        <div class="d-flex mb-3">
+          <div class="w-100">
+            <h3 class="mb-0 side-text">Eventos Próximos</h3>
+          </div>
+          <div class="w-100 ms-auto text-end">
+            <div class="dropdown">
+              <button class="btn btn-primary btn-sm me-2 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Ações
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <button class="dropdown-item" (click)="onModalOpen()" data-bs-toggle="modal" data-bs-target="#formCalendar"><i class="fa-solid fa-plus"></i> Novo Evento</button>
+                <button class="dropdown-item" (click)="onDatesModalOpen()" data-bs-toggle="modal" data-bs-target="#formCalendarPdf"><i class="fa-solid fa-plus"></i> Gerar Relatório</button>
+              </div>
+            </div>
+          </div>          
+        </div>
+        <ul class="list-unstyled" *ngFor="let calendar of calendarEvents">
+          <li class="d-flex align-items-center mb-3">
+            <div class="event-icon">
+              <i class="fa fa-calendar"></i>
+            </div>
+            <div class="ms-3">
+              <h5 class="mb-1">{{calendar.nomeEvento}}</h5>
+              <p class="mb-0">{{calendar.data  | date:'dd/MM/yyyy'}}</p>
+              <p class="mb-0">{{calendar.hora}}</p>
+              <p class="mb-0">{{calendar.descricao}}</p>
+              <p class="mb-0">{{calendar.gestante?.usuario.name}}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      </div>
+      <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}" (click)="noSideBar()"></div>
+        </div>
+        <div class="d-lg-none d-fixed">
+          <app-bottom-navigation></app-bottom-navigation>
+        </div>
+      </div>
+  </main>
+</div>
+
+
+<div class="modal fade" id="formCalendar" tabindex="-1" aria-labelledby="formCalendar" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center w-100" id="formCalendar">Novo Evento</h5>
+        <button type="button" class="btn-close" id="btn-close" (click)="onModalClose()" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="registerDate()" [formGroup]="calendarForm" #registerCalendar="ngForm">
+          <div class="mb-3">
+            <label for="calendarDate" class="form-label">Data</label>
+            <input type="Date" class="form-control" id="calendarDate" formControlName="calendarDate">
+            <div *ngIf="calendarForm.get('calendarDate')?.invalid && (calendarForm.get('calendarDate')?.dirty || calendarForm.get('calendarDate')?.touched) || calendarForm.get('calendarDate')?.invalid && registerCalendar.submitted" class="text-danger ms-1">
+              <div *ngIf="calendarForm.get('calendarDate')?.hasError('required')">Campo obrigatório.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="calendarName" class="form-label">Nome do Evento</label>
+            <input type="text" class="form-control" id="calendarName" formControlName="calendarName">
+            <div *ngIf="calendarForm.get('calendarName')?.invalid && (calendarForm.get('calendarName')?.dirty || calendarForm.get('calendarName')?.touched) || calendarForm.get('calendarName')?.invalid && registerCalendar.submitted" class="text-danger ms-1">
+              <div *ngIf="calendarForm.get('calendarName')?.hasError('required')">Campo obrigatório.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="calendarHour" class="form-label">Hora</label>
+            <input type="time" class="form-control" id="calendarHour" formControlName="calendarHour">
+            <div *ngIf="calendarForm.get('calendarHour')?.invalid && (calendarForm.get('calendarHour')?.dirty || calendarForm.get('calendarHour')?.touched) || calendarForm.get('calendarHour')?.invalid && registerCalendar.submitted" class="text-danger ms-1">
+              <div *ngIf="calendarForm.get('calendarHour')?.hasError('required')">Campo obrigatório.</div>
+            </div>
+          </div>
+          <div class="mb-3" *ngIf="gestantes.length > 0">
+            <label for="calendarParticipant" class="form-label">Participante</label>
+            <select class="form-select wrapper" id="calendarParticipant" formControlName="calendarParticipant">
+              <option value="" disabled selected>Selecione uma gestante</option>
+              <option *ngFor="let gestante of gestantes" [value]="gestante">{{gestante?.usuario?.name}}</option>
+            </select>            
+          </div>
+          <div class="mb-3">
+            <label for="calendarDescription" class="form-label">Descrição</label>
+            <textarea type="text" class="form-control" id="prescricoesMedicas" formControlName="calendarDescription"></textarea>
+            <div *ngIf="calendarForm.get('calendarDescription')?.invalid && (calendarForm.get('calendarDescription')?.dirty || calendarForm.get('calendarDescription')?.touched) || calendarForm.get('calendarDescription')?.invalid && registerCalendar.submitted" class="text-danger ms-1">
+              <div *ngIf="calendarForm.get('calendarDescription')?.hasError('required')">Campo obrigatório.</div>
+            </div>
+          </div>
+          <div class="text-center mb-4">
+            <button type="submit" class="w-50 btn btn-primary">Enviar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="formCalendarPdf" tabindex="-1" aria-labelledby="formCalendarPdf" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center w-100" id="formCalendarPdf">Selecione as Datas</h5>
+        <button type="button" class="btn-close" id="btn-closeDates" (click)="onDatesModalClose()" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="datesToPdf()" [formGroup]="datesForm" #registerDates="ngForm">
+          <div *ngIf="datesError == true" class="alert alert-danger" role="alert">
+            <div class="text-danger text-center">
+              <span>Data inválidas.</span>
+            </div>
+          </div>
+          <div *ngIf="datesNotFound == true" class="alert alert-danger" role="alert">
+            <div class="text-danger text-center">
+              <span>Nenhum registro encontrado nesse período.</span>
+            </div>
+          </div>
+          <div class="d-flex mb-3 justify-content-center">
+          <div class="me-2">
+            <label for="calendarDate" class="form-label">Data Início</label>
+            <input type="Date" (input)="changeDateInput()" class="form-control" id="calendarDateBegin" formControlName="calendarDateBegin">
+            <div *ngIf="datesForm.get('calendarDateBegin')?.invalid && (datesForm.get('calendarDateBegin')?.dirty || datesForm.get('calendarDateBegin')?.touched) || datesForm.get('calendarDateBegin')?.invalid && registerDates.submitted" class="text-danger ms-1">
+              <div *ngIf="calendarForm.get('calendarDateBegin')?.hasError('required')">Campo obrigatório.</div>
+            </div>
+          </div>
+          <div class="ms-2">
+            <label for="calendarDate" class="form-label">Data Fim</label>
+            <input type="Date" (input)="changeDateInput()" class="form-control" id="calendarDateEnd" formControlName="calendarDateEnd">
+            <div *ngIf="datesForm.get('calendarDateEnd')?.invalid && (datesForm.get('calendarDateEnd')?.dirty || datesForm.get('calendarDateEnd')?.touched) || datesForm.get('calendarDateEnd')?.invalid && registerDates.submitted" class="text-danger ms-1">
+              <div *ngIf="datesForm.get('calendarDateEnd')?.hasError('required')">Campo obrigatório.</div>
+            </div>
+          </div>
+          </div>
+          <div class="text-center mb-4">
+            <button type="submit" class="w-50 btn btn-primary" id="btnPdf">Baixar PDF <i class="fa-solid fa-download ms-2"></i></button>
+          </div>
+        </form>
+        <div class="d-none">
+          <div class="container content-body mt-5"  id="pdfTemplate">
+            <div class="text-center w-100">
+                <span class="font-logo">SisGestante</span>
+            </div>
+        
+            <h1 class="text-center">Relatório de Consultas</h1>
+            <p class="text-center">Emitido em: {{dateNow | date: 'dd/MM/yyyy'}}</p>
+        <div class="justify-content-center w-100">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Hora</th>
+                        <th>Nome do Evento</th>
+                        <th>Participante</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let date of datesArray">
+                        <td>{{ date.data | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{ date.hora }}</td>
+                        <td>{{ date.nomeEvento }}</td>
+                        <td>{{ date.gestante?.usuario.name }}</td>
+                        <td>{{ date.descricao }}</td>
+                      </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+        
+        <button id="pdf-btn" style="visibility: hidden;"  printTitle="Relatório SisGestante"  printSectionId="pdfTemplate"  [useExistingCss]="true" ngxPrint></button>
+        
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

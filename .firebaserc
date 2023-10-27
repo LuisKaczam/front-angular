@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "default": "sisgestante-d38c4",
+    "sisgestante": "sisgestante-d38c4"
+  },
+  "targets": {
+    "sisgestante": {
+      "hosting": {
+        "projeto-sisgestante-front": [
+          "sisgestante"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

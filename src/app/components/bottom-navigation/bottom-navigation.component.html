@@ -1,0 +1,11 @@
+<div class="bottom-nav d-flex d-md-fixed">
+  <a class="nav-item" *ngFor="let item of list" [routerLinkActive]="'active'" [routerLink]="item.route">
+    <ng-container *ngIf="item.icon === 'fas fa-user' && avatar">
+      <img class="rounded-5" [src]="avatar" alt="Avatar"  style="height: 37px; width: 37px;">
+    </ng-container>
+    <ng-container *ngIf="item.icon !== 'fas fa-user' || !avatar">
+      <i [routerLinkActive]="'active'" [routerLink]="item.route" class="{{ item.icon }}"></i>
+    </ng-container>
+    <span>{{ item.name }}</span>
+  </a>
+</div>

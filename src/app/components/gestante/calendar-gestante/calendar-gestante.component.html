@@ -1,0 +1,76 @@
+<div class="container-fluid g-0 w-100 h-100">
+    <app-header-gestante (sideNavToggled)="sideNavStatus = $event"></app-header-gestante>
+    <main class="container-fluid h-100">
+      <div class="row">
+        <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+          <app-side-bar-gestante [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+            [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-side-bar-gestante>
+        </div>
+        <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
+        (click)="noSideBar()">
+        <div class="row justify-content-center">
+          <div class="mx-auto col-12 col-md-8 col-lg-6 mt-lg-5  mt-0">
+            <div class="mx-auto mx-md-0 ms-md-auto d-md-flex text-center">
+            <div class="card mx-auto shadow-sm w-100">
+              <div class="card-body">
+                <div class="header-calendar d-flex justify-content-between align-items-center align-content-center">
+                  <button class="btn btn-outline-primary btn-sm" (click)="changeMonth(-1)">
+                    <i class="fa-solid fa-less-than"></i>
+                  </button>
+                  <h2 class="month-header side-text">{{ getLocalizedMonth(dateSelect) + ', ' + dateSelect.getFullYear() }}</h2>
+                  <button class="btn btn-outline-primary btn-sm" (click)="changeMonth(1)">
+                     <i class="fa-solid fa-greater-than"></i>
+                  </button>
+                </div>
+                <div class="calendar-body">
+                  <ol class="days-of-week mt-3">
+                    <li *ngFor="let day of week" class="day-name">{{ day | slice:0:3 }}</li>
+                  </ol>
+                  <ol class="days-of-month">
+                    <li class="item border" [style.gridColumnStart]="first ? day.indexWeek : 'auto'"
+                        *ngFor="let day of monthSelect; let first = first; let i = index"
+                        [ngClass]="{ 'eventDay': eventDay.includes(day.value) }">
+                      {{ day.value }}
+                    </li>
+                  </ol>
+                  
+                </div>
+            </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6 mt-3">
+          <div class="d-flex mb-3">
+            <div class="w-100">
+              <h3 class="mb-0 side-text">Eventos Próximos</h3>
+            </div>
+          </div>
+          <div class="w-100" *ngIf="calendarEvents.length === 0">
+            <span>Nenhum evento Próximo</span>
+          </div>
+          <ul class="list-unstyled" *ngFor="let calendar of calendarEvents" style="max-width: 200px;">
+            <li class="d-flex align-items-center mb-3">
+              <div class="event-icon">
+                <i class="fa fa-calendar"></i>
+              </div>
+              <div class="ms-3">
+                <h5 class="mb-1">{{calendar.nomeEvento}}</h5>
+                <p class="mb-0">{{calendar.data  | date:'dd/MM/yyyy'}}</p>
+                <p class="mb-0">{{calendar.hora}}</p>
+                <p class="mb-0">{{calendar.descricao}}</p>
+                <p class="mb-0">{{calendar.gestante?.usuario.name}}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        </div>
+        <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}" (click)="noSideBar()"></div>
+          </div>
+          <div class="d-lg-none d-fixed">
+            <app-bottom-navbar-gestante></app-bottom-navbar-gestante>
+          </div>
+        </div>
+    </main>
+  </div>

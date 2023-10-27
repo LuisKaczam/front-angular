@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Island+Moments&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Saira:wght@400&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.font-logo {
+    font-family: 'Island Moments', sans-serif;
+    font-size: 40px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.side-text {
+  font-family: 'Saira', sans-serif;
+  letter-spacing: 0em;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.display-area {
+    position: absolute;
+    top: 3rem;
+    width: 60px;
+    z-index: -1;
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 2;
+  }
+  
+  .overlay-active {
+    display: block;
+  }
+
+.display-area-shrink {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+app-header-sidebar {
+    position: fixed;
+    width: 100%;
+    top: 0px;
+    height: 4rem;
+    z-index: 3;
+}
+
+app-header-gestante {
+    position: fixed;
+    width: 100%;
+    top: 0px;
+    height: 4rem;
+    z-index: 3;
+}
+
+
+app-sidebar {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    margin-top: 3rem;
+    left: 0rem;
+    width: 60px;
+    overflow-x: hidden;
+    white-space: nowrap;
+    height: 100vh;
+    transition: width 0.3s;
+}
+
+app-side-bar-gestante {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    margin-top: 3rem;
+    left: 0rem;
+    width: 60px;
+    overflow-x: hidden;
+    white-space: nowrap;
+    height: 100vh;
+    transition: width 0.3s;
+}
+
+.app-side-nav-open {
+    width: 250px;
+    position: fixed;
+    transition: width 0.3s;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #999;
+  }
+  
+
+
+

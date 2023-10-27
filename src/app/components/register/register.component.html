@@ -1,0 +1,85 @@
+<div class="w-100 body-register">
+  <div class="p-3 w-100">
+    <app-header></app-header>
+  </div>
+  <div class="w-100 position-relative d-flex justify-content-center align-items-center mx-auto">
+    <div class="p-2 m-2 col-12 col-md-6">
+      <div class="card w-100 shadow-lg">
+        <div class="card-body">
+          <h5 class="card-title text-center mb-4">Cadastrar</h5>
+          <form (ngSubmit)="register()" #registerForm="ngForm" [formGroup]="formRegister">
+            <div class="mb-3">
+              <label for="profissionalName" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="profissionalName" maxlength="60" formControlName="profissionalName"
+                placeholder="Digite seu nome" required>
+              <div *ngIf="formRegister.get('profissionalName')?.invalid && (formRegister.get('profissionalName')?.dirty || formRegister.get('profissionalName')?.touched) || formRegister.get('profissionalName')?.invalid && registerForm.submitted"
+                class="text-danger ms-1">
+                <div *ngIf="formRegister.get('profissionalName')?.hasError('required')">Campo obrigatório.</div>
+                <div *ngIf="formRegister.get('profissionalName')?.hasError('nameInvalid')">Nome inválido.</div>
+                <div *ngIf="formRegister.get('profissionalName')?.hasError('whitespace')">Nome Inválido.</div>
+                <div *ngIf="formRegister.get('profissionalName')?.hasError('minlength') && !formRegister.get('profissionalName')?.hasError('whitespace')">O nome deve possuir no mínimo 4 caracteres.</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="profissionalCpf" class="form-label">CPF</label>
+              <input type="text" class="form-control" id="profissionalCpf" formControlName="profissionalCpf"
+                (input)="formatarCpf($event)" placeholder="Digite seu CPF" maxlength="14" required>
+              <div *ngIf="formRegister.get('profissionalCpf')?.invalid && (formRegister.get('profissionalCpf')?.dirty || formRegister.get('profissionalCpf')?.touched) || formRegister.get('profissionalCpf')?.invalid && registerForm.submitted"
+                class="text-danger ms-1">
+                <div *ngIf="formRegister.get('profissionalCpf')?.hasError('required')">Campo obrigatório.</div>
+                <div *ngIf="formRegister.get('profissionalCpf')?.hasError('minlength')">CPF inválido</div>
+                <div *ngIf="formRegister.get('profissionalCpf')?.hasError('cpfInvalid')">CPF inválido</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="profissionalEmail" class="form-label">E-mail</label>
+              <input type="email" class="form-control" id="profissionalEmail" formControlName="profissionalEmail"
+                placeholder="Digite seu e-mail" maxlength="70" required>
+              <div *ngIf="formRegister.get('profissionalEmail')?.invalid && (formRegister.get('profissionalEmail')?.dirty || formRegister.get('profissionalEmail')?.touched) || formRegister.get('profissionalEmail')?.invalid && registerForm.submitted"
+                class="text-danger ms-1">
+                <div *ngIf="formRegister.get('profissionalEmail')?.hasError('required')">Campo obrigatório.</div>
+                <div *ngIf="formRegister.get('profissionalEmail')?.hasError('email')">E-mail inválido.</div>
+                <div *ngIf="formRegister.get('profissionalEmail')?.hasError('emailInUse')">Este e-mail já está em uso.</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="profissionalPassword" class="form-label">Senha</label>
+              <input type="password" class="form-control" id="profissionalPassword"
+                formControlName="profissionalPassword" placeholder="Digite sua senha" maxlength="30" required>
+              <div
+                *ngIf="formRegister.get('profissionalPassword')?.invalid && (formRegister.get('profissionalPassword')?.dirty || formRegister.get('profissionalPassword')?.touched) || formRegister.get('profissionalPassword')?.invalid && registerForm.submitted"
+                class="text-danger ms-1 mt-2">
+                <div *ngIf="formRegister.get('profissionalPassword')?.hasError('required')">Campo obrigatório.</div>
+                <div *ngIf="formRegister.get('profissionalPassword')?.hasError('minlength')" [ngClass]="{'error-red': formRegister.get('profissionalPassword')?.hasError('minlength')}">A senha deve possuir no mínimo 8 caracteres.</div>
+                <div *ngIf="formRegister.get('profissionalPassword')?.hasError('maxlength')" [ngClass]="{'error-red': formRegister.get('profissionalPassword')?.hasError('maxlength')}">A senha deve possuir no máximo 30 caracteres.</div>
+                <div *ngIf="formRegister.get('profissionalPassword')?.hasError('hasNumber')" [ngClass]="{'error-red': formRegister.get('profissionalPassword')?.hasError('hasNumber')}">A senha deve conter pelo menos um número.</div>
+                <div *ngIf="formRegister.get('profissionalPassword')?.hasError('hasCapitalCase')" [ngClass]="{'error-red': formRegister.get('profissionalPassword')?.hasError('hasCapitalCase')}">A senha deve conter pelo menos uma letra maiúscula.</div>
+                <div *ngIf="formRegister.get('profissionalPassword')?.hasError('hasLowerCase')" [ngClass]="{'error-red': formRegister.get('profissionalPassword')?.hasError('hasLowerCase')}">A senha deve conter pelo menos uma letra minúscula.</div>
+                <div *ngIf="formRegister.get('profissionalPassword')?.hasError('hasSpecialC')" [ngClass]="{'error-red': formRegister.get('profissionalPassword')?.hasError('hasSpecialC')}">A senha deve conter pelo menos um caractere especial.</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirmar senha</label>
+              <input type="password" class="form-control" id="confirmPassword"
+                formControlName="confirmPassword" placeholder="Digite sua senha" maxlength="30" required>
+              <div
+                *ngIf="formRegister.get('confirmPassword')?.invalid && (formRegister.get('confirmPassword')?.dirty || formRegister.get('confirmPassword')?.touched) || formRegister.get('confirmPassword')?.invalid && registerForm.submitted"
+                class="text-danger ms-1">
+                <div *ngIf="formRegister.get('confirmPassword')?.hasError('required')">Campo obrigatório.</div>
+                <div *ngIf="formRegister.get('confirmPassword')?.hasError('not_matching')">As senhas devem ser iguais.</div>
+              </div>
+            </div>
+            <div class="text-center mb-4">
+              <button type="submit" class="w-50 btn btn-register">Cadastrar</button>
+            </div>
+          </form>
+          
+          <div class="text-center">
+            <p class="text-sm">Já tem uma conta? Faça <a style="cursor: pointer; text-decoration: underline;"
+                (click)="routeToLogin()">Login</a>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

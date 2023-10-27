@@ -1,0 +1,18 @@
+<div class="side-nav-content bg-white d-none d-md-flex">
+    <div class="h-100 w-100 side-text">
+      <ul class="nav-list" [ngClass]="{'side-nav-open': sideNavStatus}" style="cursor: pointer;">
+        <li *ngFor="let item of list" class="nav-list-item mt-3" [routerLinkActive]="'active'" [routerLink]="item.route">
+          <ng-container *ngIf="item.icon === '' && avatar" class="bg-white">
+            <img [src]="avatar" alt="Avatar" class="avatar-image icon-avatar bg-white rounded-5 ms-3" style="z-index: 2; margin-left: 2.5rem; height: 38px; width: 38px; margin-right: -3rem;">
+          </ng-container>
+          <ng-container *ngIf="!(item.icon === 'fas fa-user' && avatar)">
+            <i [routerLinkActive]="'active'" [routerLink]="item.route" class="{{ item.icon }}"></i>
+          </ng-container>
+          <span [routerLinkActive]="'active'" [routerLink]="item.route">
+            <a>{{ item.name }}</a>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  

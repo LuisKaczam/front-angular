@@ -1,0 +1,75 @@
+<div class="container-fluid g-0 w-100 h-100">
+    <app-header-sidebar (sideNavToggled)="sideNavStatus = $event"></app-header-sidebar>
+    <main class="container-fluid h-100">
+      <div class="row">
+        <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+          <app-sidebar [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+            [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
+        </div>
+        <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus} " (click)="noSideBar()">
+          <div class="row justify-content-center">
+            <div class="col-md-8">
+              <div class="text-center  side-text">
+                <h2>Nova Consulta</h2>
+              </div>
+              <form (ngSubmit)="registerNewConsulta()" [formGroup]="formConsulta" #registerConsulta="ngForm">
+                <div class="mb-3">
+                  <label for="batimentosCardiacos" class="form-label">Batimentos Cardíacos</label>
+                  <input type="number" class="form-control" id="batimentosCardiacos" formControlName="batimentosCardiacos">
+                  <div *ngIf="formConsulta.get('batimentosCardiacos')?.invalid && (formConsulta.get('batimentosCardiacos')?.dirty || formConsulta.get('batimentosCardiacos')?.touched) || formConsulta.get('batimentosCardiacos')?.invalid && registerConsulta.submitted" class="text-danger ms-1">
+                    <div *ngIf="formConsulta.get('batimentosCardiacos')?.hasError('required')">Campo obrigatório.</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="diagnostico" class="form-label">Diagnóstico</label>
+                  <input type="text" class="form-control" id="diagnostico" formControlName="diagnostico">
+                  <div *ngIf="formConsulta.get('diagnostico')?.invalid && (formConsulta.get('diagnostico')?.dirty || formConsulta.get('diagnostico')?.touched) || formConsulta.get('diagnostico')?.invalid && registerConsulta.submitted" class="text-danger ms-1">
+                    <div *ngIf="formConsulta.get('diagnostico')?.hasError('required')">Campo obrigatório.</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="examesRealizados" class="form-label">Exames Realizados</label>
+                  <input type="text" class="form-control" id="examesRealizados" formControlName="examesRealizados">
+                  <div *ngIf="formConsulta.get('examesRealizados')?.invalid && (formConsulta.get('examesRealizados')?.dirty || formConsulta.get('examesRealizados')?.touched) || formConsulta.get('examesRealizados')?.invalid && registerConsulta.submitted" class="text-danger ms-1">
+                    <div *ngIf="formConsulta.get('examesRealizados')?.hasError('required')">Campo obrigatório.</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="prescricoesMedicas" class="form-label">Prescrições Médicas</label>
+                  <input type="text" class="form-control" id="prescricoesMedicas" formControlName="prescricoesMedicas">
+                  <div *ngIf="formConsulta.get('prescricoesMedicas')?.invalid && (formConsulta.get('prescricoesMedicas')?.dirty || formConsulta.get('prescricoesMedicas')?.touched) || formConsulta.get('prescricoesMedicas')?.invalid && registerConsulta.submitted" class="text-danger ms-1">
+                    <div *ngIf="formConsulta.get('prescricoesMedicas')?.hasError('required')">Campo obrigatório.</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="pressaoArterial" class="form-label">Pressão Arterial</label>
+                  <input type="number" class="form-control" id="pressaoArterial" formControlName="pressaoArterial">
+                  <div *ngIf="formConsulta.get('pressaoArterial')?.invalid && (formConsulta.get('pressaoArterial')?.dirty || formConsulta.get('pressaoArterial')?.touched) || formConsulta.get('pressaoArterial')?.invalid && registerConsulta.submitted" class="text-danger ms-1">
+                    <div *ngIf="formConsulta.get('pressaoArterial')?.hasError('required')">Campo obrigatório.</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="dataConsulta" class="form-label">Data da Consulta</label>
+                  <input type="date" class="form-control" id="dataConsulta" formControlName="dataConsulta">
+                  <div *ngIf="formConsulta.get('dataConsulta')?.invalid && (formConsulta.get('dataConsulta')?.dirty || formConsulta.get('dataConsulta')?.touched) || formConsulta.get('dataConsulta')?.invalid && registerConsulta.submitted" class="text-danger ms-1">
+                    <div *ngIf="formConsulta.get('dataConsulta')?.hasError('required')">Campo obrigatório.</div>
+                  </div>
+                </div>
+                <div class="text-center mb-4">
+                  <button type="submit" class="w-50 btn btn-primary">Enviar</button>
+                </div>
+              </form>
+              
+          </div>
+          <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}"></div>
+          <div class="d-lg-none d-fixed mt-5">
+            <app-bottom-navigation></app-bottom-navigation>
+          </div>
+        </div>
+      </div>
+      </div>
+   </main> 
+  </div>
+  
+
+  

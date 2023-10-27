@@ -1,0 +1,66 @@
+<div class="container-fluid g-0 w-100 h-100">
+  <app-header-gestante (sideNavToggled)="sideNavStatus = $event"></app-header-gestante>
+  <main class="container-fluid h-100">
+    <div class="row">
+      <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+        <app-side-bar-gestante [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+          [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-side-bar-gestante>
+      </div>
+        <div class="display-area mt-1 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
+        (click)="noSideBar()">
+        <div class="p-4 justify-content-center w-100 ">
+          <div class="profile-picture rounded-circle text-center justify-content-center w-100">
+            <img *ngIf="!profissional?.usuario?.profilePhoto" src="https://cdn-icons-png.flaticon.com/128/1946/1946429.png" alt="{{ profissional?.usuario?.name}}" class="user-avatar mt-2">
+            <img *ngIf="profissional?.usuario?.profilePhoto" src="{{profissional?.usuario?.profilePhoto}}" alt="{{ profissional?.usuario?.name}}" class="user-avatar mt-2">
+            <h5 class="mt-2 fw-bold">{{profissional?.usuario?.name}}</h5>
+            <div class="flex-grow-1">
+              <div class="d-inline-grid">
+                  <span><strong>Email: </strong>{{profissional?.usuario?.email}}</span>
+              </div>
+            </div>
+          </div>
+          </div>
+        <div class="row justify-content-center">
+          <div class="col-md-8 text-center text-md-end">
+            <div class="text-center mt-2" *ngIf="postVideos.length == 0 && postArticles.length == 0">
+              <span>Você não possui nenhuma postagem.</span>
+            </div>
+          </div>
+          <div class="col-md-8" *ngIf="postArticles.length > 0 || postVideos.length > 0">
+            <div class="card rounded-lg mx-auto shadow-sm">
+              <div class="card-body text-center">
+                <div class="contacts-list">
+                  <div *ngIf="postVideos">
+                    <div *ngFor="let video of postVideos" class="contact-item mb-3">
+                      <div class="d-flex align-items-center">
+                        <img [src]="video.link" alt="User" class="user-avatar mt-2">
+                        <div class="contact-info">
+                          <h6 class="ms-2 mt-2 user-name">{{ video.titulo }}</h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="postArticles">
+                    <div *ngFor="let article of postArticles" class="contact-item mb-3">
+                      <div class="d-flex align-items-center">
+                        <img [src]="article.link" alt="User" class="user-avatar mt-2">
+                        <div class="contact-info">
+                          <h6 class="ms-2 mt-2 user-name">{{ article.titulo }}</h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}" (click)="noSideBar()"></div>
+        <div class="d-lg-none d-fixed">
+          <app-bottom-navbar-gestante></app-bottom-navbar-gestante>
+        </div>
+      </div>
+      </div>
+    </main>
+  </div>
+  

@@ -1,0 +1,46 @@
+.custom-file-label {
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: black;
+}
+
+
+.input-file {
+    border: 2px dashed #00B2FF;;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #ffffffe8;
+    border-radius: 10px;
+}
+
+.input-file:hover {
+    background-color: #a7a7a783;
+}
+
+.item:hover {
+  color: #02425d;
+}
+
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-20px);
+    }
+    60% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  .up-bounce:hover {
+    animation-name: bounce;
+    animation-duration: 2s;
+    cursor: pointer;
+  }
+  
+
+

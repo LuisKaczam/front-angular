@@ -1,0 +1,32 @@
+<div class="container-fluid g-0 w-100">
+    <app-header-sidebar (sideNavToggled)="sideNavStatus = $event"></app-header-sidebar>
+    <main class="container-fluid h-100">
+        <div class="row">
+            <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+                <app-sidebar [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+                             [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
+            </div>
+            <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
+                 (click)="noSideBar()">
+                <div class="row d-flex justify-content-center">
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="text-center mt-5">
+                            <img class="mb-3 rocking-baby w-50 w-md-75" src="/assets/images/bebeIcon.png" alt="Bebê">
+                        </div>
+                        <div class="p-3 ms-3 rounded">
+                            <p class="text-center ">O bebê já nasceu?</p>
+                            <button class="btn btn-addBaby" (click)=" navigateToNewBaby()" >
+                                <i class="fa-solid fa-plus"></i>
+                                Adicionar Bebê
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}" (click)="noSideBar()"></div>
+        <div class="d-lg-none d-fixed">
+            <app-bottom-navigation></app-bottom-navigation>
+        </div>
+            </div>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,156 @@
+<div class="container-fluid g-0 w-100 h-100">
+  <app-header-sidebar (sideNavToggled)="sideNavStatus = $event"></app-header-sidebar>
+  <main class="container-fluid h-100">
+    <div class="row">
+      <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+        <app-sidebar [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+          [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
+      </div>
+      <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
+        (click)="noSideBar()">
+        <div class="row justify-content-center">
+          <div class="col-md-8 text-center text-md-end mt-3">
+            <div class="p-2 rounded">
+              <button class="btn add-btn" routerLink="/new-post">
+                <i class="fa-solid fa-arrow-up-from-bracket me-2"></i>
+                Adicionar Publicação
+              </button>
+            </div>
+            <div class="text-center mt-2" *ngIf="postVideos.length == 0 && postArticles.length == 0">
+              <span>Você não possui nenhuma postagem.</span>
+            </div>
+          </div>
+          <div class="col-md-8" *ngIf="postArticles.length > 0 || postVideos.length > 0">
+            <div class="card rounded-lg mx-auto shadow-sm">
+              <div class="card-body text-center">
+                <div class="contacts-list">
+                  <div *ngIf="postVideos">
+                    <div *ngFor="let video of postVideos" class="contact-item mb-3">
+                      <div class="d-flex align-items-center">
+                        <img [src]="video.link" alt="User" class="user-avatar mt-2">
+                        <div class="contact-info">
+                          <h6 class="ms-2 mt-2 user-name">{{ video.titulo }}</h6>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-end">
+                        <span class="mr-3">
+                          <a title="Editar" (click)="onModalOpen(video)" data-bs-toggle="modal"
+                            data-bs-target="#formPosts">
+                            <i class="fa-solid fa-share-nodes"></i>
+                            Compartilhar
+                          </a>
+                        </span>
+                        <span class="ms-4">
+                          <a title="Deletar" (click)="deleteVideo(video.id, video.link, video.titulo)">
+                            <i class="fa-solid fa-trash-can"></i>
+                            Deletar
+                          </a>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="postArticles">
+                    <div *ngFor="let article of postArticles" class="contact-item mb-3">
+                      <div class="d-flex align-items-center">
+                        <img [src]="article.link" alt="User" class="user-avatar mt-2">
+                        <div class="contact-info">
+                          <h6 class="ms-2 mt-2 user-name">{{ article.titulo }}</h6>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-end">
+                        <span class="mr-3">
+                          <a title="Editar" (click)="onModalOpen(article)" data-bs-toggle="modal"
+                            data-bs-target="#formPosts">
+                            <i class="fa-solid fa-share-nodes"></i>
+                            Compartilhar
+                          </a>
+                        </span>
+                        <span class="ms-4">
+                          <a title="Deletar" (click)="deleteArticle(article.id, article.link, article.titulo)">
+                            <i class="fa-solid fa-trash-can"></i>
+                            Deletar
+                          </a>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}" (click)="noSideBar()"></div>
+        <div class="d-lg-none d-fixed">
+          <app-bottom-navigation></app-bottom-navigation>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal fade" id="formPosts" tabindex="-1" aria-labelledby="formPosts" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center w-100" id="formPosts">Compartilhar</h5>
+        <button type="button" id="close-share" class="btn-close" (click)="onModalClose()" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body justify-content-center">
+        <div class="inSearch input-group p-2 w-100">
+          <input type="text" class="form-control rounded" placeholder="Buscar gestante..." (input)="searchGestantes()"
+            [(ngModel)]="searchTerm">
+          <span class="input-group-text btn-search"><i class="fas fa-search" style="color: #00B2FF;"
+              (click)="searchGestantes()"></i></span>
+        </div>
+        <div class="justify-content-center mb-1">
+          <div class="text-center mt-2 mb-2" *ngIf="gestantes.length == 0">
+            <span>Nenhuma gestante cadastrada.</span>
+          </div>
+          <div class="text-center mt-2 mb-2" *ngIf="foundedGestante == true">
+            <span>Nenhuma gestante encontrada.</span>
+          </div>
+          <div class="card rounded-lg mx-auto shadow-sm mb-3" *ngIf="gestantes.length > 0 && foundedGestante == false">
+            <div class="card-body text-center">
+              <div class="text-end mb-3">
+                <input type="checkbox" id="allChechecked" class="invisible" [(ngModel)]="selectAllChecked" (change)="selectAllGestantes()">
+                <label class="me-2 btn" style="background-color: #00B2FF; color: white" for="allChechecked">Selecionar Todos</label>
+              </div>
+              <div *ngIf="!searchTerm" style="max-height: 400px; overflow-y: auto;">
+                <div *ngFor="let gestante of gestantes">
+                  <label  class="d-flex align-items-center contact-item mb-4" id="selectGestante{{ gestante.id }}" for="checkbox{{ gestante.id }}">
+                    <input type="checkbox" [(ngModel)]="gestante.selected" class="invisible" id="checkbox{{ gestante.id }}" name="checkbox{{ gestante.id }}" class="mt-2 invisible" (change)="toggleGestanteSelection(gestante)">
+                    <img *ngIf="!gestante?.usuario?.profilePhoto" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                      <img *ngIf="gestante?.usuario?.profilePhoto" src="{{gestante?.usuario?.profilePhoto}}" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                    <div class="contact-info">
+                      <h6 class="ms-2 mt-2 user-name">{{ gestante.usuario.name }}</h6>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <div *ngIf="searchTerm">
+                <div style="max-height: 400px; overflow-y: auto;">
+                  <div *ngFor="let gestante of filteredGestantes">
+                    <label  class="d-flex align-items-center contact-item mb-4" id="selectGestante{{ gestante.id }}" for="checkbox{{ gestante.id }}">
+                      <input type="checkbox" [(ngModel)]="gestante.selected" id="checkbox{{ gestante.id }}" name="checkbox{{ gestante.id }}" class="mt-2 invisible " (change)="toggleGestanteSelection(gestante)">
+                      <img *ngIf="!gestante?.usuario?.profilePhoto" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                      <img *ngIf="gestante?.usuario?.profilePhoto" src="{{gestante?.usuario?.profilePhoto}}" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                      <div class="contact-info">
+                        <h6 class="ms-2 mt-2 user-name">{{ gestante.usuario.name }}</h6>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-end">
+            <button type="submit" id="sendBtn" class="btn text-end invisible" style="background-color: #00B2FF; color: white" (click)="share()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m4 6.03l7.5 3.22l-7.5-1V6.03m7.5 8.72L4 17.97v-2.22l7.5-1M2 3v7l15 2l-15 2v7l21-9L2 3Z"/></svg> </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

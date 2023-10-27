@@ -1,0 +1,46 @@
+<div class="container-fluid g-0 w-100">
+  <app-header-gestante (sideNavToggled)="sideNavStatus = $event"></app-header-gestante>
+  <main class="container-fluid h-100">
+    <div class="row">
+      <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+        <app-side-bar-gestante [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+          [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-side-bar-gestante>
+      </div>
+      <div class="display-area  mt-lg-3  mt-0 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
+        (click)="noSideBar()">
+        <div class="row justify-content-center">
+          <div class="col-md-4 mb-4 mt-lg-5  mt-0">
+            <div class="card h-100 mt-lg-5 mt-0 rounded-4 shadow-lg" routerLink="/list-gestante-babies" style="cursor: pointer;">
+              <div class="card-body">
+                <div>
+                  <h3 class="side-text">Meu Bebê</h3>
+                  <span class="cardText">Visualizar informações gerais do Recém-nascido e suas vacinas </span>
+                </div>
+                <div class="w-100 text-end">
+                  <img class="ms-auto" src="/assets/images/bebe.png" alt="Meu Bebê">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4 mt-lg-5  mt-0">
+            <div class="card h-100  mt-lg-5  mt-0 rounded-4 shadow-lg" routerLink="/infos-gestante" style="cursor: pointer;">
+              <div class="card-body">
+                <div>
+                  <h3 class="side-text">Gestante</h3>
+                  <span class="cardText">Visualizar minhas informações e Histórico Médico </span>
+                </div>
+                <div class="w-100 text-end mt-4">
+                  <img class="ms-auto" src="/assets/images/gestante-img.png" alt="Meu Bebê">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}"></div>
+        <div class="d-lg-none d-fixed mt-4">
+          <app-bottom-navbar-gestante></app-bottom-navbar-gestante>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

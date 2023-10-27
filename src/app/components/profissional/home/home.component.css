@@ -1,0 +1,86 @@
+.contacts-list {
+  margin-top: 20px;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover{
+  color: #00B2FF;
+}
+
+.contact-item {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  transition: background-color 0.3s;
+}
+
+.contact-item:hover {
+  background-color: #e0e0e0;
+}
+
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.user-name {
+  margin: 0;
+  font-weight: bold;
+}
+
+.user-info {
+  margin: 0;
+  font-size: 14px;
+}
+
+.input-group-text {
+  background-color: #f5dfdf;
+  border: none;
+}
+
+.btn-search:hover{
+  background-color: rgba(39, 38, 38, 0.047);
+  cursor: pointer;
+}
+
+.btn-search{
+  color: #00B2FF;
+  background-color: rgb(231, 225, 225);
+}
+
+.add-btn{
+  background-color: #00B2FF;
+  color: white;
+}
+
+
+.add-btn:hover{
+  background-color: white;
+  color: #00B2FF;
+  border: 1.5px solid #00B2FF;
+}
+
+.input-search{
+  left: 5rem;
+}
+
+@media (max-width: 767px) {
+  .inSearch {
+    width: 100%;
+  }
+}
+
+
+@media (min-width: 768px) {
+  .inSearch {
+    width: 50%;
+  }
+}
+

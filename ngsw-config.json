@@ -1,0 +1,38 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/manifest.webmanifest",
+          "/*.css",
+          "/*.js"
+        ],
+        "urls": [
+          "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js",
+          "https://kit.fontawesome.com/1d87c7c99e.js",
+          "https://fonts.googleapis.com/css2?family=Saira:wght@400&display=swap",
+          "https://fonts.googleapis.com/css2?family=Island+Moments&display=swap",
+          "https://cdn-icons-png.flaticon.com/128/1946/1946429.png",
+          "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+        ]
+      }
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/**",
+          "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
+        ]
+      }
+    }
+  ]
+}

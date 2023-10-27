@@ -1,0 +1,18 @@
+.step-button{
+    color: inherit;
+    text-decoration: none;
+}
+
+.step-button:hover{
+    color: #00B2FF;
+}
+
+.active{
+    border-bottom: 2px solid #00B2FF;
+    color: #00B2FF;
+}
+
+select{
+    padding: 4px 6px
+}
+  

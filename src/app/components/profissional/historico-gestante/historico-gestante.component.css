@@ -1,0 +1,72 @@
+  .profile-picture {
+    height: 100px;
+    border-radius: 50%;
+    top: -50px;
+    padding: 5px;
+    margin: 0 auto;
+  }
+
+  .profile-picture img {
+    width: 100px;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  .profile-info {
+    margin-top: 70px;
+  }
+
+  .vaccine-list {
+    padding: 0;
+  }
+  
+  .vaccine-list li {
+    background-color: #ffffff;
+    border-radius: 15px;
+    margin: 10px 0;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+  
+  .vaccine-list a {
+    color: #4d85cd;
+    text-decoration: none;
+  }
+  
+  .vaccine-name {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .vaccine-details {
+    display: none;
+    padding: 10px 0;
+    transition: all 0.3s ease-in-out;
+    border-top: 1px solid #ccc; 
+    margin-top: 10px; 
+  }
+  
+  .vaccine-details.show {
+    display: block;
+  }
+  
+  .vaccine-date {
+    color: #6c757d;
+  }
+  .add-btn{
+    background-color: #00B2FF;
+    color: white;
+  }
+
+  .btn-edit:hover{
+    cursor: pointer;
+    color: #00B2FF;
+  }
+  
+  
+  .add-btn:hover{
+    background-color: white;
+    color: #00B2FF;
+    border: 1.5px solid #00B2FF;
+  }

@@ -1,0 +1,43 @@
+<div class="container-fluid g-0 w-100 h-100">
+    <app-header-gestante (sideNavToggled)="sideNavStatus = $event"></app-header-gestante>
+    <main class="container-fluid h-100">
+      <div class="row">
+        <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+          <app-side-bar-gestante [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+            [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-side-bar-gestante>
+        </div>
+        <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus} " (click)="noSideBar()">
+          <div class="row justify-content-center" *ngIf="babiesArray">
+            <div class="w-100 ms-auto">
+              <div class="text-center mt-2" *ngIf="babiesArray.length == 0">
+                <span>Nenhum bebê cadastrado.</span>
+              </div>
+            </div>
+            <div class="col-md-8 mb-5 mt-5" *ngIf="babiesArray.length > 0">
+              <div class="card rounded-lg mx-auto shadow-sm mb-5 mt-3">
+                <div class="card-body text-center">
+                  <div class="contacts-list " style="max-height: 400px; overflow-y: auto;">
+                    <div *ngFor="let bebe of babiesArray" class="contact-item mb-4">
+                      <div class="w-100 h-100" (click)="infosBaby(bebe.id)">
+                      <div class="d-flex align-items-center">
+                        <img *ngIf="!bebe.foto" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="{{ bebe.nome}}" class="user-avatar mt-2">
+                        <img *ngIf="bebe.foto" src="{{bebe.foto}}" alt="{{ bebe.nome}}" class="user-avatar mt-2">
+                        <div class="contact-info">
+                          <h6 class="ms-2 mt-2 user-name">{{ bebe.nome }}</h6>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}"></div>
+          <div class="d-lg-none d-fixed mt-2">
+            <app-bottom-navbar-gestante></app-bottom-navbar-gestante>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>

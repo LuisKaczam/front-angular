@@ -1,0 +1,108 @@
+<div class="container-fluid g-0 w-100">
+  <app-header-gestante (sideNavToggled)="sideNavStatus = $event"></app-header-gestante>
+  <main class="container-fluid h-100">
+    <div class="row">
+      <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+        <app-side-bar-gestante [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+          [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-side-bar-gestante>
+      </div>
+      <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}" (click)="noSideBar()">
+        <div class="row justify-content-center mt-5">
+          <div class="col-md-8">
+            <div class="bg-white router-btns rounded-link d-flex w-100">
+              <div (click)="showStep(1)" id="info" class="side-text shadow w-50 rounded-link p-2 mw-100">
+                <a>Informações</a>
+              </div>
+              <div (click)="showStep(2)" id="historico" class="side-text shadow a-links w-50 p-2">
+                <a>Consultas</a>
+              </div>
+            </div>
+            <div class="card mx-auto shadow-sm">
+              <div class="card-body">
+                <div class="vaccine-list mt-4" *ngIf="currentStep === 1">
+                  <ul class="list-unstyled">
+                    <li>
+                      <div class="d-flex justify-content-between ">
+                         <span class="vaccine-name"> Data de Nascimento:</span>
+                         <span>{{infosGestante?.gestanteBirthDate | date:'dd/MM/yyyy'}}</span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="d-flex justify-content-between">
+                         <span class="vaccine-name"> Abortos: </span>
+                         <span *ngIf="infosGestante?.abortions === 0"> Nenhum</span>
+                         <span *ngIf="infosGestante?.abortions != 0"> {{infosGestante?.abortions}}</span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="d-flex justify-content-between ">
+                        <span class="vaccine-name"> Cesáreas: </span>
+                       <span *ngIf="infosGestante?.cesareanDeliveries === 0"> Nenhuma</span>
+                       <span *ngIf="infosGestante?.cesareanDeliveries != 0"> {{infosGestante?.cesareanDeliveries}}</span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="d-flex justify-content-between ">
+                        <span class="vaccine-name"> Gestações anteriores: </span>
+                       <span *ngIf="infosGestante?.numberOfPregnancies === 0"> Nenhuma</span>
+                       <span *ngIf="infosGestante?.numberOfPregnancies != 0"> {{infosGestante?.numberOfPregnancies}}</span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="d-flex justify-content-between ">
+                        <span class="vaccine-name"> Partos normais: </span>
+                       <span *ngIf="infosGestante?.normalDeliveries === 0"> Nenhum</span>
+                       <span *ngIf="infosGestante?.normalDeliveries != 0"> {{infosGestante?.normalDeliveries}}</span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="vaccine-list mt-4" *ngIf="currentStep === 2">
+                  <div class="text-center mt-2 mb-2" *ngIf="consultas.length == 0">
+                    <span class="mb-3">Nenhuma consulta cadastrada.</span>
+                  </div>
+                  <ul class="list-unstyled">
+                    <li *ngFor="let consulta of consultas" class="mb-2" (click)="toggleDetails(consulta)">
+                      <span class="vaccine-name">Consulta: {{ consulta.dataConsulta | date:'dd/MM/yyyy'}}</span>
+                      <div class="vaccine-details" [ngClass]="{'show': consulta.expanded}">
+                       
+                        <div class="d-flex justify-content-between ">
+                          <span class="vaccine-name">Exames realizados:</span>
+                          <span>{{ consulta.examesRealizados }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <span class="vaccine-name">Prescrições: </span>
+                          <span>{{ consulta.prescricoesMedicas }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <span class="vaccine-name">Exames realizado:</span>
+                          <span>{{ consulta.examesRealizados }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <span class="vaccine-name">Pressão Arterial: </span>
+                          <span>{{ consulta.pressaoArterial }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <span class="vaccine-name">Diagnóstico:</span>
+                          <span>{{  consulta.diagnostico }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <span class="vaccine-name">Batimentos Cardíacos:</span>
+                          <span>{{ consulta.batimentosCardiacos }}</span>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}"></div>
+        <div class="d-lg-none d-fixed">
+          <app-bottom-navbar-gestante></app-bottom-navbar-gestante>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

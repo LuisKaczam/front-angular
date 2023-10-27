@@ -1,0 +1,20 @@
+.login-item{
+    color: inherit;
+}
+
+.login-dropdown-item{
+    color: inherit;
+}
+
+.login-item:hover{
+    color: #00B2FF;
+  }
+
+.login-dropdown-item:hover{
+    color: white;
+    background-color: #00B2FF;
+  }
+
+  .login-item:active{
+    color: #00B2FF;
+}

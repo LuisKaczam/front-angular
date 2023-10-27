@@ -1,0 +1,71 @@
+<nav  [ngClass]="{ 'navbar': true, 'navbar-fixed-top': true, 'navbar-expand-lg': true, 'navbar-light': true, 'bg-light': true, 'shadow-lg': true, 'mb-5': true, 'bg-white': true, 'rounded': true, 'transparent-image': isModalOpen }"
+[style.z-index]="isModalOpen ? '1' : '9999'">
+  <div class="container">
+    <a class="font-logo" href="#">SisGestante</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle login-item" href="#" id="cadastroDropdown" routerLinkActive="active" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Como se Cadastrar?
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="cadastroDropdown">
+            <li><a class="dropdown-item login-dropdown-item" (click)="onModalOpen()" routerLinkActive="active" data-bs-toggle="modal" data-bs-target="#profissionalModal">Profissional da Saúde</a></li>
+            <li><a class="dropdown-item login-dropdown-item" data-bs-toggle="modal" (click)="onModalOpen()" data-bs-target="#gestanteModal">Gestante</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link login-item" data-bs-toggle="modal" (click)="onModalOpen()" routerLinkActive="active" data-bs-target="#sobreModal" href="#">Sobre</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link login-item" (click)="navigateToLoginOrRegister()" routerLinkActive="active">{{ isLoginOrRegisterRoute() }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="modal fade" id="profissionalModal" tabindex="-1" aria-labelledby="profissionalModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="profissionalModal">Como se Cadastrar?</h5>
+        <button type="button" class="btn-close" (click)="onModalClose()" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Profissional...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="gestanteModal" tabindex="-1" aria-labelledby="gestanteModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="gestanteModal">Como se Cadastrar?</h5>
+        <button type="button" class="btn-close" (click)="onModalClose()" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Gestante...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="sobreModal" tabindex="-1" aria-labelledby="sobreModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sobreModalLabel">Sobre</h5>
+        <button type="button" class="btn-close" (click)="onModalClose()" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Conteúdo da janela modal "Sobre"...</p>
+      </div>
+    </div>
+  </div>
+</div>
+

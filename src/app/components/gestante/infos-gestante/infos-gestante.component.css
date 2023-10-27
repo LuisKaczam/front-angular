@@ -1,0 +1,70 @@
+.vaccine-list {
+  padding: 0;
+}
+
+.vaccine-list li {
+  background-color: #ffffff;
+  border-radius: 15px;
+  margin: 10px 0;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.vaccine-list a {
+  color: #4d85cd;
+  text-decoration: none;
+}
+
+.vaccine-name {
+  font-weight: bold;
+  color: #333;
+}
+
+.vaccine-details {
+  display: none;
+  padding: 10px 0;
+  transition: all 0.3s ease-in-out;
+  border-top: 1px solid #ccc; 
+  margin-top: 10px; 
+}
+
+.vaccine-details.show {
+  display: block;
+}
+
+.vaccine-date {
+  color: #6c757d;
+}
+.active{
+  background-color: #00B2FF;
+  color: white;
+}
+
+.router-btns{
+  text-decoration: none;
+  height: 2.6rem;
+  text-align: center;
+}
+
+.rounded-link{
+  border-radius: 50px 0 0 0;
+}
+
+.a-links{
+  color: #00B2FF;
+  text-decoration: none;
+}
+
+.card{
+  border-radius: 0 0 0 0;
+  border: solid 1px #00B2FF;
+}
+
+#info, #historico{
+  cursor: pointer;
+}
+
+.border-links{
+  border: solid 1px #00B2FF;
+}

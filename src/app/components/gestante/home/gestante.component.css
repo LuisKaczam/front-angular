@@ -1,0 +1,14 @@
+.card{
+    background-color: #00B2FFE3;
+    color: white;
+}
+
+.side-text{
+    color: white;
+}
+
+.cardText{
+    text-align: justify;
+    margin-top: 2.5rem;
+    font-size: 18.5px;
+}

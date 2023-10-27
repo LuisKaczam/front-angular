@@ -1,0 +1,153 @@
+<div class="container-fluid g-0 w-100 h-100">
+  <app-header-gestante (sideNavToggled)="sideNavStatus = $event"></app-header-gestante>
+  <main class="container-fluid h-100">
+    <div class="row">
+      <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+        <app-side-bar-gestante [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+          [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-side-bar-gestante>
+      </div>
+        <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
+          (click)="noSideBar()">
+          <div class="row justify-content-center">
+            <div class="col-md-4">
+              <div class="text-center">
+                   <label class="profile-picture rounded-circle position-relative shadow-lg" for="userPhoto">
+                              <div class="edit-icon">
+                                <i class="fas fa-camera"></i>
+                              </div>
+                              <img *ngIf="!gestante?.usuario?.profilePhoto" src="{{avatar}}" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                              <img *ngIf="gestante?.usuario?.profilePhoto" src="{{gestante?.usuario?.profilePhoto}}" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                          </label>
+                <h2 class="mt-3">{{gestante?.usuario?.name}}</h2>
+                <p><strong>Email: </strong>{{gestante?.usuario?.email}}</p>
+                <hr>
+                <input type="file" name="userPhoto" id="userPhoto" class="invisible" (input)="onFileSelected($event)">
+                <div class="list-group list-group-flush">
+                  <ul class="list-unstyled text-start">
+                    <li class="itens list-group-item d-flex justify-content-between align-items-center" (click)="onModalOpen()"
+                    data-bs-toggle="modal" data-bs-target="#emailModal">
+                      <a>Mudar E-mail</a>
+                      <i class="fa-solid fa-pen"></i>
+                    </li>
+                    <li class="itens list-group-item d-flex justify-content-between align-items-center" (click)="onModalPasswordOpen()" data-bs-toggle="modal" data-bs-target="#passwordModal">
+                      <a>Mudar Senha</a>
+                      <i class="fa-solid fa-pen"></i>
+                    </li>
+                    <li class="itens list-group-item d-flex justify-content-between align-items-center" (click)="deleteGestante()">
+                      <a class="text-danger ">Deletar Conta</a>
+                    </li>
+                    <li class="itens list-group-item d-flex justify-content-between align-items-center text-danger" (click)="logout()">
+                      <a>Sair</a>
+                      <i class="fa-solid fa-right-from-bracket fa-lg" style="cursor: pointer;"></i>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}" (click)="noSideBar()"></div>
+          <div class="d-lg-none d-fixed">
+            <app-bottom-navbar-gestante></app-bottom-navbar-gestante>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true"
+      data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title text-center w-100" id="emailModalLabel">Alterar E-mail de Usuário</h5>
+                  <button type="button" class="btn-close" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-center">
+                <div class="text-center d-block justify-content-center mx-auto w-50" >
+                  <form (ngSubmit)="updateEmailUser()" #emailForm="ngForm" [formGroup]="inputEmail">
+                      <div class="mb-2">
+                          <input type="email" class="form-control col-md-4" id="email" formControlName="newEmail"
+                            name="newName" maxlength="60" placeholder="Digite seu e-mail" required>
+                          <div
+                            *ngIf="inputEmail.get('newEmail')?.invalid && (inputEmail.get('newEmail')?.dirty || inputEmail.get('newEmail')?.touched) || inputEmail.get('newEmail')?.invalid && emailForm.submitted"
+                            class="text-danger ms-1">
+                            <div *ngIf="inputEmail.get('newEmail')?.hasError('required')">Campo obrigatório.</div>
+                            <div *ngIf="inputEmail.get('newEmail')?.hasError('email')">Email Inválido.</div>
+                            <div *ngIf="inputEmail.get('newEmail')?.hasError('emailInUse')" >Email já em uso.</div>
+                          </div>
+                      </div>
+                      <div class="mb-2">
+                        <input type="password" class="form-control col-md-4" id="password" formControlName="password"
+                          name="password" maxlength="60" placeholder="Digite sua senha" required>
+                        <div
+                          *ngIf="inputEmail.get('password')?.invalid && (inputEmail.get('password')?.dirty || inputEmail.get('password')?.touched) || inputEmail.get('password')?.invalid && emailForm.submitted"
+                          class="text-danger ms-1">
+                          <div *ngIf="inputEmail.get('password')?.hasError('required')">Campo obrigatório.</div>
+                          <div *ngIf="inputEmail.get('password')?.hasError('passwordInvalid')" >Senha Inválida</div>
+                        </div>
+                    </div>
+                      <div class="mb-2">
+                          <button type="submit" class="btn mt-2" style="background-color: #083263; color: white"> Alterar</button>
+                      </div>
+                  </form>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true"
+      data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title text-center w-100" id="passwordModalLabel">Alterar Senha</h5>
+                  <button type="button" class="btn-close" id="closePassword" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-center">
+                <div class="text-center d-block justify-content-center mx-auto w-50" id="notExpandDiv" >
+                  <form (ngSubmit)=" updatePassword()" #passwordForm="ngForm" [formGroup]="inputPassword">
+                      <div *ngIf="passwordError == true" class="alert alert-danger" role="alert">
+                          <div class="text-danger text-center">
+                            <span>Erro ao alterar senha, tente novamente mais tarde.</span>
+                          </div>
+                        </div>
+                        <div *ngIf="passwordSuccess == true" class="alert alert-success" role="alert">
+                          <div class="text-success text-center">
+                            <span>Senha Alterada com sucesso.</span>
+                          </div>
+                        </div>
+                      <div class="mb-2">
+                          <input type="password" class="form-control col-md-4" formControlName="newPassword"
+                            name="newPassword" maxlength="30" placeholder="Digite sua nova senha" required>
+                          <div
+                            *ngIf="inputPassword.get('newPassword')?.invalid && (inputPassword.get('newPassword')?.dirty || inputPassword.get('newPassword')?.touched) || inputPassword.get('newPassword')?.invalid && passwordForm.submitted"
+                            class="text-danger ms-1 text-start">
+                            <div *ngIf="inputPassword.get('newPassword')?.hasError('required')">Campo obrigatório.</div>
+                            <div *ngIf="inputPassword.get('newPassword')?.hasError('minlength')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('minlength')}">A senha deve possuir no mínimo 8 caracteres.</div>
+                            <div *ngIf="inputPassword.get('newPassword')?.hasError('maxlength')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('maxlength')}">A senha deve possuir no máximo 30 caracteres.</div>
+                            <div *ngIf="inputPassword.get('newPassword')?.hasError('hasNumber')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('hasNumber')}">A senha deve conter pelo menos um número.</div>
+                            <div *ngIf="inputPassword.get('newPassword')?.hasError('hasCapitalCase')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('hasCapitalCase')}">A senha deve conter pelo menos uma letra maiúscula.</div>
+                            <div *ngIf="inputPassword.get('newPassword')?.hasError('hasLowerCase')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('hasLowerCase')}">A senha deve conter pelo menos uma letra minúscula.</div>
+                            <div *ngIf="inputPassword.get('newPassword')?.hasError('hasSpecialC')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('hasSpecialC')}">A senha deve conter pelo menos um caractere especial.</div>
+                          </div>
+                      </div>
+                      <div class="mb-3 text-start">
+                          <label for="confirmPassword" class="form-label">Confirmar senha</label>
+                          <input type="password" class="form-control" id="confirmPassword"
+                            formControlName="confirmPassword" placeholder="Digite sua senha" maxlength="30" required>
+                          <div
+                            *ngIf="inputPassword.get('confirmPassword')?.invalid && (inputPassword.get('confirmPassword')?.dirty || inputPassword.get('confirmPassword')?.touched) || inputPassword.get('confirmPassword')?.invalid && passwordForm.submitted"
+                            class="text-danger ms-1">
+                            <div *ngIf="inputPassword.get('confirmPassword')?.hasError('required')">Campo obrigatório.</div>
+                            <div *ngIf="inputPassword.get('confirmPassword')?.hasError('not_matching')">As senhas devem ser iguais.</div>
+                          </div>
+                        </div>
+                      <div class="mb-2">
+                          <button type="submit" class="btn mt-2" style="background-color: #083263; color: white"> Alterar</button>
+                      </div>
+                  </form>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>

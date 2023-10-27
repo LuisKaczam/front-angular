@@ -1,0 +1,23 @@
+.rocking-baby {
+    animation: rockingAnimation 2s infinite alternate ease-in-out;
+}
+
+@keyframes rockingAnimation {
+    from {
+        transform: rotate(5deg);
+    }
+    to {
+        transform: rotate(-5deg);
+    }
+}
+
+.btn-addBaby{
+    background-color: #00B2FF;
+    color: white;
+  }
+
+  .btn-addBaby:hover {
+    background-color: white;
+    color: #00B2FF;
+    border: 2px solid #00B2FF;
+  }

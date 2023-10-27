@@ -1,0 +1,50 @@
+.side-nav-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 15%;
+  }
+
+  .notification-badge {
+    position: absolute;
+    top: -5px;
+    left: 0.5rem;
+    background-color: red;
+    color: white;
+    width: 12.8px;
+    height: 12.8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.6rem;
+  }
+
+  .notifications-wrapper {
+    overflow:auto;
+     max-height:250px;
+   }
+
+     .notifications a.content {
+      text-decoration:none;
+      background:#ccc;
+     
+      }
+         
+     .notification-item {
+      padding:10px;
+      margin:5px;
+      background:#ccc;
+      border-radius:4px;
+      }
+     
+  
+
+  .side-nav-button:hover {
+    color:  #00B2FF; 
+  }
+
+  .side-nav-item:hover{
+    color: #00B2FF;
+  }

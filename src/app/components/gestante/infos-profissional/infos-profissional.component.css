@@ -1,0 +1,57 @@
+.profile-picture {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .profile-picture img {
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%;
+  }
+
+  .contacts-list {
+    margin-top: 20px;
+  }
+  
+  a {
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  a:hover{
+    color: #00B2FF;
+  }
+  
+  .contact-item {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    transition: background-color 0.3s;
+  }
+  
+  .contact-item:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+  
+  .user-name {
+    margin: 0;
+    font-weight: bold;
+  }
+  
+  .user-info {
+    margin: 0;
+    font-size: 14px;
+  }
+  
+  .input-group-text {
+    background-color: #f5dfdf;
+    border: none;
+  }

@@ -1,0 +1,72 @@
+<div class="container-fluid g-0 w-100 h-100">
+  <app-header-sidebar (sideNavToggled)="sideNavStatus = $event"></app-header-sidebar>
+  <main class="container-fluid h-100">
+    <div class="row">
+      <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+        <app-sidebar [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+          [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
+      </div>
+      <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
+        (click)="noSideBar()">
+        <div class="row justify-content-center">
+          <div class="col-md-8 mt-2">
+            <div class="baby-card p-4">
+              <div class="profile-picture rounded-circle position-relative text-center">
+                <img src="https://cdn-icons-png.flaticon.com/128/1946/1946429.png" alt="Perfil do Bebê"
+                  class="img-fluid">
+                <h5 class="mt-2 fw-bold">{{ baby?.nome}}</h5>
+              </div>
+              <hr>
+              <div class="profile-info mt-4 d-flex align-items-center">
+                <div class="flex-grow-1">
+                  <div class="d-inline-grid">
+                    <p><strong>Data de Nascimento:</strong>  {{ baby?.dataNascimento | date:'dd/MM/yyyy' }} </p>
+                    <p><strong>Peso:</strong> {{baby?.peso}}kg</p>
+                    <p><strong>Altura:</strong> {{baby?.altura}}cm</p>
+                    <p><strong>Sexo:</strong> {{ baby?.sexo }}</p>
+                    <p><strong>Tipo Sanguíneo:</strong>{{ baby?.tipoSanguineo }}</p>
+                  </div>
+                </div>
+                <div class="w-25 btn-edit" style="margin-top: -2.1rem;">
+                  <span><i class="fa-solid fa-edit me-2"></i>Editar</span>
+                </div>
+              </div>
+              <hr>
+              <div class="vaccine-list mt-4 mb-2">
+                <h4 class="text-center">Vacinas</h4>
+                <ul class="list-unstyled">
+                  <li *ngFor="let vaccine of vaccines" (click)="toggleDetails(vaccine)">
+                    <span class="vaccine-name">{{ vaccine.name }}</span>
+                    <div class="vaccine-details" [ngClass]="{'show': vaccine.expanded}">
+                      <div class="d-block">
+                        <a [href]="vaccine.pdfLink" target="_blank">
+                          <i class="fa-solid fa-file-pdf"></i>
+                          Informações</a>
+                      </div>
+                      <div class="d-block">
+                        <span class="vaccine-date">Data: {{ vaccine.date }}</span>
+                      </div>
+                      <div class="d-block">
+                        <span class="vaccine-dose">Dose: {{ vaccine.dose }}</span>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="text-end rounded mb-5">
+                <button class="btn add-btn" data-bs-toggle="modal" data-bs-target="#formRegisterGestante">
+                  <i class="fa-solid fa-plus"></i>
+                  Adicionar Vacina
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}" (click)="noSideBar()"></div>
+        <div class="d-lg-none d-fixed mt-3">
+          <app-bottom-navigation></app-bottom-navigation>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

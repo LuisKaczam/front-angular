@@ -1,0 +1,97 @@
+<div class="container-fluid g-0 w-100 h-100">
+    <app-header-sidebar (sideNavToggled)="sideNavStatus = $event"></app-header-sidebar>
+    <main class="container-fluid h-100">
+      <div class="row">
+        <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+          <app-sidebar [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+            [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
+        </div>
+        <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}" (click)="noSideBar()">
+          <div class="row justify-content-center mb-5">
+            <div class="col-md-8 mt-2 mb-5">
+              <div class="p-4">
+                <div class="profile-picture rounded-circle position-relative text-center mb-3">
+                  <img *ngIf="!gestante?.usuario?.profilePhoto" src="https://cdn-icons-png.flaticon.com/128/1946/1946429.png" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                  <img *ngIf="gestante?.usuario?.profilePhoto" src="{{gestante?.usuario?.profilePhoto}}" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                  <h5 class="mt-2 fw-bold">{{gestante?.usuario?.name}}</h5>
+                  <div class="flex-grow-1">
+                    <div class="d-inline-grid">
+                        <span><strong>Email: </strong>{{gestante.usuario?.email}}</span>
+                        <span><strong>CPF: </strong>{{gestante.usuario?.cpf}}</span>
+                    </div>
+                  </div>
+                </div>
+                <hr class="mt-5">
+                <div class="profile-info mt-4 d-flex align-items-center">
+                  <div class="flex-grow-1">
+                    <div class="d-inline-grid">
+                    <span><strong>Data de Nascimento:</strong> {{ gestante.gestanteBirthDate | date:'dd/MM/yyyy' }}</span>
+                    <span><strong>Peso:</strong> {{gestante.weight}}kg</span>
+                    <span><strong>Altura</strong> {{gestante.height}}m  </span>
+                    <span><strong>Tipo Sanguíneo:</strong> {{gestante.gestanteBloodType}} </span>
+                    <span><strong>Gestações Anteriores:</strong> {{gestante.numberOfPregnancies}} </span>
+                    <span><strong>Parto Normal:</strong> {{gestante.normalDeliveries}}</span>
+                    <span><strong>Cesáreas:</strong> {{gestante.cesareanDeliveries}}</span>
+                    <span><strong>Abortos:</strong> {{gestante.abortions}}</span>
+                    </div>
+                  </div>
+                  <div class="w-25 btn-edit" style="margin-top: -2.1rem;" (click)="navigateToUpdateGestante()">
+                    <span><i class="fa-solid fa-edit me-2"></i>Editar</span>
+                  </div>
+                </div>
+                <hr>
+              </div>
+              <div class="text-end rounded">
+                <button class="btn add-btn" (click)="newConsulta()">
+                  <i class="fa-solid fa-plus"></i>
+                  Nova Consulta
+                </button>
+              </div> 
+              <div class="text-center mt-2 mb-2" *ngIf="consultas.length == 0">
+                <span class="mb-3">Nenhuma consulta cadastrada.</span>
+              </div>
+              <div class="vaccine-list mt-4 mb-3" *ngIf="consultas.length > 0">
+                <ul class="list-unstyled" style="max-height: 400px; overflow-y: auto;">
+                  <li *ngFor="let consulta of consultas" class="mb-2" (click)="toggleDetails(consulta)">
+                    <span class="vaccine-name">Data da Consulta: {{ consulta.dataConsulta | date:'dd/MM/yyyy'}}</span>
+                    <div class="vaccine-details" [ngClass]="{'show': consulta.expanded}">
+                     
+                      <div class="d-flex justify-content-between ">
+                        <span class="vaccine-name">Exames realizados:</span>
+                        <span>{{ consulta.examesRealizados }}</span>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <span class="vaccine-name">Prescrições: </span>
+                        <span>{{ consulta.prescricoesMedicas }}</span>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <span class="vaccine-name">Exames realizado:</span>
+                        <span>{{ consulta.examesRealizados }}</span>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <span class="vaccine-name">Pressão Arterial: </span>
+                        <span>{{ consulta.pressaoArterial }}</span>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <span class="vaccine-name">Diagnóstico:</span>
+                        <span>{{  consulta.diagnostico }}</span>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <span class="vaccine-name">Batimentos Cardíacos:</span>
+                        <span>{{ consulta.batimentosCardiacos }}</span>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}" (click)="noSideBar()"></div>
+          <div class="d-lg-none d-fixed mt-5">
+            <app-bottom-navigation></app-bottom-navigation>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  

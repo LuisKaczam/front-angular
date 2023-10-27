@@ -1,0 +1,76 @@
+<div class="contentBody w-100 bg-md-color">
+  <div class="p-3 position-absolute top-0 start-0 w-100 mb-5">
+    <app-header></app-header>
+  </div>
+  <div class="d-flex align-items-center w-100 h-100">
+    <div class="position-relative d-none d-lg-block w-100">
+      <div class="w-100 transparent-image"></div>
+    </div>   
+    <div class="w-md-100 w-100 d-flex justify-content-center mt-5">
+      <div class="p-3 m-5 w-75 mt-5">
+        <div class="mt-5 card w-100 shadow-lg">
+          <div class="mt-2 card-body">
+            <h5 class="card-title text-center mb-4">Login - Profissional da Saúde</h5>
+            <form (ngSubmit)="login()" [formGroup]="loginForm" #formDir="ngForm">
+              <div *ngIf="invalidCredentials == true" class="alert alert-danger" role="alert">
+                <div class="text-danger text-center">
+                  <span>E-mail e/ou Senha inválidos</span>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="email" class="form-label">E-mail</label>
+                <input type="email" class="form-control" id="email" formControlName="email" (input)="inputChange()" placeholder="Digite seu e-mail ou documento" required>
+                <div *ngIf="email.invalid && password.dirty" class="text-danger">
+                  <div *ngIf="email.errors?.['required']">Campo obrigatório.</div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Senha</label>
+                <input type="password" class="form-control" id="password" formControlName="password" (input)="inputChange()" placeholder="Digite sua senha" required>
+                <div *ngIf="password.invalid && password.dirty" class="text-danger">
+                  <div *ngIf="password.errors?.['required']">Campo obrigatório.</div>
+                </div>
+              </div>
+              <div class="text-center mb-4">
+                <button type="submit" class="w-50 btn btn-login btn-enter" disabled id="btnLogin">Entrar</button>
+              </div>
+            </form>            
+            <div class="text-center invisible" id="recoveryPassword">
+              <p class="text-sm">Esqueceu a senha? <a style="cursor: pointer; text-decoration: underline;"  data-bs-toggle="modal" data-bs-target="#passwordModal" >Recupere-a</a>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="passwordModalLabel">Recuperar Senha</h5>
+                <button type="button" class="btn-close" id="btnClose" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+              <div *ngIf=" errorEmail == true" class="alert alert-danger" role="alert">
+                <div class="text-danger text-center">
+                  <span>Falha ao enviar e-mail de recuperação</span>
+                </div>
+              </div>
+              <div *ngIf=" confirmEmail == true" class="alert alert-success" role="alert">
+                <div class="text-success text-center">
+                  <span>E-mail enviado com sucesso! Verifique sua caixa de entrada.</span>
+                </div>
+              </div>
+                <p>Deseja realmente recuperar a senha de {{email.value}}?</p>
+                <button type="button" class="btn btn-login me-2"
+                    (click)="recoveryPassword()">Sim</button>
+                <button type="button" class="btn btn-login ms-2"
+                    data-bs-dismiss="modal" aria-label="Close">Não</button>
+            </div>
+        </div>
+    </div>
+</div>
