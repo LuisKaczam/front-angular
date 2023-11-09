@@ -20,7 +20,7 @@
                   Nova Gestante
                 </button>
                 <button class="btn add-btn mt-md-0 mt-2" (click)="onCpfModalOpen()" data-bs-toggle="modal" data-bs-target="#cpfModal">
-                  <i class="fa-solid fa-user-plus"></i>
+                  <i class="fa-solid fa-user-clock"></i>
                   Reinserir Gestante
                 </button>
               </div>
@@ -39,20 +39,20 @@
                   <div *ngFor="let gestante of gestantes" class="contact-item mb-4">
                     <div class="w-100 h-100" (click)="expandGestanteInfo(gestante)">
                     <div class="d-flex align-items-center">
-                      <img *ngIf="!gestante?.usuario?.profilePhoto" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
-                      <img *ngIf="gestante?.usuario?.profilePhoto" src="{{gestante?.usuario?.profilePhoto}}" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                      <img style="height: 50px; width: 50px;" *ngIf="!gestante?.usuario?.profilePhoto" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                      <img style="height: 50px; width: 50px;" *ngIf="gestante?.usuario?.profilePhoto" src="{{gestante?.usuario?.profilePhoto}}" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
                       <div class="contact-info">
                         <h6 class="ms-2 mt-2 user-name">{{ gestante?.usuario?.name }}</h6>
                       </div>
                     </div>
                     <div class="text-center d-grid" *ngIf="gestante?.expanded">
                       <p style="margin-bottom: 0;">Telefone: {{ gestante?.gestantePhone }}</p>
-                      <span style="margin-top: 0;"><a (click)="navigateToHistorico(gestante?.historico.id)">Histórico Médico</a></span>
-                      <p style="margin-top: 0;"><a (click)="navigateToBebe(gestante.id)">Recém-Nascido</a></p>
+                      <span class="link" style="margin-top: 0;"><a (click)="navigateToHistorico(gestante?.historico.id)">Histórico Médico</a></span>
+                      <p class="link" style="margin-top: 0;"><a (click)="navigateToBebe(gestante.id)">Recém-Nascido</a></p>
                     </div>
                     <div class="d-flex justify-content-end mt-4 mt-md-0">
-                      <span class="ms-4">
-                        <a title="Deletar" (click)="deleteGestante(gestante.id, gestante.usuario.name)">
+                      <span class="ms-4 link">
+                        <a title="Deletar" (click)="deleteGestante(gestante.id, gestante.usuario.name, $event)">
                           <i class="fa-solid fa-user-xmark"></i>
                           Deletar Gestante
                         </a>
@@ -65,20 +65,20 @@
                     <div class="contacts-list " style="max-height: 400px; overflow-y: auto;">
                     <div *ngFor="let gestante of filteredGestantes" class="contact-item mb-4" (click)="expandGestanteInfo(gestante)">
                       <div class="d-flex align-items-center">
-                        <img *ngIf="!gestante?.usuario?.profilePhoto" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
-                      <img *ngIf="gestante?.usuario?.profilePhoto" src="{{gestante?.usuario?.profilePhoto}}" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                        <img style="height: 50px; width: 50px;" *ngIf="!gestante?.usuario?.profilePhoto" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                        <img style="height: 50px; width: 50px;" *ngIf="gestante?.usuario?.profilePhoto" src="{{gestante?.usuario?.profilePhoto}}" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
                         <div class="contact-info">
                           <h6 class="ms-2 mt-2 user-name">{{ gestante?.usuario?.name }}</h6>
                         </div>
                       </div>
                       <div class="text-center d-grid" *ngIf="gestante.expanded">
                         <p style="margin-bottom: 0;">Telefone: {{ gestante?.gestantePhone }}</p>
-                        <span style="margin-top: 0;"><a (click)="navigateToHistorico(gestante.historico.id)">Histórico Médico</a></span>
-                        <p style="margin-top: 0;"><a (click)="navigateToBebe(gestante.id)">Recém-Nascido</a></p>
+                        <span class="link" style="margin-top: 0;"><a (click)="navigateToHistorico(gestante.historico.id)">Histórico Médico</a></span>
+                        <p class="link" style="margin-top: 0;"><a (click)="navigateToBebe(gestante.id)">Recém-Nascido</a></p>
                       </div>
                       <div class="d-flex justify-content-end mt-4 mt-md-0">
-                        <span class="ms-4">
-                          <a href="#" title="Deletar" (click)="deleteGestante(gestante.id, gestante.usuario.name)">
+                        <span class="ms-4 link">
+                          <a href="#" title="Deletar" (click)="deleteGestante(gestante.id, gestante.usuario.name, $event)">
                             <i class="fa-solid fa-user-xmark"></i>
                             Deletar Gestante
                           </a>

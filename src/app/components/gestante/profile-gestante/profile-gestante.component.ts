@@ -22,6 +22,7 @@ export class ProfileGestanteComponent {
   emailSuccess:boolean = false;
   emailModal:boolean = false;
   passwordModal:boolean = false;
+  deleteModal:boolean = false;
   passwordError: boolean = false;
   babies: any[] = [];
 
@@ -114,8 +115,12 @@ export class ProfileGestanteComponent {
    this.passwordModal = true;
    }
 
+   onModalDeleteOpen() {
+    this.deleteModal = true;
+    }
+
   onModalClose() {
-    const modal = document.getElementById('nameModal');
+    const modal = document.getElementById('emailModal');
     if (modal) {
       modal.classList.remove('show');
       modal.setAttribute('aria-hidden', 'true');
@@ -241,13 +246,10 @@ export class ProfileGestanteComponent {
     }
 
     deleteGestante(){
-      const nameId = this.gestante.usuario.name + this.gestante.usuario.id;
-      this.service.deleteGestante(this.gestante.usuario.id, this.gestante.usuario.profilePhoto, this.babies, nameId);
+      this.service.deleteGestante(this.gestante.usuario.id, this.gestante.usuario.profilePhoto, this.babies);
     }
 
     logout() {
-      localStorage.removeItem('token');
-      localStorage.removeItem('role');
-      this.router.navigate(['/login']);
+      this.service.logout();
     }
 }

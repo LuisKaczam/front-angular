@@ -1,24 +1,25 @@
 <div class="container-fluid g-0 w-100">
-    <app-header-gestante (sideNavToggled)="sideNavStatus = $event"></app-header-gestante>
-    <main class="container-fluid h-100">
-      <div class="row">
-        <div class="col-lg-3 col-xl-2 d-none d-lg-block">
-          <app-side-bar-gestante [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
-            [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-side-bar-gestante>
-        </div>
-        <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}" (click)="noSideBar()">
-          <div class="row justify-content-center mt-5">
-            <div class="col-md-8">
-              <div class="bg-white router-btns rounded-link d-flex w-100">
-                <div (click)="showStep(1)" id="info" class="side-text shadow w-50 rounded-link p-2 mw-100">
-                  <a>Informações</a>
-                </div>
-                <div (click)="showStep(2)" id="historico" class="side-text shadow a-links w-50 p-2">
-                  <a>Vacinas</a>
-                </div>
+  <app-header-gestante (sideNavToggled)="sideNavStatus = $event"></app-header-gestante>
+  <main class="container-fluid h-100">
+    <div class="row">
+      <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+        <app-side-bar-gestante [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+          [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-side-bar-gestante>
+      </div>
+      <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}" (click)="noSideBar()">
+        <div class="row justify-content-center mt-5">
+          <div class="col-md-8">
+            <div class="bg-white router-btns rounded-link d-flex w-100">
+              <div (click)="showStep(1)" id="info" class="side-text shadow w-50 rounded-link p-2 mw-100">
+                <a>Informações</a>
               </div>
-              <div class="card mx-auto shadow-sm">
-                <div class="card-body w-100">
+              <div (click)="showStep(2)" id="historico" class="side-text shadow a-links w-50 p-2">
+                <a>Vacinas</a>
+              </div>
+            </div>
+            <div class="card mx-auto shadow-sm mb-4">
+              <div class="card-body">
+                <div class="vaccine-list mt-4" *ngIf="currentStep === 1">
                   <label class="d-flex justify-content-center align-items-center mb-2" for="userPhoto">
                     <div class="avatar-container">
                       <img *ngIf="!bebe?.foto" src="{{avatar}}" alt="{{ bebe.babyName}}" class="user-avatar profile-picture rounded-circle mt-2">
@@ -29,10 +30,9 @@
                     </div>
                   </label>
                   <div class="text-center">
-                    <h3>{{bebe?.nome}}</h3>
+                    <h5 class="mt-1 mb-2 fw-bold">{{ bebe?.nome}}</h5>
+                    <input type="file" name="userPhoto" id="userPhoto" class="invisible" (input)="onFileSelected($event)">
                   </div>
-                  <input type="file" name="userPhoto" id="userPhoto" class="invisible" (input)="''">
-                  <div class="vaccine-list mt-4" *ngIf="currentStep === 1 || currentStep === 2">
                     <ul class="list-unstyled">
                       <li>
                         <div class="d-flex justify-content-between ">
@@ -65,17 +65,52 @@
                          </div>
                         </li>
                       </ul>
+                      
+                </div>
+                <div class="vaccine-list mt-4" *ngIf="currentStep === 2">
+                  <label class="d-flex justify-content-center align-items-center mb-2" for="userPhoto">
+                    <div class="avatar-container">
+                      <img *ngIf="!bebe?.foto" src="{{avatar}}" alt="{{ bebe.babyName}}" class="user-avatar profile-picture rounded-circle mt-2">
+                      <img *ngIf="bebe?.foto" src="{{bebe.foto}}" alt="{{ bebe.babyName}}" class="user-avatar mt-2 profile-picture rounded-circle">
+                      <span class="edit-icon">
+                        <i class="fas fa-camera"></i>
+                      </span>
+                    </div>
+                  </label>
+                  <div class="text-center">
+                    <h5 class="mt-1 mb-2 fw-bold">{{ bebe?.nome}}</h5>
+                    <input type="file" name="userPhoto" id="userPhoto" class="invisible" (input)="onFileSelected($event)">
                   </div>
+                  <ul class="list-unstyled">
+                    <li *ngFor="let vaccine of vacinas" (click)="toggleDetails(vaccine)">
+                      <span class="vaccine-name">{{ vaccine.nome }}</span>
+                      <div class="vaccine-details" [ngClass]="{'show': vaccine.expanded}">
+                        <div class="d-flex justify-content-between ">
+                          <span class="vaccine-name">Idade recomendada:</span>
+                          <span *ngIf="vaccine.idadeNecessaria == 0" class="vaccine-date"> Ao nascer</span>
+                          <span *ngIf="vaccine.idadeNecessaria == 1" class="vaccine-date"> 1º Mês</span>
+                          <span *ngIf="vaccine.idadeNecessaria == 2" class="vaccine-date"> 2º Mês</span>
+                          <span *ngIf="vaccine.idadeNecessaria == 9" class="vaccine-date"> 9º Mês</span>
+                          <span *ngIf="vaccine.idadeNecessaria == 12" class="vaccine-date"> 1 Ano </span>
+                       </div>
+                        <div class="d-block">
+                          <a [href]="vaccine.link" target="_blank">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            Informações</a>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
-          <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}"></div>
-          <div class="d-lg-none d-fixed">
-            <app-bottom-navbar-gestante></app-bottom-navbar-gestante>
-          </div>
+        </div>
+        <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}"></div>
+        <div class="d-lg-none d-fixed">
+          <app-bottom-navbar-gestante></app-bottom-navbar-gestante>
         </div>
       </div>
-    </main>
-  </div>
-  
+    </div>
+  </main>
+</div>

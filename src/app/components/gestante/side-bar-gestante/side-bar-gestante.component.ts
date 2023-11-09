@@ -9,6 +9,8 @@ import { GestanteService } from '../gestante.service';
 })
 export class SideBarGestanteComponent {
   @Input() sideNavStatus = false;
+  babies:any[] = [];
+  hasBaby:boolean = false;
   
 
   list = [
@@ -38,26 +40,28 @@ export class SideBarGestanteComponent {
     },
   ]
  avatar:string='';
- private gestante:any
+ gestante:any
 
 
   ngOnInit(): void {
       this.getGestante();
   }
 
-  setHome(){
-   const baby =  localStorage.getItem('baby')!;
-   let route;
-   if(parseInt(baby) != 0){
-    route = '/gestante';
-   }else{
-    route = '/infos-gestante';
-   }
-   return route;
+ 
 
-  }
 
   constructor(private router: Router, private service: GestanteService){}
+  setHome(){
+    const baby =  localStorage.getItem('baby')!;
+    let route;
+    if(parseInt(baby) != 0 || this.hasBaby === true){
+     route = '/gestante';
+    }else{
+     route = '/infos-gestante';
+    }
+    return route;
+ 
+   }
 
   navigateToPage(route: string): void {
     this.router.navigateByUrl(route);
@@ -78,7 +82,14 @@ export class SideBarGestanteComponent {
           }
         }
       }
-      console.log(this.gestante);
+      }
+    })
+  }
+  getBabies(){
+    this.service.listBebes().subscribe((response)=>{
+      this.babies = response;
+      if(this.babies.length > 0){
+        this.hasBaby = true;
       }
     })
   }

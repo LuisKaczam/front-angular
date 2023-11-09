@@ -121,8 +121,8 @@
                 <div *ngFor="let gestante of gestantes">
                   <label  class="d-flex align-items-center contact-item mb-4" id="selectGestante{{ gestante.id }}" for="checkbox{{ gestante.id }}">
                     <input type="checkbox" [(ngModel)]="gestante.selected" class="invisible" id="checkbox{{ gestante.id }}" name="checkbox{{ gestante.id }}" class="mt-2 invisible" (change)="toggleGestanteSelection(gestante)">
-                    <img *ngIf="!gestante?.usuario?.profilePhoto" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
-                      <img *ngIf="gestante?.usuario?.profilePhoto" src="{{gestante?.usuario?.profilePhoto}}" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                    <img style="height: 50px; width: 50px;" *ngIf="!gestante?.usuario?.profilePhoto" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                    <img style="height: 50px; width: 50px;" *ngIf="gestante?.usuario?.profilePhoto" src="{{gestante?.usuario?.profilePhoto}}" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
                     <div class="contact-info">
                       <h6 class="ms-2 mt-2 user-name">{{ gestante.usuario.name }}</h6>
                     </div>
@@ -134,8 +134,8 @@
                   <div *ngFor="let gestante of filteredGestantes">
                     <label  class="d-flex align-items-center contact-item mb-4" id="selectGestante{{ gestante.id }}" for="checkbox{{ gestante.id }}">
                       <input type="checkbox" [(ngModel)]="gestante.selected" id="checkbox{{ gestante.id }}" name="checkbox{{ gestante.id }}" class="mt-2 invisible " (change)="toggleGestanteSelection(gestante)">
-                      <img *ngIf="!gestante?.usuario?.profilePhoto" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
-                      <img *ngIf="gestante?.usuario?.profilePhoto" src="{{gestante?.usuario?.profilePhoto}}" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                      <img style="height: 50px; width: 50px;" *ngIf="!gestante?.usuario?.profilePhoto" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
+                      <img style="height: 50px; width: 50px;" *ngIf="gestante?.usuario?.profilePhoto" src="{{gestante?.usuario?.profilePhoto}}" alt="{{ gestante?.usuario?.name}}" class="user-avatar mt-2">
                       <div class="contact-info">
                         <h6 class="ms-2 mt-2 user-name">{{ gestante.usuario.name }}</h6>
                       </div>

@@ -13,6 +13,7 @@ import { Calendario } from 'src/app/entities/Calendario';
 import { Notificacoes } from 'src/app/entities/Notificacoes';
 import { SendEmail } from 'src/app/entities/recoveryPassword';
 import { PwaObject } from 'src/app/entities/PwaObject';
+import { Vacinas } from 'src/app/entities/Vacinas';
 
 @Injectable({
   providedIn: 'root',
@@ -87,24 +88,23 @@ export class ProfissionalService {
   }
 
   sendPushNotification(title: string, message:string, pwa:PwaObject){
+    const notification = new PwaObject();
+    notification.message = message;
+    notification.title = title;
+    notification.token = pwa.token;
     const token = localStorage.getItem('token');
-    const endpoint = pwa.endpoint;
-    const expirationTime = pwa.expirationTime;
-    const keys = pwa.keys
-    const notificacao = {endpoint, title, message, expirationTime, keys}
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
     return this.http
     .post(
       `${this.baseUrl}/profissionais/send-push-notification`,
-      notificacao,
+      notification,
       {
         headers: headers,
       }
     )
   }
-
   getNotifications() {
     const token = localStorage.getItem('token');
     const profissionalId = localStorage.getItem('id');
@@ -116,6 +116,8 @@ export class ProfissionalService {
       { headers: headers }
     );
   }
+
+  
 
   getPwaObject() {
     const profissionalId = localStorage.getItem("idUser")
@@ -138,6 +140,18 @@ export class ProfissionalService {
       `${this.baseUrl}/auth/${id}/gestante-pwa-notification`,
       { headers: headers }
     );
+  }
+
+  getVaccines(){
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + token,
+    });
+    return this.http.get<Vacinas[]>(
+      `${this.baseUrl}/auth/list-vacinas`,
+      { headers: headers }
+    );
+
   }
 
   getAllNotifications() {
@@ -186,11 +200,12 @@ export class ProfissionalService {
 
   newConstulta(gestante: Gestante, historicId: number): Observable<any> {
     const token = localStorage.getItem('token');
+    const id = localStorage.getItem('id');
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
     return this.http.post(
-      `${this.baseUrl}/profissionais/historic/${historicId}`,
+      `${this.baseUrl}/profissionais/historic/${historicId}/${id}`,
       gestante,
       {
         headers: headers,
@@ -581,40 +596,38 @@ export class ProfissionalService {
     });
   }
 
-  deleteVideos(id: number, fileLink: string) {
+  async deleteVideos(id: number, fileLink: string) {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
+    await this.deleteImageUrlByLink(fileLink);
     console.log(id);
     const url = `${this.baseUrl}/profissionais/delete-videos/${id}`;
     return this.http
       .delete(url, {
         headers: headers,
       })
-      .pipe(
-        tap(() => {
-          this._refresh$.next();
-        })
-      );
+      .subscribe(()=>{
+        window.location.reload();
+      });
   }
 
-  deleteArticles(id: number, fileLink: string) {
+  async deleteArticles(id: number, fileLink: string) {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
+    await this.deleteImageUrlByLink(fileLink);
     console.log(id);
     const url = `${this.baseUrl}/profissionais/delete-articles/${id}`;
     return this.http
       .delete(url, {
         headers: headers,
       })
-      .pipe(
-        tap(() => {
-          this._refresh$.next();
-        })
-      );
+      .subscribe(()=>{
+        window.location.reload();
+      });
   }
 
   listArticles(): Observable<any> {
@@ -648,6 +661,7 @@ export class ProfissionalService {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('id');
-    localStorage.removeItem('userId');
+    localStorage.removeItem('idUser');
+    this.router.navigate(['/login-profissional']);
   }
 }

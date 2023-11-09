@@ -4,7 +4,7 @@
       <div class="d-none d-lg-flex side-nav-button p- me-3" (click)="toggleSidebar()">
         <i class="fa-solid fa-bars p-2"></i>
       </div>
-      <a href="#" class="font-logo me-2 ms-0 ">SisGestante</a>
+      <a class="font-logo me-2 ms-0 ">SisGestante</a>
     </div>
   </div>
   <div class="ms-auto align-items-center w-50">
@@ -14,8 +14,9 @@
         <span class="notification-badge badge rounded-pill badge-notification bg-danger" *ngIf="numberOfNotifications > 0">{{numberOfNotifications}}</span>
         <span class="ms-2 d-none d-sm-inline" style="cursor: pointer;">Notificações</span>
         <div class="position-absolute top-100 start-50 me-5 translate-middle-x mt-1 me-2 shadow-sm" *ngIf="isNotificationsOpen">
-          <div class="card" style="min-width: 230px; max-width: 300px; max-height: 400px;">
-          <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+          <div class="card" style="min-width: 230px; max-width: 300px; max-height: 240px; overflow-y: auto;">
+          <div class="card-body" style="max-height: 400px;">
+            <span *ngIf="allNotifications.length == 0 " class="text-dark-emphasis"> Nenhuma notificação. </span>
             <ul class="list-unstyled" *ngFor="let notificacao of allNotifications" style="max-height: 400px;">
               <li>{{notificacao.tituloProfissional}}</li>
               <li>{{notificacao.descricaoProfissional}}</li>

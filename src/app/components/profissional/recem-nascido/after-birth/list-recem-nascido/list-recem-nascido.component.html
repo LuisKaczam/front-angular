@@ -1,58 +1,57 @@
 <div class="container-fluid g-0 w-100 h-100">
-    <app-header-sidebar (sideNavToggled)="sideNavStatus = $event"></app-header-sidebar>
-    <main class="container-fluid h-100">
-      <div class="row">
-        <div class="col-lg-3 col-xl-2 d-none d-lg-block">
-          <app-sidebar [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
-            [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
-        </div>
-        <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus} " (click)="noSideBar()">
-          <div class="row justify-content-center">
-            <div class="w-100 ms-auto">
-              <div class="w-75 m-2 mx-auto mx-md-0 ms-md-auto d-md-flex text-center">
-                <div class="inSearch input-group p-2">
-                  <input type="text" class="form-control rounded" placeholder="Buscar bebê..." (input)="searchGestantes()" [(ngModel)]="searchTerm" >
-                  <span class="input-group-text btn-search"><i class="fas fa-search" style="color: #00B2FF;" (click)="searchGestantes()"></i></span>
-                </div>
-                <div class="text-center p-2 rounded">
-                  <button class="btn add-btn" (click)="newBebe()">
-                    <i class="fa-solid fa-user-plus"></i>
-                    Adicionar Bebê
-                  </button>
-                </div>
+  <app-header-sidebar (sideNavToggled)="sideNavStatus = $event"></app-header-sidebar>
+  <main class="container-fluid h-100">
+    <div class="row">
+      <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+        <app-sidebar [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+          [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
+      </div>
+      <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus} " (click)="noSideBar()">
+        <div class="row justify-content-center">
+          <div class="w-100 ms-auto">
+            <div class="w-75 m-2 mx-auto mx-md-0 ms-md-auto d-md-flex text-center">
+              <div class="inSearch input-group p-2">
+                <input type="text" class="form-control rounded" placeholder="Buscar bebê..." (input)="searchGestantes()" [(ngModel)]="searchTerm" >
+                <span class="input-group-text btn-search"><i class="fas fa-search" style="color: #00B2FF;" (click)="searchGestantes()"></i></span>
               </div>
-              <div class="text-center mt-2" *ngIf="bebes.length == 0">
-                <span>Nenhum bebê cadastrado.</span>
-              </div>
-              <div class="text-center mt-2" *ngIf="foundedBebes == true">
-                <span>Nenhum bebê encontrado.</span>
+              <div class="text-center p-2 rounded">
+                <button class="btn add-btn" (click)="newBebe()">
+                  <i class="fa-solid fa-user-plus"></i>
+                  Adicionar Bebê
+                </button>
               </div>
             </div>
-            <div class="col-md-8 mb-5" *ngIf="bebes.length > 0 && foundedBebes == false">
-              <div class="card rounded-lg mx-auto shadow-sm mb-5">
-                <div class="card-body text-center">
-                  <div class="contacts-list " *ngIf="!searchTerm" style="max-height: 400px; overflow-y: auto;">
-                    <div *ngFor="let bebe of bebes" class="contact-item mb-4">
-                      <div class="w-100 h-100" (click)="infosBaby(bebe.id)">
+            <div class="text-center mt-2" *ngIf="bebes.length == 0">
+              <span>Nenhum bebê cadastrado.</span>
+            </div>
+            <div class="text-center mt-2" *ngIf="foundedBebes == true">
+              <span>Nenhum bebê encontrado.</span>
+            </div>
+          </div>
+          <div class="col-md-8 mb-5" *ngIf="bebes.length > 0 && foundedBebes == false">
+            <div class="card rounded-lg mx-auto shadow-sm mb-5">
+              <div class="card-body text-center">
+                <div class="contacts-list " *ngIf="!searchTerm" style="max-height: 400px; overflow-y: auto;">
+                  <div *ngFor="let bebe of bebes" class="contact-item mb-4">
+                    <div class="w-100 h-100" (click)="infosBaby(bebe.id)">
+                    <div class="d-flex align-items-center">
+                    <img style="height: 40px; width: 40px;" *ngIf="!bebe.foto" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="{{ bebe.nome}}" class="user-avatar mt-2">
+                    <img style="height: 40px; width: 40px;" *ngIf="bebe.foto" src="{{bebe.foto}}" alt="{{ bebe.nome}}" class="user-avatar mt-2">
+                      <div class="contact-info">
+                        <h6 class="ms-2 mt-2 user-name">{{ bebe.nome }}</h6>
+                      </div>
+                    </div>
+                 
+                    </div>
+                  </div>
+                </div>
+                  <div *ngIf="searchTerm">
+                    <div class="contacts-list " style="max-height: 400px; overflow-y: auto;">
+                    <div *ngFor="let bebe of filteredBebes" class="contact-item mb-4">
                       <div class="d-flex align-items-center">
-                      <img *ngIf="!bebe.foto" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="{{ bebe.nome}}" class="user-avatar mt-2">
-                      <img *ngIf="bebe.foto" src="{{bebe.foto}}" alt="{{ bebe.nome}}" class="user-avatar mt-2">
+                        <img src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="User" class="user-avatar mt-2">
                         <div class="contact-info">
-                          <h6 class="ms-2 mt-2 user-name">{{ bebe.nome }}</h6>
-                        </div>
-                      </div>
-                   
-                      </div>
-                    </div>
-                  </div>
-                    <div *ngIf="searchTerm">
-                      <div class="contacts-list " style="max-height: 400px; overflow-y: auto;">
-                      <div *ngFor="let bebe of filteredBebes" class="contact-item mb-4">
-                        <div class="d-flex align-items-center">
-                          <img src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="User" class="user-avatar mt-2">
-                          <div class="contact-info">
-                            <h6 class="ms-2 mt-2 user-name">{{ bebe.name }}</h6>
-                          </div>
+                          <h6 class="ms-2 mt-2 user-name">{{ bebe.name }}</h6>
                         </div>
                       </div>
                     </div>
@@ -61,11 +60,12 @@
               </div>
             </div>
           </div>
-          <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}"></div>
-          <div class="d-lg-none d-fixed mt-2">
-            <app-bottom-navigation></app-bottom-navigation>
-          </div>
+        </div>
+        <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}"></div>
+        <div class="d-lg-none d-fixed mt-2">
+          <app-bottom-navigation></app-bottom-navigation>
         </div>
       </div>
-    </main>
-  </div>
+    </div>
+  </main>
+</div>

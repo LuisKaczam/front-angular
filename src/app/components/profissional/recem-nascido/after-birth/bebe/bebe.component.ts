@@ -12,26 +12,9 @@ export class BebeComponent implements OnInit{
   sideNavStatus = false;
   bebeId:number = 0;
   baby: any;
-  vaccines = [
-    {
-      name: 'BCG',
-      pdfLink: 'link_to_bcg_pdf',
-      date: '10/01/23',
-      dose: 'Dose 1',
-      expanded: false
-    },
-    {
-      name: 'Hepatite B',
-      pdfLink: 'link_to_hepatite_pdf',
-      date: '15/02/23',
-      dose: 'Dose 1',
-      expanded: false
-    }
-  ];
+  vacinas: any;
 
-  toggleDetails(vaccine: any): void {
-    vaccine.expanded = !vaccine.expanded;
-  }
+ 
 
   constructor(private sideBarService: SidebarService, private route: ActivatedRoute, private profissionalService: ProfissionalService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
@@ -45,6 +28,7 @@ export class BebeComponent implements OnInit{
       this.bebeId = parseInt(params['id']);
     })
     this.getBaby();
+    this.getVacinas();
   }
 
   noSideBar(): void {
@@ -54,10 +38,25 @@ export class BebeComponent implements OnInit{
    
   }
 
+  toggleDetails(vaccine: any): void {
+    vaccine.expanded = !vaccine.expanded;
+  }
+
   getBaby(){
     this.profissionalService.getOneBaby(this.bebeId).subscribe((response) =>{
       this.baby = response;
       console.log(this.baby)
     } )
   }
+
+  getVacinas() {
+    this.profissionalService.getVaccines().subscribe((response) => {
+        const vacinasSet = new Set(response); 
+        this.vacinas = Array.from(vacinasSet);
+        this.vacinas.sort((a: { idadeNecessaria: number; }, b: { idadeNecessaria: number; }) => a.idadeNecessaria - b.idadeNecessaria);
+        console.log(this.vacinas);
+    });
+}
+
+  
 }

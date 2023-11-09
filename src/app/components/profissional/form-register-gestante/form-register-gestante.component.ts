@@ -1,12 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Gestante } from 'src/app/entities/Gestante';
 import { ProfissionalService } from '../profissional.service';
 import { catchError } from 'rxjs';
@@ -30,6 +23,7 @@ export class FormRegisterGestanteComponent implements OnInit {
   errorName: boolean = false;
   errorCpf: boolean = false;
   errorSendEmail:boolean = false;
+  isValidSum: boolean = true;
   private profissional = new Profissional();
 
   constructor(
@@ -106,7 +100,21 @@ export class FormRegisterGestanteComponent implements OnInit {
           
         });
       });
+      this.formRegisterGestante.valueChanges.subscribe(() => {
+        this.isValidSum = this.validateDeliverySum();
+      });
     }
+  }
+
+  validateDeliverySum(): boolean {
+    const numberOfPregnancies = this.formRegisterGestante.get('numberOfPregnancies')?.value;
+    const normalDeliveries = this.formRegisterGestante.get('normalDeliveries')?.value;
+    const cesareanDeliveries = this.formRegisterGestante.get('cesareanDeliveries')?.value;
+    const abortions = this.formRegisterGestante.get('abortions')?.value;
+
+    const sum = normalDeliveries + cesareanDeliveries + abortions;
+
+    return sum <= numberOfPregnancies;
   }
 
   getProfissional() {

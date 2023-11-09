@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { SidebarService } from '../sidebar/sidebar.service';
 import { Post } from 'src/app/entities/Posts';
 import { ProfissionalService } from '../profissional/profissional.service';
-import { Subscription } from 'rxjs';
+import { Subscription, catchError } from 'rxjs';
 import { Notificacoes } from 'src/app/entities/Notificacoes';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-publications',
@@ -28,7 +29,8 @@ export class PublicationsComponent implements OnInit {
 
   constructor(
     private sideBarService: SidebarService,
-    private service: ProfissionalService
+    private service: ProfissionalService,
+    private pushService: PushNotificationService
   ) {
     this.sideBarService.getSideNavStatus().subscribe((status) => {
       this.sideNavStatus = status;
@@ -47,11 +49,7 @@ export class PublicationsComponent implements OnInit {
 
   deleteVideo(id: number, file: string, postName: string) {
     if (confirm('Deseja realmente deletar: ' + postName)) {
-      this.service.deleteVideos(id, file).subscribe(() => {
-        if (file !== '') {
-          this.service.deleteImageUrlByLink(file);
-        }
-      });
+      this.service.deleteVideos(id, file);
     }
   }
 
@@ -63,11 +61,7 @@ export class PublicationsComponent implements OnInit {
 
   deleteArticle(id: number, file: string, postName: string) {
     if (confirm('Deseja realmente deletar: ' + postName)) {
-      this.service.deleteArticles(id, file).subscribe(() => {
-        if (file !== '') {
-          this.service.deleteImageUrlByLink(file);
-        }
-      });
+      this.service.deleteArticles(id, file);
     }
   }
 
@@ -108,26 +102,40 @@ export class PublicationsComponent implements OnInit {
   }
   }
 
-  share(){
-    for(let i = 0; i < this.gestantesSelecionadas.length; i++){
-          this.service.sharePost(this.post, this.gestantesSelecionadas[i].id).subscribe((response) =>{
-            console.log("OK ",response);
-            const notificacao = new Notificacoes();
-            notificacao.descricaoProfissional = "Você compartihou uma postagem com " + this.gestantesSelecionadas[i].usuario.name;
-            notificacao.tipoProfissional = "Postagem";
-            notificacao.tituloProfissional = "Nova postagem";
-            notificacao.tipoGestante = "Evento";
-            notificacao.tituloGestante = "Novo evento";
-            notificacao.lidaGestante = false;
-            notificacao.lidaProfissional = false;
-            this.service.newNotification(notificacao, this.gestantesSelecionadas[i].id).subscribe((response) =>{
-              setTimeout(() => {
-                document.getElementById('close-share')?.click();
-              }, 2000);
-            })
-          })
-        };
-      }
+  share() {
+    this.gestantesSelecionadas.forEach(gestante => {
+      this.service.sharePost(this.post, gestante.id).subscribe(response => {
+        console.log("OK ", response);
+  
+        const notificacao = new Notificacoes();
+        notificacao.descricaoProfissional = `Você compartilhou uma postagem com ${gestante.usuario.name}`;
+        notificacao.tipoProfissional = "Postagem";
+        notificacao.tituloProfissional = "Nova postagem";
+        notificacao.tipoGestante = "Evento";
+        notificacao.tituloGestante = "Novo evento";
+        notificacao.lidaGestante = false;
+        notificacao.lidaProfissional = false;
+  
+        this.service.newNotification(notificacao, gestante.id).subscribe(response => {
+          this.pushService.getPwaObject(gestante.usuario.id).subscribe(pwa => {
+            if (pwa) {
+              console.log(pwa);
+              this.service.sendPushNotification(
+                notificacao.tituloGestante,
+                notificacao.descricaoGestante,
+                pwa
+              );
+            }
+          });
+  
+          setTimeout(() => {
+            document.getElementById('close-share')?.click();
+          }, 2000);
+        });
+      });
+    });
+  }
+  
 
   getVideos() {
     this.service.listVideos().subscribe((response) => {

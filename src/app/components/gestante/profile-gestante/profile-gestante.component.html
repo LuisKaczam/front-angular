@@ -33,7 +33,7 @@
                       <a>Mudar Senha</a>
                       <i class="fa-solid fa-pen"></i>
                     </li>
-                    <li class="itens list-group-item d-flex justify-content-between align-items-center" (click)="deleteGestante()">
+                    <li class="itens list-group-item d-flex justify-content-between align-items-center" (click)="onModalDeleteOpen()" data-bs-toggle="modal" data-bs-target="#deleteModal">
                       <a class="text-danger ">Deletar Conta</a>
                     </li>
                     <li class="itens list-group-item d-flex justify-content-between align-items-center text-danger" (click)="logout()">
@@ -53,101 +53,120 @@
       </div>
     </main>
   </div>
-  
+
   <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true"
-      data-bs-backdrop="static" data-bs-keyboard="false">
-      <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title text-center w-100" id="emailModalLabel">Alterar E-mail de Usuário</h5>
-                  <button type="button" class="btn-close" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body text-center">
-                <div class="text-center d-block justify-content-center mx-auto w-50" >
-                  <form (ngSubmit)="updateEmailUser()" #emailForm="ngForm" [formGroup]="inputEmail">
-                      <div class="mb-2">
-                          <input type="email" class="form-control col-md-4" id="email" formControlName="newEmail"
-                            name="newName" maxlength="60" placeholder="Digite seu e-mail" required>
-                          <div
-                            *ngIf="inputEmail.get('newEmail')?.invalid && (inputEmail.get('newEmail')?.dirty || inputEmail.get('newEmail')?.touched) || inputEmail.get('newEmail')?.invalid && emailForm.submitted"
-                            class="text-danger ms-1">
-                            <div *ngIf="inputEmail.get('newEmail')?.hasError('required')">Campo obrigatório.</div>
-                            <div *ngIf="inputEmail.get('newEmail')?.hasError('email')">Email Inválido.</div>
-                            <div *ngIf="inputEmail.get('newEmail')?.hasError('emailInUse')" >Email já em uso.</div>
-                          </div>
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="emailModalLabel">Alterar E-mail de Usuário</h5>
+              <button type="button" class="btn-close" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <div class="text-center d-block justify-content-center mx-auto w-100" >
+              <form (ngSubmit)="updateEmailUser()" #emailForm="ngForm" [formGroup]="inputEmail">
+                  <div class="mb-2">
+                      <input type="email" class="form-control col-md-4" id="email" formControlName="newEmail"
+                        name="newName" maxlength="60" placeholder="Digite seu e-mail" required>
+                      <div
+                        *ngIf="inputEmail.get('newEmail')?.invalid && (inputEmail.get('newEmail')?.dirty || inputEmail.get('newEmail')?.touched) || inputEmail.get('newEmail')?.invalid && emailForm.submitted"
+                        class="text-danger ms-1">
+                        <div *ngIf="inputEmail.get('newEmail')?.hasError('required')">Campo obrigatório.</div>
+                        <div *ngIf="inputEmail.get('newEmail')?.hasError('email')">Email Inválido.</div>
+                        <div *ngIf="inputEmail.get('newEmail')?.hasError('emailInUse')" >Email já em uso.</div>
                       </div>
-                      <div class="mb-2">
-                        <input type="password" class="form-control col-md-4" id="password" formControlName="password"
-                          name="password" maxlength="60" placeholder="Digite sua senha" required>
-                        <div
-                          *ngIf="inputEmail.get('password')?.invalid && (inputEmail.get('password')?.dirty || inputEmail.get('password')?.touched) || inputEmail.get('password')?.invalid && emailForm.submitted"
-                          class="text-danger ms-1">
-                          <div *ngIf="inputEmail.get('password')?.hasError('required')">Campo obrigatório.</div>
-                          <div *ngIf="inputEmail.get('password')?.hasError('passwordInvalid')" >Senha Inválida</div>
-                        </div>
+                  </div>
+                  <div class="mb-2">
+                    <input type="password" class="form-control col-md-4" id="password" formControlName="password"
+                      name="password" maxlength="60" placeholder="Digite sua senha" required>
+                    <div
+                      *ngIf="inputEmail.get('password')?.invalid && (inputEmail.get('password')?.dirty || inputEmail.get('password')?.touched) || inputEmail.get('password')?.invalid && emailForm.submitted"
+                      class="text-danger ms-1">
+                      <div *ngIf="inputEmail.get('password')?.hasError('required')">Campo obrigatório.</div>
+                      <div *ngIf="inputEmail.get('password')?.hasError('passwordInvalid')" >Senha Inválida</div>
                     </div>
-                      <div class="mb-2">
-                          <button type="submit" class="btn mt-2" style="background-color: #083263; color: white"> Alterar</button>
-                      </div>
-                  </form>
                 </div>
-              </div>
+                  <div class="mb-2">
+                      <button type="submit" class="btn mt-2" style="background-color: #083263; color: white"> Alterar</button>
+                  </div>
+              </form>
+            </div>
           </div>
       </div>
   </div>
-  <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true"
-      data-bs-backdrop="static" data-bs-keyboard="false">
-      <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title text-center w-100" id="passwordModalLabel">Alterar Senha</h5>
-                  <button type="button" class="btn-close" id="closePassword" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body text-center">
-                <div class="text-center d-block justify-content-center mx-auto w-50" id="notExpandDiv" >
-                  <form (ngSubmit)=" updatePassword()" #passwordForm="ngForm" [formGroup]="inputPassword">
-                      <div *ngIf="passwordError == true" class="alert alert-danger" role="alert">
-                          <div class="text-danger text-center">
-                            <span>Erro ao alterar senha, tente novamente mais tarde.</span>
-                          </div>
-                        </div>
-                        <div *ngIf="passwordSuccess == true" class="alert alert-success" role="alert">
-                          <div class="text-success text-center">
-                            <span>Senha Alterada com sucesso.</span>
-                          </div>
-                        </div>
-                      <div class="mb-2">
-                          <input type="password" class="form-control col-md-4" formControlName="newPassword"
-                            name="newPassword" maxlength="30" placeholder="Digite sua nova senha" required>
-                          <div
-                            *ngIf="inputPassword.get('newPassword')?.invalid && (inputPassword.get('newPassword')?.dirty || inputPassword.get('newPassword')?.touched) || inputPassword.get('newPassword')?.invalid && passwordForm.submitted"
-                            class="text-danger ms-1 text-start">
-                            <div *ngIf="inputPassword.get('newPassword')?.hasError('required')">Campo obrigatório.</div>
-                            <div *ngIf="inputPassword.get('newPassword')?.hasError('minlength')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('minlength')}">A senha deve possuir no mínimo 8 caracteres.</div>
-                            <div *ngIf="inputPassword.get('newPassword')?.hasError('maxlength')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('maxlength')}">A senha deve possuir no máximo 30 caracteres.</div>
-                            <div *ngIf="inputPassword.get('newPassword')?.hasError('hasNumber')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('hasNumber')}">A senha deve conter pelo menos um número.</div>
-                            <div *ngIf="inputPassword.get('newPassword')?.hasError('hasCapitalCase')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('hasCapitalCase')}">A senha deve conter pelo menos uma letra maiúscula.</div>
-                            <div *ngIf="inputPassword.get('newPassword')?.hasError('hasLowerCase')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('hasLowerCase')}">A senha deve conter pelo menos uma letra minúscula.</div>
-                            <div *ngIf="inputPassword.get('newPassword')?.hasError('hasSpecialC')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('hasSpecialC')}">A senha deve conter pelo menos um caractere especial.</div>
-                          </div>
+</div>
+<div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="passwordModalLabel">Alterar Senha</h5>
+              <button type="button" class="btn-close" id="closePassword" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <div class="text-center d-block justify-content-center mx-auto w-100"  id="notExpandDiv" >
+              <form (ngSubmit)=" updatePassword()" #passwordForm="ngForm" [formGroup]="inputPassword">
+                  <div *ngIf="passwordError == true" class="alert alert-danger" role="alert">
+                      <div class="text-danger text-center">
+                        <span>Erro ao alterar senha, tente novamente mais tarde.</span>
                       </div>
-                      <div class="mb-3 text-start">
-                          <label for="confirmPassword" class="form-label">Confirmar senha</label>
-                          <input type="password" class="form-control" id="confirmPassword"
-                            formControlName="confirmPassword" placeholder="Digite sua senha" maxlength="30" required>
-                          <div
-                            *ngIf="inputPassword.get('confirmPassword')?.invalid && (inputPassword.get('confirmPassword')?.dirty || inputPassword.get('confirmPassword')?.touched) || inputPassword.get('confirmPassword')?.invalid && passwordForm.submitted"
-                            class="text-danger ms-1">
-                            <div *ngIf="inputPassword.get('confirmPassword')?.hasError('required')">Campo obrigatório.</div>
-                            <div *ngIf="inputPassword.get('confirmPassword')?.hasError('not_matching')">As senhas devem ser iguais.</div>
-                          </div>
-                        </div>
-                      <div class="mb-2">
-                          <button type="submit" class="btn mt-2" style="background-color: #083263; color: white"> Alterar</button>
+                    </div>
+                    <div *ngIf="passwordSuccess == true" class="alert alert-success" role="alert">
+                      <div class="text-success text-center">
+                        <span>Senha Alterada com sucesso.</span>
                       </div>
-                  </form>
-                </div>
-              </div>
+                    </div>
+                  <div class="mb-2">
+                      <input type="password" class="form-control col-md-4" formControlName="newPassword"
+                        name="newPassword" maxlength="30" placeholder="Digite sua nova senha" required>
+                      <div
+                        *ngIf="inputPassword.get('newPassword')?.invalid && (inputPassword.get('newPassword')?.dirty || inputPassword.get('newPassword')?.touched) || inputPassword.get('newPassword')?.invalid && passwordForm.submitted"
+                        class="text-danger ms-1 text-start">
+                        <div *ngIf="inputPassword.get('newPassword')?.hasError('required')">Campo obrigatório.</div>
+                        <div *ngIf="inputPassword.get('newPassword')?.hasError('minlength')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('minlength')}">A senha deve possuir no mínimo 8 caracteres.</div>
+                        <div *ngIf="inputPassword.get('newPassword')?.hasError('maxlength')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('maxlength')}">A senha deve possuir no máximo 30 caracteres.</div>
+                        <div *ngIf="inputPassword.get('newPassword')?.hasError('hasNumber')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('hasNumber')}">A senha deve conter pelo menos um número.</div>
+                        <div *ngIf="inputPassword.get('newPassword')?.hasError('hasCapitalCase')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('hasCapitalCase')}">A senha deve conter pelo menos uma letra maiúscula.</div>
+                        <div *ngIf="inputPassword.get('newPassword')?.hasError('hasLowerCase')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('hasLowerCase')}">A senha deve conter pelo menos uma letra minúscula.</div>
+                        <div *ngIf="inputPassword.get('newPassword')?.hasError('hasSpecialC')" [ngClass]="{'error-red': inputPassword.get('newPassword')?.hasError('hasSpecialC')}">A senha deve conter pelo menos um caractere especial.</div>
+                      </div>
+                  </div>
+                  <div class="mb-3 text-start">
+                      <label for="confirmPassword" class="form-label">Confirmar senha</label>
+                      <input type="password" class="form-control" id="confirmPassword"
+                        formControlName="confirmPassword" placeholder="Digite sua senha" maxlength="30" required>
+                      <div
+                        *ngIf="inputPassword.get('confirmPassword')?.invalid && (inputPassword.get('confirmPassword')?.dirty || inputPassword.get('confirmPassword')?.touched) || inputPassword.get('confirmPassword')?.invalid && passwordForm.submitted"
+                        class="text-danger ms-1">
+                        <div *ngIf="inputPassword.get('confirmPassword')?.hasError('required')">Campo obrigatório.</div>
+                        <div *ngIf="inputPassword.get('confirmPassword')?.hasError('not_matching')">As senhas devem ser iguais.</div>
+                      </div>
+                    </div>
+                  <div class="mb-2">
+                      <button type="submit" class="btn mt-2" style="background-color: #083263; color: white"> Alterar</button>
+                  </div>
+              </form>
+            </div>
           </div>
       </div>
   </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title text-center w-100" id="deleteModalLabel">Deletar Conta</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+              <p>Você deletará todos os seus dados, tem certeza?</p>
+              <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal" aria-label="Close"
+              (click)="deleteGestante()" id="deleteBtn">Sim</button>
+              <button type="button" class="btn" style="background-color: #083263; color: white"
+                  data-bs-dismiss="modal" aria-label="Close">Não</button>
+          </div>
+      </div>
+  </div>
+</div>

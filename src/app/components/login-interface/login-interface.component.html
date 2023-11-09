@@ -7,7 +7,7 @@
       <div class="w-100 transparent-image"></div>
     </div>   
     <div class="w-md-100 w-100 d-flex justify-content-center mt-5">
-      <div class="p-3 m-5 w-75 mt-5">
+      <div class="col-10 col-md-6 mt-3">
         <div class="mt-5 card w-100 shadow-lg">
           <div class="mt-2 card-body">
             <h5 class="card-title text-center mb-4">Login - Profissional da Saúde</h5>
@@ -35,9 +35,12 @@
               <div class="text-center mb-4">
                 <button type="submit" class="w-50 btn btn-login btn-enter" disabled id="btnLogin">Entrar</button>
               </div>
-            </form>            
-            <div class="text-center invisible" id="recoveryPassword">
-              <p class="text-sm">Esqueceu a senha? <a style="cursor: pointer; text-decoration: underline;"  data-bs-toggle="modal" data-bs-target="#passwordModal" >Recupere-a</a>.</p>
+            </form>
+            <div class="text-center">
+              <p class="text-sm">É uma gestante? <a class="link-body-emphasis" routerLink="/login-gestante" style="cursor: pointer; text-decoration: underline;">Faça login</a>.</p>
+            </div>         
+            <div class="text-center d-none" id="recoveryPassword">
+              <p class="text-sm">Esqueceu a senha? <a class="link-body-emphasis" style="cursor: pointer; text-decoration: underline;"  data-bs-toggle="modal" data-bs-target="#passwordModal" >Recupere-a</a>.</p>
             </div>
           </div>
         </div>

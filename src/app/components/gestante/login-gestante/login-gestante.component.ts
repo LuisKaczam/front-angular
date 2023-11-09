@@ -134,9 +134,9 @@ export class LoginGestanteComponent {
     this.invalidCredentials = false;
   
     if(loginEmail.value != '' && loginEmail.valid){
-      divPasswordRec?.classList.remove('invisible')
+      divPasswordRec?.classList.remove('d-none')
     }else{
-      divPasswordRec?.classList.add('invisible')
+      divPasswordRec?.classList.add('d-none')
     }
   
     if((loginEmail.value != '' && loginEmail.valid) && (recoveryPasword.value != '' && recoveryPasword.valid)){
@@ -167,38 +167,33 @@ export class LoginGestanteComponent {
         }
         return [];
       })
-    ).subscribe(async (response) => {
-      if (response && response.token && response.role) {
-        const token = response.token;
-        const role = response.role;
-        const id = response.id;
-        const baby = response.baby;
-        const userId = response.idUser;
-        localStorage.setItem('token', token);
-        localStorage.setItem('role', role);
-        localStorage.setItem('id', id);
-        localStorage.setItem('idUser', userId);
-        localStorage.setItem('baby', baby);
-        if (this.swPush.isEnabled) {
-          await this.pushService.updateUrl(userId);
-          if(baby != 0){
-            this.router.navigate(['/gestante']);
-          }else{
-            this.router.navigate(['/infos-gestante']);
-          }
-         } else {
-          if(baby != 0){
-            this.router.navigate(['/gestante']);
-          }else{
-            this.router.navigate(['/infos-gestante']);
-          }
-           
-       
-         }
-      }
-    });
+      ).subscribe(
+        async response => {
+          if (response && response.token && response.role) {
+            const token = response.token;
+            const role = response.role;
+            const id = response.id;
+            const userId = response.idUser;
+            const baby = response.baby;
+            localStorage.setItem('token', token);
+            localStorage.setItem('role', role);
+            localStorage.setItem('baby', baby);
+            localStorage.setItem('id', id);
+            localStorage.setItem('idUser', userId);
+            await this.pushService.notificationSub();
+              if(baby != 0){
+                this.router.navigateByUrl('/gestante');
+              }else{
+                this.router.navigateByUrl('/infos-gestante');
+              }
+            }
+          });
   }
+
+  
    
   }
 
+
+  
 

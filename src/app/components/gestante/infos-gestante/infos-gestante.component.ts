@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SidebarService } from '../../sidebar/sidebar.service';
 import { Router } from '@angular/router';
 import { GestanteService } from '../gestante.service';
+import { ProfissionalService } from '../../profissional/profissional.service';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-infos-gestante',
@@ -13,10 +15,12 @@ export class InfosGestanteComponent implements OnInit {
   infosGestante:any; 
   currentStep = 1;
   consultas:any;
+  pwaObj: any[] = [];
+  dum!: Date;
   
 
 
-  constructor(private router: Router, private sideBarService: SidebarService, private service: GestanteService) {
+  constructor(private router: Router, private pushService: PushNotificationService, private profissionalService: ProfissionalService, private sideBarService: SidebarService, private service: GestanteService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -26,6 +30,7 @@ export class InfosGestanteComponent implements OnInit {
     this.noSideBar();
     this.getGestante();
     this.getConsultas();
+    this.getPwaObj()
   }
 
   showStep(step: number) {
@@ -52,6 +57,17 @@ export class InfosGestanteComponent implements OnInit {
     }
   }
   
+  getPwaObj(){
+    const key = localStorage.getItem('idUser');
+    const id = Number(key);
+    if(id != 0){
+      this.pushService.getPwaObject(id).subscribe((response)=>{
+        this.pwaObj = response;
+        console.log(this.pwaObj);
+      })
+    }
+   
+  }
 
 
 
@@ -69,10 +85,15 @@ export class InfosGestanteComponent implements OnInit {
     this.router.navigateByUrl('historico-gestante');
   }
 
-  getGestante(){
-    this.service.getGestante().subscribe((response)=>{
+  getGestante() {
+    this.service.getGestante().subscribe((response) => {
       this.infosGestante = response;
-    })
+      const dum = new Date(this.infosGestante.gestanteDum);
+      console.log(this.infosGestante)
+      dum.setDate(dum.getDate() + 7);
+      dum.setMonth(dum.getMonth() - 3);
+      this.dum = dum;
+    });
   }
 
   getConsultas(){

@@ -27,9 +27,10 @@
                   <li *ngFor="let day of week" class="day-name">{{ day | slice:0:3 }}</li>
                 </ol>
                 <ol class="days-of-month">
-                  <li class="item border" [style.gridColumnStart]="first ? day.indexWeek : 'auto'"
+                  <li class="item border"
+                      [style.gridColumnStart]="first ? day.indexWeek : 'auto'"
                       *ngFor="let day of monthSelect; let first = first; let i = index"
-                      [ngClass]="{ 'eventDay': eventDay.includes(day.value) }" (click)="clickDay(day, dateSelect.getFullYear())" data-bs-toggle="modal" data-bs-target="#formCalendar">
+                      [ngClass]="{ 'eventDay': isEventDay(day.value) }" (click)="clickDay(day, dateSelect.getFullYear())" data-bs-toggle="modal" data-bs-target="#formCalendar">
                     {{ day.value }}
                   </li>
                 </ol>
@@ -43,26 +44,30 @@
       <div class="col-12 col-md-8 col-lg-6 mt-3">
         <div class="d-flex mb-3">
           <div class="w-100">
-            <h3 class="mb-0 side-text">Eventos Próximos</h3>
+            <h3 class="mb-0 side-text">Consultas Agendadas</h3>
           </div>
           <div class="w-100 ms-auto text-end">
             <div class="dropdown">
               <button class="btn btn-primary btn-sm me-2 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Ações
+                <i class="fa-solid fa-clipboard-list"></i>  Agendamentos
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <button class="dropdown-item" (click)="onModalOpen()" data-bs-toggle="modal" data-bs-target="#formCalendar"><i class="fa-solid fa-plus"></i> Novo Evento</button>
-                <button class="dropdown-item" (click)="onDatesModalOpen()" data-bs-toggle="modal" data-bs-target="#formCalendarPdf"><i class="fa-solid fa-plus"></i> Gerar Relatório</button>
+                <button class="dropdown-item" (click)="onDatesModalOpen()" data-bs-toggle="modal" data-bs-target="#formCalendarPdf"><i class="fa-solid fa-file-lines"></i> Gerar Relatório</button>
               </div>
             </div>
           </div>          
         </div>
-        <ul class="list-unstyled" *ngFor="let calendar of calendarEvents">
+        <div class="text-center mt-2" *ngIf="calendarEvents.length == 0">
+          <span>Nenhuma consulta agendada.</span>
+        </div>
+        <ul class="list-unstyled" style="max-height: 400px; overflow-y: auto;" *ngFor="let calendar of calendarEvents">
+          <hr>
           <li class="d-flex align-items-center mb-3">
             <div class="event-icon">
               <i class="fa fa-calendar"></i>
             </div>
-            <div class="ms-3">
+            <div class="ms-3 shadow-sm">
               <h5 class="mb-1">{{calendar.nomeEvento}}</h5>
               <p class="mb-0">{{calendar.data  | date:'dd/MM/yyyy'}}</p>
               <p class="mb-0">{{calendar.hora}}</p>
@@ -70,6 +75,7 @@
               <p class="mb-0">{{calendar.gestante?.usuario.name}}</p>
             </div>
           </li>
+          <hr>
         </ul>
       </div>
       </div>
@@ -94,10 +100,11 @@
         <form (ngSubmit)="registerDate()" [formGroup]="calendarForm" #registerCalendar="ngForm">
           <div class="mb-3">
             <label for="calendarDate" class="form-label">Data</label>
-            <input type="Date" class="form-control" id="calendarDate" formControlName="calendarDate">
+            <input type="Date" min="{{dateNow | date:'yyyy-MM-dd'}}" class="form-control" id="calendarDate" formControlName="calendarDate">
             <div *ngIf="calendarForm.get('calendarDate')?.invalid && (calendarForm.get('calendarDate')?.dirty || calendarForm.get('calendarDate')?.touched) || calendarForm.get('calendarDate')?.invalid && registerCalendar.submitted" class="text-danger ms-1">
               <div *ngIf="calendarForm.get('calendarDate')?.hasError('required')">Campo obrigatório.</div>
             </div>
+            <div *ngIf="errorDate === true" class="text-danger">Data inválida</div>
           </div>
           <div class="mb-3">
             <label for="calendarName" class="form-label">Nome do Evento</label>
@@ -115,9 +122,9 @@
           </div>
           <div class="mb-3" *ngIf="gestantes.length > 0">
             <label for="calendarParticipant" class="form-label">Participante</label>
-            <select class="form-select wrapper" id="calendarParticipant" formControlName="calendarParticipant">
+            <select class="form-select wrapper" id="calendarParticipant" (change)=" getSelectedGestante($event)" formControlName="calendarParticipant">
               <option value="" disabled selected>Selecione uma gestante</option>
-              <option *ngFor="let gestante of gestantes" [value]="gestante">{{gestante?.usuario?.name}}</option>
+              <option *ngFor="let gestante of gestantes" [value]="gestante.usuario.id + ' ' + gestante.id">{{gestante?.usuario?.name}}</option>
             </select>            
           </div>
           <div class="mb-3">

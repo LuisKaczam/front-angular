@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-import { SwPush } from '@angular/service-worker';
-import { ProfissionalService } from './components/profissional/profissional.service';
+import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { PushNotificationService } from './push-notification.service';
 
 @Component({
@@ -8,12 +6,26 @@ import { PushNotificationService } from './push-notification.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements AfterContentInit {
   title = 'Sisgestante';
-  
+
   constructor(private pushService: PushNotificationService) {
-    this.pushService.notificationSub();
+  }
+
+  ngAfterContentInit(): void {
+  this.getPush();
+  this.pushService.receiveNotification();
+    
+  }
+
+  getPush(){
+    const userId = Number(localStorage.getItem('idUser'));
+    if(userId !== 0){
+      this.pushService.notificationSub();
+    }
+
   }
 
 
+  
 }

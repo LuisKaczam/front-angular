@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit{
   emailModal:boolean = false;
   passwordModal:boolean = false;
   passwordError: boolean = false;
+  deleteModal: boolean = false;
 
   
 
@@ -101,6 +102,10 @@ export class ProfileComponent implements OnInit{
         });
   }
 
+  onModalDeleteOpen() {
+    this.deleteModal = true;
+    }
+
   noSideBar(): void {
     if (this.sideBarService.isSideNavOpen()) {
       this.sideBarService.toggleSideNav();
@@ -117,7 +122,7 @@ export class ProfileComponent implements OnInit{
    }
 
   onModalClose() {
-    const modal = document.getElementById('nameModal');
+    const modal = document.getElementById('emailModal');
     if (modal) {
       modal.classList.remove('show');
       modal.setAttribute('aria-hidden', 'true');

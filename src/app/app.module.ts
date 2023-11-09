@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule, isDevMode } from '@angular/core';
+import { ErrorHandler, NgModule, isDevMode } from '@angular/core';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -47,6 +47,9 @@ import { ListProfissionaisComponent } from './components/gestante/list-profissio
 import { InfosProfissionalComponent } from './components/gestante/infos-profissional/infos-profissional.component';
 import { NgxPrintModule } from 'ngx-print';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { PushNotificationService } from './push-notification.service';
+import { GlobalErrorHandler } from 'global-error-handler';
+
 
 
 
@@ -100,6 +103,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
   ],
 
   providers:[
+    PushNotificationService,
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
   
   ],
 

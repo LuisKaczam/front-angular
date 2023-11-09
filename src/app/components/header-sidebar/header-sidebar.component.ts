@@ -64,6 +64,7 @@ export class HeaderSidebarComponent implements OnInit{
     
   }
 
+ 
   update(){
     const updateNotifications = new Notificacoes();
     for(let i = 0; i < this.allNotifications.length; i++){
@@ -86,6 +87,5 @@ export class HeaderSidebarComponent implements OnInit{
 
   logout(){
     this.profissionalService.logout();
-    this.router.navigate(['/login-profissional']);
   }
 }

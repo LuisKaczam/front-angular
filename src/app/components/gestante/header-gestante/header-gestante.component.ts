@@ -72,7 +72,7 @@ export class HeaderGestanteComponent implements OnInit{
   update(){
     const updateNotifications = new Notificacoes();
     for(let i = 0; i < this.allNotifications.length; i++){
-      if(this.allNotifications[i].lidaProfissional === false){
+      if(this.allNotifications[i].lidaGestante === false){
         updateNotifications.descricaoGestante = this.allNotifications[i].descricaoGestante;
         updateNotifications.tipoGestante = this.allNotifications[i].tipoGestante;
         updateNotifications.tituloGestante = this.allNotifications[i].tituloGestante;
@@ -89,8 +89,9 @@ export class HeaderGestanteComponent implements OnInit{
     this.sideNavToggled.emit(this.sideBarService.isSideNavOpen());
   }
 
+  
+
   logout(){
     this.gestanteService.logout();
-    this.router.navigate(['/']);
   }
 }

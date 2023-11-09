@@ -10,6 +10,8 @@ import { GestanteService } from '../gestante.service';
 export class BottomNavbarGestanteComponent {
   gestante:any;
   avatar:string = '';
+  babies: any[] = [];
+  hasBaby:boolean = false
 
   list = [
     { name: 'Perfil', icon: 'fas fa-user', route: '/profile-gestante'},
@@ -22,13 +24,14 @@ export class BottomNavbarGestanteComponent {
   constructor(private router: Router, private service: GestanteService) {}
 
   ngOnInit(): void {
-    this.getGestante()
+    this.getGestante();
+    this.getBabies();
   }
 
   setHome(){
     const baby =  localStorage.getItem('baby')!;
     let route;
-    if(parseInt(baby) != 0){
+    if(parseInt(baby) != 0 || this.hasBaby === true){
      route = '/gestante';
     }else{
      route = '/infos-gestante';
@@ -48,6 +51,14 @@ export class BottomNavbarGestanteComponent {
       if(this.gestante.usuario.profilePhoto != ''){
         this.avatar = this.gestante.usuario.profilePhoto;
       }
+      }
+    })
+  }
+  getBabies(){
+    this.service.listBebes().subscribe((response)=>{
+      this.babies = response;
+      if(this.babies.length > 0){
+        this.hasBaby = true;
       }
     })
   }

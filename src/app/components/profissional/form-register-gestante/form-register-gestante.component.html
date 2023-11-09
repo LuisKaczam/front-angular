@@ -152,6 +152,13 @@
     </div>
 
     <div *ngIf="currentStep === 3">
+      <div *ngIf="!isValidSum" class="alert alert-danger" role="alert">
+        <div class="text-danger text-center">
+          <span>
+            A soma dos campos não deve ser maior que o número de gestações. Por favor, corrija os valores.
+          </span>
+        </div>
+      </div>      
       <div class="mb-3">
         <label for="numberOfPregnancies" class="form-label">Número de Gestações</label>
         <input type="number" class="form-control" id="numberOfPregnancies" formControlName="numberOfPregnancies" name="numberOfPregnancies" placeholder="Digite número de gestações" required>

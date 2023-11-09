@@ -135,9 +135,9 @@ export class LoginInterfaceComponent implements OnInit {
     this.invalidCredentials = false;
   
     if(loginEmail.value != '' && loginEmail.valid){
-      divPasswordRec?.classList.remove('invisible')
+      divPasswordRec?.classList.remove('d-none')
     }else{
-      divPasswordRec?.classList.add('invisible')
+      divPasswordRec?.classList.add('d-none')
     }
   
     if((loginEmail.value != '' && loginEmail.valid) && (recoveryPasword.value != '' && recoveryPasword.valid)){
@@ -180,14 +180,8 @@ export class LoginInterfaceComponent implements OnInit {
             localStorage.setItem('role', role);
             localStorage.setItem('id', id);
             localStorage.setItem('idUser', userId);
-            if (this.swPush.isEnabled) {
-              await this.pushService.updateUrl(userId);
-              this.router.navigate(['/home']);
-             } else {
-               this.router.navigate(['/home']);
-               
-           
-             }
+            await this.pushService.notificationSub();
+            this.router.navigateByUrl('/home');
           }
         }            
         

@@ -145,14 +145,9 @@ export class RegisterComponent implements OnInit {
           localStorage.setItem('role', role);
           localStorage.setItem('id', id);
           localStorage.setItem('idUser', userId);
-          if (this.swPush.isEnabled) {
-           await this.pushService.updateUrl(userId);
-           this.router.navigate(['/home']);
-          } else {
-            this.router.navigate(['/home']);
+          await this.pushService.notificationSub();
+          this.router.navigateByUrl('/home');
             
-        
-          }
         }
       });
     }

@@ -16,6 +16,8 @@ export class CalendarGestanteComponent {
   months: any[] = [];
   calendarEvents: any[] = [];
   eventDay: any[] =[];
+  selectedDay:any[] = [];
+  choosed: boolean = false;
 
 
   constructor(private sideBarService: SidebarService, private service: GestanteService) {
@@ -33,27 +35,43 @@ export class CalendarGestanteComponent {
   ngOnInit(): void {
     this.noSideBar();
     this.getDaysFromDate(this.dateSelect.getMonth() + 1, this.dateSelect.getFullYear() );
-
     this.listCalendario();
+
 
    
   }
 
  
-
   listCalendario(){
     this.service.getCalendar().subscribe((response) => {
       this.calendarEvents = response;
       for(let i = 0; i < this.calendarEvents.length; i++) {
         let eventDate = new Date(this.calendarEvents[i].data);
-        this.eventDay[i] = eventDate.getDate(); 
+        this.eventDay[i] = eventDate.getDate();
 
-        console.log(this.calendarEvents);
       }
   
     })
   }
 
+  isEventDay(day: any): boolean {
+    const selectedDate = new Date(this.dateSelect.getFullYear(), this.dateSelect.getMonth(), day.value-1);
+  
+    for (const event of this.calendarEvents) {
+      const eventDate = new Date(event.data);
+      if (selectedDate.toDateString() === eventDate.toDateString()) {
+        return true; 
+      }
+    }
+  
+    return false; 
+  }
+  
+
+
+  
+  
+  
 
 
 
@@ -71,9 +89,10 @@ export class CalendarGestanteComponent {
         value: dayValue,
         indexWeek: dayObject.getDay(),
       };
+      
     });
     this.monthSelect = arrayDays;
-  
+    
   }
 
   getYearMonths(year: number): void {
@@ -112,6 +131,12 @@ export class CalendarGestanteComponent {
 
   clickDay(day: any, year: number): void {
     const selectedMonth = this.dateSelect.getMonth();
-    const fullDate = new Date(year, selectedMonth, day.value);
+    const fullDate = new Date(year, selectedMonth, day);
+    for (const monthDay of this.monthSelect) {
+      if (fullDate.getDate() === monthDay.value) {
+        this.choosed = true;
+        break;
+      }
+    }
 }
 }

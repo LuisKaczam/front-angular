@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import firebase from 'firebase/compat/app';
 import { Calendario } from 'src/app/entities/Calendario';
 import { Profissional } from 'src/app/entities/Profissional';
+import { Vacinas } from 'src/app/entities/Vacinas';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,7 @@ export class GestanteService {
   _delete$ = new Subject<void>();
   _notification$ = new Subject<void>();
   _calendar$ = new Subject<void>();
+  app = firebase.initializeApp(environment.firebase);
 
   constructor(
     private http: HttpClient,
@@ -168,6 +170,17 @@ export class GestanteService {
     );
   }
 
+  getVaccines(){
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + token,
+    });
+    return this.http.get<Vacinas[]>(
+      `${this.baseUrl}/auth/list-vacinas`,
+      { headers: headers }
+    );
+
+  }
 
   updateNotifications(id: number, notificacao: Notificacoes): Observable<any> {
     const token = localStorage.getItem('token');
@@ -184,8 +197,7 @@ export class GestanteService {
   }
 
   async updateUserPhoto(gestante: any, image: File, nameId:string) {
-    let app = firebase.initializeApp(environment.firebase);
-    const storage = app.storage();
+    const storage = this.app.storage();
     const updateGestante = new Gestante();
     updateGestante.name = gestante.name;
     updateGestante.email = gestante.email;
@@ -205,7 +217,7 @@ export class GestanteService {
         this.updateGestante(
           updateGestante,
           gestante.usuario.id
-        ).subscribe((response) => {
+        ).subscribe(() => {
           window.location.reload();
         });
       } catch (error) {
@@ -231,8 +243,7 @@ export class GestanteService {
   }
 
   async updateBabyPhoto(baby: any, image: File, nameId:string) {
-    let app = firebase.initializeApp(environment.firebase);
-    const storage = app.storage();
+    const storage = this.app.storage();
     const updateBaby = new Bebe();
     updateBaby.babyName = baby.babyName;
     updateBaby.babyBithDate = baby.babyBithDate;
@@ -245,7 +256,7 @@ export class GestanteService {
       this.deleteImageUrlByLink(baby.photo);
       try {
         const storageRef = storage.ref(
-          `profiles/gestantes/bebes/${nameId}/${image.name}`
+          `profiles/gestantes/${nameId}/bebes/${image.name}`
         );
 
         const snapshot = await storageRef.put(image);
@@ -263,7 +274,7 @@ export class GestanteService {
     } else {
       try {
         const storageRef = storage.ref(
-          `profiles/gestantes/bebes/${nameId}/${image.name}`
+          `profiles/gestantes/${nameId}/bebes/${image.name}`
         );
         const snapshot = await storageRef.put(image);
         const url = await snapshot.ref.getDownloadURL();
@@ -293,59 +304,37 @@ export class GestanteService {
   }
 
   deleteImageUrlByLink(fileLink: string): Promise<any> {
-    let app = firebase.initializeApp(environment.firebase);
-    const storage = app.storage().refFromURL(fileLink);
+    
+    const storage = this.app.storage().refFromURL(fileLink);
     return storage.delete();
   }
 
   
 
-  deleteGestante(gestanteId: number, image: string, children: any[], nameId:string) {
+  deleteGestante(gestanteId: number, image: string, children: any[]) {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
     const url = `${this.baseUrl}/gestantes/delete-gestante/${gestanteId}`;
     if (image != '' && image != undefined) {
-      this.deleteFolder("profiles/gestantes/", nameId + "/");
+      this.deleteImageUrlByLink(image);
 
     } 
+    
     if (children.length > 0) {
-      for(let i = 0; children.length; i++){
-        if((children[i].foto != '' && children[i].foto != undefined) && (image == '' || image == undefined)){
-          this.deleteFolder("profiles/gestantes/", nameId + "/");
+      for(let i = 0; i < children.length; i++){
+        if(children[i].foto != '' && children[i].foto != undefined){
+          this.deleteImageUrlByLink(children[i].foto);
         }
       }
         }
     
-        this.http.delete(url, { headers: headers }).subscribe((response) => {
-          if (response) {
-            console.log(response);
-            localStorage.removeItem('id');
-            localStorage.removeItem('token');
-            this.router.navigate(['/']);
-          } 
+        this.http.delete(url, { headers: headers }).subscribe(() => {
+            this.logout();
            
         });
-    }
-
-
-
-
-  async deleteFolder(basePath: string, folderName: string): Promise<void> {
-    let app = firebase.initializeApp(environment.firebase);
-    const storage = app.storage();
-  
-    const folderPath = `${basePath}/${folderName}`;
-    const folderRef = storage.ref(folderPath);
-  
-    const listResult = await folderRef.listAll();
-  
-    listResult.items.forEach(async (item) => {
-      await item.delete();
-    });
-  
-  }
+      }
 
   updateGestante(gestante: Gestante, id: number): Observable<any> {
     const token = localStorage.getItem('token');
@@ -390,7 +379,8 @@ export class GestanteService {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
-    localStorage.removeItem('userId');
+    localStorage.removeItem('idUser');
     localStorage.removeItem('id');
+    this.router.navigate(['/login-gestante']);
   }
 }

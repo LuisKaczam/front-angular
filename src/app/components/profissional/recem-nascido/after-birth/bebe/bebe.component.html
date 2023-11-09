@@ -8,12 +8,12 @@
       </div>
       <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
         (click)="noSideBar()">
-        <div class="row justify-content-center">
-          <div class="col-md-8 mt-2">
+        <div class="row justify-content-center mb-3">
+          <div class="col-md-8 mt-2 mb-4">
             <div class="baby-card p-4">
               <div class="profile-picture rounded-circle position-relative text-center">
-                <img src="https://cdn-icons-png.flaticon.com/128/1946/1946429.png" alt="Perfil do Bebê"
-                  class="img-fluid">
+                <img *ngIf="!baby?.foto" src="https://cdn-icons-png.flaticon.com/128/1946/1946429.png" alt="{{ baby.none}}" class="user-avatar profile-picture rounded-circle mt-2">
+                <img *ngIf="baby?.foto" src="{{baby?.foto}}" alt="{{ baby?.nome}}" class="user-avatar mt-2 profile-picture rounded-circle">
                 <h5 class="mt-2 fw-bold">{{ baby?.nome}}</h5>
               </div>
               <hr>
@@ -24,40 +24,33 @@
                     <p><strong>Peso:</strong> {{baby?.peso}}kg</p>
                     <p><strong>Altura:</strong> {{baby?.altura}}cm</p>
                     <p><strong>Sexo:</strong> {{ baby?.sexo }}</p>
-                    <p><strong>Tipo Sanguíneo:</strong>{{ baby?.tipoSanguineo }}</p>
+                    <p><strong>Tipo Sanguíneo:</strong> {{ baby?.tipoSanguineo }}</p>
                   </div>
-                </div>
-                <div class="w-25 btn-edit" style="margin-top: -2.1rem;">
-                  <span><i class="fa-solid fa-edit me-2"></i>Editar</span>
                 </div>
               </div>
               <hr>
               <div class="vaccine-list mt-4 mb-2">
-                <h4 class="text-center">Vacinas</h4>
-                <ul class="list-unstyled">
-                  <li *ngFor="let vaccine of vaccines" (click)="toggleDetails(vaccine)">
-                    <span class="vaccine-name">{{ vaccine.name }}</span>
+                <h4 class="text-center mb-2">Vacinas</h4>
+                <ul class="list-unstyled mt-2 mb-3">
+                  <li *ngFor="let vaccine of vacinas" (click)="toggleDetails(vaccine)" class="mt-2 mb-3">
+                    <span class="vaccine-name">{{ vaccine.nome }}</span>
                     <div class="vaccine-details" [ngClass]="{'show': vaccine.expanded}">
+                      <div class="d-flex justify-content-between ">
+                        <span class="vaccine-name">Idade recomendada:</span>
+                        <span *ngIf="vaccine.idadeNecessaria == 0" class="vaccine-date"> Ao nascer</span>
+                        <span *ngIf="vaccine.idadeNecessaria == 1" class="vaccine-date"> 1º Mês</span>
+                        <span *ngIf="vaccine.idadeNecessaria == 2" class="vaccine-date"> 2º Mês</span>
+                        <span *ngIf="vaccine.idadeNecessaria == 9" class="vaccine-date"> 9º Mês</span>
+                        <span *ngIf="vaccine.idadeNecessaria == 12" class="vaccine-date"> 1 Ano </span>
+                     </div>
                       <div class="d-block">
-                        <a [href]="vaccine.pdfLink" target="_blank">
+                        <a [href]="vaccine.link" target="_blank">
                           <i class="fa-solid fa-file-pdf"></i>
                           Informações</a>
-                      </div>
-                      <div class="d-block">
-                        <span class="vaccine-date">Data: {{ vaccine.date }}</span>
-                      </div>
-                      <div class="d-block">
-                        <span class="vaccine-dose">Dose: {{ vaccine.dose }}</span>
                       </div>
                     </div>
                   </li>
                 </ul>
-              </div>
-              <div class="text-end rounded mb-5">
-                <button class="btn add-btn" data-bs-toggle="modal" data-bs-target="#formRegisterGestante">
-                  <i class="fa-solid fa-plus"></i>
-                  Adicionar Vacina
-                </button>
               </div>
             </div>
           </div>

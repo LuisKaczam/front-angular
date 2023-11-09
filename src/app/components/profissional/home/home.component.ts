@@ -6,6 +6,7 @@ import { SidebarService } from '../../sidebar/sidebar.service';
 import { ProfissionalService } from '../profissional.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PwaObject } from 'src/app/entities/PwaObject';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-home',
@@ -28,10 +29,10 @@ export class HomeComponent implements OnInit{
   errorCpf: boolean = false;
   formCpfModal:boolean = false;
   errorPresent:boolean = false;
-  pwaObject = new PwaObject;
+  pwaObject:any[] = []
 
 
-  constructor(private router: Router, private sideBarService: SidebarService, private serviceProfissional: ProfissionalService, private modalService: ModalService) {
+  constructor(private router: Router, private sideBarService: SidebarService, private pushService: PushNotificationService, private serviceProfissional: ProfissionalService, private modalService: ModalService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -66,10 +67,15 @@ export class HomeComponent implements OnInit{
   }
 
   getPwaObj(){
-    this.serviceProfissional.getPwaObject().subscribe((response)=>{
-      this.pwaObject = response;
-      console.log(this.pwaObject);
-    })
+    const key = localStorage.getItem('idUser');
+    const id = Number(key);
+    if(id != 0){
+      this.pushService.getPwaObject(id).subscribe((response)=>{
+        this.pwaObject = response;
+        console.log(this.pwaObject);
+      })
+    }
+   
   }
 
   formatarCpf(event: any) {
@@ -194,15 +200,18 @@ export class HomeComponent implements OnInit{
       this.filteredGestantes = this.gestantes;
       this.foundedGestante = false; 
     } else {
-      this.filteredGestantes = this.gestantes.filter(gestante =>
-        gestante.usuario.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
+      this.filteredGestantes = this.gestantes.filter(gestante =>{
+        const searchTermLower = this.searchTerm.toLowerCase();
+        const nameLower = gestante.usuario.name.toLowerCase();
+        return nameLower.startsWith(searchTermLower) || nameLower.includes(searchTermLower);
+      });
       this.foundedGestante = this.filteredGestantes.length === 0;
     }
   }
   }
 
-  deleteGestante( key:number, name:string){
+  deleteGestante( key:number, name:string, event:any){
+    event.stopPropagation();
     this.key = key;
     this.deleteName = name;
       if (confirm("Tem certeza que deseja excluir a gestante: " + name)) {
