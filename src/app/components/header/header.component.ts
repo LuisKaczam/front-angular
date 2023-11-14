@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  nameLink: string = "Cadastrar-se";
+  nameLink: string = "Cadastrar Novo Profissional";
+  isModalOpen: boolean = false;
 
   constructor(private router: Router) {}
 
@@ -15,7 +16,7 @@ export class HeaderComponent {
     if (this.router.url === '/register') {
       return 'Login';
     } else {
-      return 'Cadastrar-se';
+      return 'Cadastrar Novo Profissional';
     }
   }
 
@@ -27,7 +28,7 @@ export class HeaderComponent {
     }
   }
 
-  isModalOpen: boolean = false;
+  
   
 
   onModalOpen() {

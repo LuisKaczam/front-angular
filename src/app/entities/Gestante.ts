@@ -3,11 +3,11 @@ export class Gestante {
     name: string = '';
     email: string = '';
     cpf: string = '';
+    phone: string = '';
     password: string = '';
     gestanteAge:number = 0;
     gestanteAddress: string = '';
     gestanteBirthDate!: Date;
-    gestantePhone: string ='';
     gestanteDum!: Date;
     gestanteBloodType!: string;
     idProfissional: number = 0;

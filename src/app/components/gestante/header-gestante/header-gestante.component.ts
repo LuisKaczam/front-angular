@@ -57,6 +57,8 @@ export class HeaderGestanteComponent implements OnInit{
   getNotifications(){
     this.gestanteService.getAllNotifications().subscribe((response) =>{
       this.allNotifications = response
+      console.log(this.allNotifications);
+      
     });
     
   }

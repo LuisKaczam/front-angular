@@ -7,7 +7,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 
   handleError(error: any): void {
     if (error instanceof FirebaseError) {
-      if (error.message.includes('token-unsubscribe-failed')) {
+      if (error.message.includes('messaging/token-unsubscribe-failed')) {
         error = null;
         window.location.reload();
       }
@@ -19,7 +19,7 @@ export class GlobalErrorHandler implements ErrorHandler {
       
     }
 
-    if (error.message && error.message.includes('no active Service Worker') || error.message && error.message.includes('Not Found')) {
+    if (error.message && error.message.includes('no active Service Worker')) {
       error = null;
       window.location.reload();
     }

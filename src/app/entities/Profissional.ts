@@ -6,4 +6,5 @@ export class Profissional{
     cpf: string = '';
     password: string = '';
     notificationUrl!:string;
+    phone!:string;
 }

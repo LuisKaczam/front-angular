@@ -12,6 +12,10 @@ a:hover{
   color: #00B2FF;
 }
 
+.link:hover{
+  color: #00B2FF;
+}
+
 .contact-item {
   cursor: pointer;
   padding: 10px;

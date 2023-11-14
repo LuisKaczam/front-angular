@@ -16,17 +16,12 @@
         <div class="position-absolute top-100 start-50 me-5 translate-middle-x mt-1 me-2 shadow-sm" *ngIf="isNotificationsOpen">
           <div class="card" style="min-width: 230px; max-width: 300px; max-height: 400px;">
             <div class="card-body" style="max-height: 350px; overflow-y: auto;">
-              <hr>
               <span *ngIf="allNotifications.length == 0 " class="text-dark-emphasis"> Nenhuma notificação. </span>
-              <ul class="list-unstyled">
-                <li *ngFor="let notificacao of allNotifications">
-                  {{notificacao.tituloGestante}}
-                </li>
-                <li *ngFor="let notificacao of allNotifications">
-                  {{notificacao.descricaoGestante}}
-                </li>
+              <ul class="list-unstyled" *ngFor="let notificacao of allNotifications" style="max-height: 400px;">
+                <a href="{{notificacao.linkGestante}}"><li>{{notificacao.tituloGestante}}</li>
+                <li>{{notificacao.descricaoGestante}}</li></a>
+                <hr>
               </ul>
-              <hr>
             </div>
           </div>
           

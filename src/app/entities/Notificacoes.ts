@@ -7,4 +7,7 @@ export class Notificacoes{
     lidaGestante!:boolean
     tipoGestante!:string
     tituloGestante!:string
+    linkGestante!:string;
+    linkProfissional!:string;
+
 }

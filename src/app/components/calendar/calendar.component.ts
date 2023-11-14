@@ -214,6 +214,8 @@ export class CalendarComponent implements OnInit {
         notificacao.lidaGestante = false;
         notificacao.lidaProfissional = false;
         notificacao.descricaoGestante = 'Nova consulta marcada';
+        notificacao.linkGestante = 'https://sisgestante-d38c4.web.app/list-gestante-calendar';
+        notificacao.linkProfissional = 'https://sisgestante-d38c4.web.app/calendario';
 
         this.profissionaService
           .insertCalendarGestante(calendar, this.gestanteId)
@@ -263,13 +265,11 @@ export class CalendarComponent implements OnInit {
                             })
                           )
                           .subscribe(() => {
-                            document.getElementById('btn-close')?.click();
-                            this.onModalClose();
+                            window.location.reload();
                           });
                       }
                     } else {
-                      document.getElementById('btn-close')?.click();
-                      this.onModalClose();
+                     window.location.reload();
                     }
                   });
               });
@@ -284,13 +284,10 @@ export class CalendarComponent implements OnInit {
             })
           )
           .subscribe(() => {
-            document.getElementById('btn-close')?.click();
-            this.onModalClose();
+            window.location.reload();
           });
       }
     }
-    document.getElementById('btn-close')?.click();
-    this.onModalClose();
   }
 
   datesToPdf() {

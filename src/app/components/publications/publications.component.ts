@@ -103,38 +103,65 @@ export class PublicationsComponent implements OnInit {
   }
 
   share() {
-    this.gestantesSelecionadas.forEach(gestante => {
-      this.service.sharePost(this.post, gestante.id).subscribe(response => {
-        console.log("OK ", response);
+    const numGestantes = this.gestantesSelecionadas.length;
+    const profissionalId = localStorage.getItem('id');
   
-        const notificacao = new Notificacoes();
-        notificacao.descricaoProfissional = `Você compartilhou uma postagem com ${gestante.usuario.name}`;
-        notificacao.tipoProfissional = "Postagem";
-        notificacao.tituloProfissional = "Nova postagem";
-        notificacao.tipoGestante = "Evento";
-        notificacao.tituloGestante = "Novo evento";
-        notificacao.lidaGestante = false;
-        notificacao.lidaProfissional = false;
+    for (let index = 0; index < numGestantes; index++) {
+      const gestante = this.gestantesSelecionadas[index];
   
-        this.service.newNotification(notificacao, gestante.id).subscribe(response => {
-          this.pushService.getPwaObject(gestante.usuario.id).subscribe(pwa => {
-            if (pwa) {
-              console.log(pwa);
-              this.service.sendPushNotification(
-                notificacao.tituloGestante,
-                notificacao.descricaoGestante,
-                pwa
-              );
-            }
-          });
+      this.service.sharePost(this.post, gestante.id)
+        .subscribe(() => {
+          const notificacao = new Notificacoes();
+          notificacao.descricaoProfissional = `Você compartilhou uma postagem com ${gestante.usuario.name}`;
+          notificacao.tipoProfissional = "Postagem";
+          notificacao.tituloProfissional = "Nova postagem";
+          notificacao.tipoGestante = "Evento";
+          notificacao.tituloGestante = "Nova Postagem";
+          notificacao.descricaoGestante = "Nova Postagem";
+          notificacao.lidaGestante = false;
+          notificacao.lidaProfissional = false;
+          notificacao.linkGestante = 'https://sisgestante-d38c4.web.app/infos-meu-profissional?id=' + profissionalId;
+          notificacao.linkProfissional = 'https://sisgestante-d38c4.web.app/publicacoes';
   
-          setTimeout(() => {
-            document.getElementById('close-share')?.click();
-          }, 2000);
+          this.service.newNotification(notificacao, gestante.id)
+            .subscribe(() => {
+              this.pushService.getPwaObject(gestante.usuario.id)
+              .subscribe(async (response) => {
+                const pwaObject = response;
+                if (pwaObject) {
+                  for (let i = 0; i < pwaObject.length; i++) {
+                    console.log(pwaObject);
+
+                    this.service
+                      .sendPushNotification(
+                        notificacao.tituloGestante,
+                        notificacao.descricaoGestante,
+                        pwaObject[i]
+                      )
+                      .pipe(
+                        catchError((error) => {
+                          console.error(
+                            'Falha ao enviar notificação push',
+                            error
+                          );
+                          return [];
+                        })
+                      )
+                      .subscribe(() => {
+                        window.location.reload();
+                      });
+                  }
+                } else {
+                 window.location.reload();
+                }
+              });
+            });
         });
-      });
-    });
+    }
   }
+  
+  
+  
   
 
   getVideos() {

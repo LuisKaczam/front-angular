@@ -301,7 +301,7 @@ export class FormRegisterGestanteComponent implements OnInit {
       this.gestante.gestanteBirthDate = birth?.value;
       this.gestante.gestanteBloodType = blood?.value;
       this.gestante.gestanteDum = dum?.value;
-      this.gestante.gestantePhone = phone?.value;
+      this.gestante.phone = phone?.value;
       this.gestante.gestanteAge = age;
       this.gestante.abortions = abortions?.value;
       this.gestante.cesareanDeliveries = cesareanDeliveries?.value;

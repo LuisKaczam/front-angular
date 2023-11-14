@@ -61,7 +61,7 @@ export class PushNotificationService {
       body: data['body'],
       icon: data['icon'],  
       image: data['image'],
-      vibrate: data['vibrate'],  
+      vibrate: [300, 100, 300]
     };
     const userNotify: Notification = new Notification(title, options);
   
