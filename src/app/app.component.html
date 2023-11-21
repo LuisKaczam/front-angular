@@ -1,3 +1,32 @@
 <div class="w-100 h-100">
-  <router-outlet></router-outlet>
+  <div *ngIf="userRole == 'GESTANTE'" id="header-gestante">
+    <app-header-gestante (sideNavToggled)="sideNavStatus = $event"></app-header-gestante>
+    <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+      <app-side-bar-gestante [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+        [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-side-bar-gestante>
+    </div>
+  </div>
+  
+  <div *ngIf="userRole == 'PROFISSIONAL'" id="header-profissional">
+    <app-header-sidebar (sideNavToggled)="sideNavStatus = $event"></app-header-sidebar>
+    <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+      <app-sidebar [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
+        [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
+    </div>
+  </div>
+
+    <router-outlet></router-outlet>
+
+  <div *ngIf="userRole == 'GESTANTE'" id="bottom-gestante">
+    <div class="d-lg-none d-fixed">
+      <app-bottom-navbar-gestante></app-bottom-navbar-gestante>
+    </div>
+  </div>
+
+  <div *ngIf="userRole == 'PROFISSIONAL'" id="bottom-profissional">
+    <div class="d-lg-none d-fixed mt-5">
+      <app-bottom-navigation></app-bottom-navigation>
+    </div>
+  </div>
+
 </div>

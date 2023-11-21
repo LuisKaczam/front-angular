@@ -2,35 +2,32 @@
     <main class="container-fluid h-100">
       <div class="row">
         <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus} " (click)="noSideBar()">
-          <div class="row justify-content-center">
+          <div class="row justify-content-center mb-3">
             <div class="col-md-8">
               <div class="text-center  side-text">
-                <h2>Nova Publicação</h2>
+                <h2>Nova Vacina</h2>
               </div>
-              <form [formGroup]="newPostForm" (ngSubmit)="registerPost()">
-                <div class="form-group mb-3">
-                  <label for="type">Tipo de Post</label>
-                  <select class="form-control form-select" id="type" formControlName="type">
-                    <option value="" disabled selected>Selecione o tipo</option>
-                    <option value="video">Vídeo</option>
-                    <option value="article">Artigo</option>
-                  </select>
-                  <div *ngIf="type.invalid && (type.dirty || type.touched)" class="text-danger ms-1">
-                    <div *ngIf="type.errors?.['required']">Campo obrigatório.</div>
+              <form [formGroup]="newVacinaForm" (ngSubmit)="registerVaccine()">
+                <div *ngIf="errorVaccine == true" class="alert alert-danger" role="alert">
+                  <div class="text-danger text-center">
+                    <span>Uma vacina já foi cadastrada com o nome: {{nome.value}}</span>
                   </div>
                 </div>
                 <div class="form-group mb-3">
-                  <label for="title">Título</label>
-                  <input type="text" class="form-control futuristic-input" id="title" formControlName="title" placeholder="Título">
-                  <div *ngIf="title.invalid && (title.dirty || title.touched)" class="text-danger ms-1">
-                    <div *ngIf="title.errors?.['required']">Campo obrigatório.</div>
-                    <div *ngIf="title.errors?.['minlength']">O título deve possuir no mínimo 4 caracteres.</div>
-                    <div *ngIf="title.errors?.['maxlength']">O título deve possuir no máximo 40 caracteres.</div>
+                  <label for="nome">Nome</label>
+                  <input type="text" class="form-control futuristic-input" id="nome" formControlName="nome" placeholder="Nome">
+                  <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="text-danger ms-1">
+                    <div *ngIf="nome.errors?.['required']">Campo obrigatório.</div>
+                    <div *ngIf="nome.errors?.['minlength']">O título deve possuir no mínimo 4 caracteres.</div>
+                    <div *ngIf="nome.errors?.['maxlength']">O título deve possuir no máximo 40 caracteres.</div>
                   </div>
                 </div>
                 <div class="form-group mb-3">
-                  <label for="author">Autor</label>
-                  <input type="text" class="form-control futuristic-input" id="author" formControlName="author" placeholder="Autor">
+                  <label for="idadeNescessaria">Idade Nescessária</label>
+                  <input type="number" class="form-control futuristic-input" id="idadeNescessaria" min="0" formControlName="idadeNescessaria" placeholder="Idade Nescessária">
+                  <div *ngIf="idadeNescessaria.invalid && (idadeNescessaria.dirty || idadeNescessaria.touched)" class="text-danger ms-1">
+                    <div *ngIf="idadeNescessaria.errors?.['required']">Campo obrigatório.</div>
+                  </div>                  
                 </div>
                 <div class="form-group mb-4 mt-5 item">                                      
                   <label class="form-group mb-3 mt-4 d-inline-grid item w-100 p-3 mt-2 justify-content-center text-center input-file" appDrop  (files)="fileDropped($event)">
@@ -58,6 +55,3 @@
       </div>
    </main> 
   </div>
-  
-
-  

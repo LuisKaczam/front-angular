@@ -29,7 +29,7 @@
     cursor: pointer;
   }
   
-  .vaccine-list a {
+  .vaccine-list .pdf {
     color: #4d85cd;
     text-decoration: none;
   }

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, Subject, catchError, tap } from 'rxjs';
 import { Profissional } from '../../entities/Profissional';
 import { Gestante } from 'src/app/entities/Gestante';
 import firebase from 'firebase/compat/app';
@@ -19,19 +19,16 @@ import { Vacinas } from 'src/app/entities/Vacinas';
   providedIn: 'root',
 })
 export class ProfissionalService {
-  private baseUrl = 'https://sisgestante-deploy.onrender.com';
+  private baseUrl = 'https://sisgestante-deploy-tb0m.onrender.com';
   _refresh$ = new Subject<void>();
   _delete$ = new Subject<void>();
   _notification$ = new Subject<void>();
   _notificationGestante$ = new Subject<void>();
   _updateNotification$ = new Subject<void>();
   _calendar$ = new Subject<void>();
+  _errorVaccine = new Subject<void>();
 
-  constructor(
-    private http: HttpClient,
-    private storage: AngularFireStorage,
-    private router: Router
-  ) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   registerProfissional(profissional: Profissional): Observable<any> {
     return this.http.post(
@@ -152,6 +149,79 @@ export class ProfissionalService {
       { headers: headers }
     );
 
+  }
+
+  getVaccinesBaby(id:number){
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + token,
+    });
+    return this.http.get<Vacinas[]>(
+      `${this.baseUrl}/auth/${id}/bebe-vacinas`,
+      { headers: headers }
+    );
+
+  }
+
+  async insertStorageVacine(vaccine: Vacinas, file: File, recemNascido: string, babyId:number) {
+    const nameId = recemNascido + babyId;
+    let app = firebase.initializeApp(environment.firebase);
+    const storage = app.storage();
+    const newVaccine = new Vacinas();
+    newVaccine.nome = vaccine.nome;
+    newVaccine.idadeNecessaria = vaccine.idadeNecessaria;
+    if (newVaccine.link == '') {
+      const storageRef = storage.ref(`profiles/gestantes/${nameId}/bebes/vacinas/${file.name}`);
+
+      try {
+        const snapshot = await storageRef.put(file);
+        const url = await snapshot.ref.getDownloadURL();
+        newVaccine.link = url;
+        this.registerVacinas(newVaccine, babyId).subscribe(() => {
+          this.router.navigate(['/infos-recem-nascido'], { queryParams: { id: babyId }}); 
+        });
+      } catch (error) {
+        console.error('Nao foi possivel realizar postagem: ', error);
+      }
+    } else {
+      this.registerVacinas(newVaccine, babyId).subscribe(() => {
+        this.router.navigate(['/infos-recem-nascido'], { queryParams: { id: babyId }}); 
+      });
+    }
+  }
+
+  registerVacinas(vacina: Vacinas, bebeId:number){
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + token,
+    });
+    return this.http.post(`${this.baseUrl}/profissionais/new-vacina/${bebeId}`, vacina, {
+      headers: headers,
+    }).pipe(
+      catchError((errorResponse) => {
+        if (errorResponse.error === 'vacina ja cadastrada') {
+          this._errorVaccine.next();
+        }
+        return [];
+      })
+    )
+  }
+
+  async deleteVaccines(vacinaId:number, bebeId:number, fileLink:string){
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + token,
+    });
+    if(fileLink.startsWith("https://firebasestorage")){
+      await this.deleteImageUrlByLink(fileLink);
+    }
+    
+    const url = `${this.baseUrl}/profissionais/delete-vacinas/${vacinaId}/${bebeId}`;
+    return this.http.delete(url, {
+      headers: headers,
+    }).subscribe(()=>{
+      window.location.reload();
+    });
   }
 
   getAllNotifications() {
@@ -399,6 +469,7 @@ export class ProfissionalService {
     updateProfissional.cpf = profissional.cpf;
     updateProfissional.password = profissional.password;
     updateProfissional.id = profissional.id;
+    updateProfissional.phone = profissional.phone
     if (profissional.photo != '' && profissional.photo != undefined) {
       this.deleteImageUrlByLink(profissional.photo);
       try {
@@ -619,7 +690,6 @@ export class ProfissionalService {
       Authorization: 'Bearer ' + token,
     });
     await this.deleteImageUrlByLink(fileLink);
-    console.log(id);
     const url = `${this.baseUrl}/profissionais/delete-articles/${id}`;
     return this.http
       .delete(url, {

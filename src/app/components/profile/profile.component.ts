@@ -26,6 +26,10 @@ export class ProfileComponent implements OnInit{
   passwordModal:boolean = false;
   passwordError: boolean = false;
   deleteModal: boolean = false;
+  inputPhone!: FormGroup;
+  phoneSuccess:boolean = false;
+  phoneModal:boolean = false;
+  phoneError: boolean = false;
 
   
 
@@ -42,6 +46,10 @@ export class ProfileComponent implements OnInit{
     this.inputEmail = new FormGroup({
       newEmail: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required])
+    });
+
+    this.inputPhone = new FormGroup({
+      phone: new FormControl('', [Validators.required, Validators.minLength(14)])
     });
 
     this.inputPassword = new FormGroup({
@@ -121,6 +129,10 @@ export class ProfileComponent implements OnInit{
    this.passwordModal = true;
    }
 
+   onModalPhoneOpen() {
+    this.phoneModal = true;
+    }
+
   onModalClose() {
     const modal = document.getElementById('emailModal');
     if (modal) {
@@ -148,6 +160,73 @@ export class ProfileComponent implements OnInit{
       btnClose?.click();
   }
   
+  }
+
+  onModalPhoneClose() {
+    const modal = document.getElementById('phoneModal');
+    if (modal) {
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden', 'true');
+      modal.style.display = 'none';
+      document.body.classList.remove('modal-open');
+      this.emailModal = false;
+      
+      const btnClose = document.getElementById('closePhone');
+      btnClose?.click();
+  }
+  
+  }
+
+  updatePhone(){
+    const formUpdatePhone = this.inputPhone;
+    const newPhone = formUpdatePhone.get('phone')!;
+    if(formUpdatePhone.invalid){
+      return;
+    }else{
+      const updateProfissional = new Profissional();
+      updateProfissional.name = this.profissional.usuario.name;
+      updateProfissional.cpf = this.profissional.usuario.cpf;
+      updateProfissional.email = this.profissional.usuario.email;
+      updateProfissional.password = this.profissional.usuario.password;
+      updateProfissional.id = this.profissional.usuario.id;
+      updateProfissional.phone = newPhone.value;
+      updateProfissional.profilePhoto = this.profissional.usuario.profilePhoto
+      this.service.updateProfissional(updateProfissional, this.profissional.usuario.id).pipe(
+        catchError((error)=>{
+          console.log(error);
+        if(error){
+          this.phoneError = true;
+        }
+        return[]
+      })
+      ).subscribe((response) =>{
+        if(response){
+          this.phoneSuccess = true;
+          setTimeout(() => {
+            document.getElementById('closePhone')?.click();
+          }, 5000);
+        }
+      })
+    }
+  }
+
+  formatarTelefone(event: any) {
+    let telefone = event.target.value;
+    telefone = telefone.replace(/\D/g, '');
+    let formattedTelefone = '';
+
+    for (let i = 0; i < telefone.length; i++) {
+      if (i === 0) {
+        formattedTelefone += '(';
+      } else if (i === 2) {
+        formattedTelefone += ') ';
+      } else if (i === telefone.length - 4) {
+        formattedTelefone += '-';
+      }
+      formattedTelefone += telefone[i];
+    }
+
+    this.inputPhone.get('phone')!.setValue(formattedTelefone);
   }
 
   updatePassword(){
@@ -252,6 +331,7 @@ export class ProfileComponent implements OnInit{
         updateProfissional.email = this.profissional.usuario.email;
         updateProfissional.password = this.profissional.usuario.password;
         updateProfissional.id = this.profissional.usuario.id;
+        updateProfissional.phone = this.profissional.usuario.phone
         this.service.updateUserPhoto(updateProfissional, file, nameId);
       };
     }

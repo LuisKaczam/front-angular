@@ -1,11 +1,6 @@
 <div class="container-fluid g-0 w-100 h-100">
-  <app-header-sidebar (sideNavToggled)="sideNavStatus = $event"></app-header-sidebar>
   <main class="container-fluid h-100">
     <div class="row">
-      <div class="col-lg-3 col-xl-2 d-none d-lg-block">
-        <app-sidebar [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
-          [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
-      </div>
       <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus} " (click)="noSideBar()">
         <div class="row justify-content-center">
           <div class="w-100 ms-auto">
@@ -15,7 +10,7 @@
                 <span class="input-group-text btn-search"><i class="fas fa-search" style="color: #00B2FF;" (click)="searchGestantes()"></i></span>
               </div>
               <div class="text-center p-2 rounded">
-                <button class="btn add-btn me-2" (click)="onModalOpen()" data-bs-toggle="modal" data-bs-target="#formRegisterGestante">
+                <button class="btn add-btn btn-success me-2" (click)="onModalOpen()" data-bs-toggle="modal" data-bs-target="#formRegisterGestante">
                   <i class="fa-solid fa-user-plus"></i>
                   Nova Gestante
                 </button>
@@ -52,7 +47,7 @@
                       <p class="link" style="margin-top: 0;"><a (click)="navigateToBebe(gestante.id)">Recém-Nascido</a></p>
                     </div>
                     <div class="d-flex justify-content-end mt-4 mt-md-0">
-                      <span class="ms-4 link">
+                      <span class="ms-4 btn btn-danger">
                         <a title="Deletar" (click)="deleteGestante(gestante.id, gestante.usuario.name, $event)">
                           <i class="fa-solid fa-user-xmark"></i>
                           Deletar Gestante
@@ -79,7 +74,7 @@
                         <p class="link" style="margin-top: 0;"><a (click)="navigateToBebe(gestante.id)">Recém-Nascido</a></p>
                       </div>
                       <div class="d-flex justify-content-end mt-4 mt-md-0">
-                        <span class="ms-4 link">
+                        <span class="ms-4 btn btn-danger">
                           <a href="#" title="Deletar" (click)="deleteGestante(gestante.id, gestante.usuario.name, $event)">
                             <i class="fa-solid fa-user-xmark"></i>
                             Deletar Gestante
@@ -95,9 +90,6 @@
           </div>
         </div>
         <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}"></div>
-        <div class="d-lg-none d-fixed mt-2">
-          <app-bottom-navigation></app-bottom-navigation>
-        </div>
       </div>
     </div>
   </main>
@@ -130,7 +122,7 @@
                 <form (ngSubmit)="oldGestante()" #cpfForm="ngForm" [formGroup]="inputCpf">
                     <div class="mb-2">
                       <label for="cpf" class="form-label">CPF</label>
-                        <input type="text" maxlength="14" class="form-control col-md-4" id="cpf" formControlName="cpf"
+                        <input type="text" maxlength="14" (input)="formatarCpf($event)" class="form-control col-md-4" id="cpf" formControlName="cpf"
                           name="cpf" placeholder="Digite o CPF" required>
                         <div
                           *ngIf="inputCpf.get('cpf')?.invalid && (inputCpf.get('cpf')?.dirty || inputCpf.get('cpf')?.touched) || inputCpf.get('cpf')?.invalid && cpfForm.submitted"
@@ -141,7 +133,7 @@
                           <div *ngIf="errorPresent === true" class="text-danger ms-1">essa gestante já está na sua lista.</div>
                     </div>
                     <div class="mb-2">
-                        <button type="submit" class="btn mt-2" style="background-color: #083263; color: white"> Alterar</button>
+                        <button type="submit" class="btn btn-primary mt-2" style="color: white"> Alterar</button>
                     </div>
                 </form>
               </div>

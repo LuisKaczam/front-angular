@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BottomNavigationComponent } from './components/bottom-navigation/bottom-navigation.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { GestanteComponent } from './components/gestante/home/gestante.component';
 import { InfosGestanteComponent } from './components/gestante/infos-gestante/infos-gestante.component';
 import { InfosRecemNascidoComponent } from './components/gestante/infos-recem-nascido/infos-recem-nascido.component';
@@ -23,7 +22,6 @@ import { FormEditGestanteComponent } from './components/profissional/form-edit-g
 import { FormRegisterGestanteComponent } from './components/profissional/form-register-gestante/form-register-gestante.component';
 import { HistoricoGestanteComponent } from './components/profissional/historico-gestante/historico-gestante.component';
 import { HomeComponent } from './components/profissional/home/home.component';
-import { ProfissionalComponent } from './components/profissional/profissional.component';
 import { BebeComponent } from './components/profissional/recem-nascido/after-birth/bebe/bebe.component';
 import { RecemNascidoComponent } from './components/profissional/recem-nascido/before-birth/recem-nascido.component';
 import { PublicationsComponent } from './components/publications/publications.component';
@@ -49,6 +47,8 @@ import { NgxPrintModule } from 'ngx-print';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PushNotificationService } from './push-notification.service';
 import { GlobalErrorHandler } from 'global-error-handler';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
+import { NewVaccineComponent } from './components/profissional/recem-nascido/vaccine/new-vaccine/new-vaccine.component';
 
 
 
@@ -58,10 +58,8 @@ import { GlobalErrorHandler } from 'global-error-handler';
     AppComponent,
     HeaderComponent,
     LoginInterfaceComponent,
-    FooterComponent,
     RegisterComponent,
     HomeComponent,
-    ProfissionalComponent,
     SidebarComponent,
     HeaderSidebarComponent,
     BottomNavigationComponent,
@@ -76,7 +74,7 @@ import { GlobalErrorHandler } from 'global-error-handler';
     GestanteComponent,
     InfosGestanteComponent,
     InfosRecemNascidoComponent, 
-    LoginGestanteComponent, AddPostComponent, DropDirective, NewConsultaComponent, NewRecemNascidoComponent, ListRecemNascidoComponent, HeaderGestanteComponent, SideBarGestanteComponent, BottomNavbarGestanteComponent, ListBabiesComponent, CalendarGestanteComponent, ProfileGestanteComponent, ListProfissionaisComponent, InfosProfissionalComponent, 
+    LoginGestanteComponent, AddPostComponent, DropDirective, NewConsultaComponent, NewRecemNascidoComponent, ListRecemNascidoComponent, HeaderGestanteComponent, SideBarGestanteComponent, BottomNavbarGestanteComponent, ListBabiesComponent, CalendarGestanteComponent, ProfileGestanteComponent, ListProfissionaisComponent, InfosProfissionalComponent, NotFoundPageComponent, NewVaccineComponent, 
   
   ],
   imports: [

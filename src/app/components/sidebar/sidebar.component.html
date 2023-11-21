@@ -5,7 +5,7 @@
         <ng-container *ngIf="item.icon === '' && avatar" class="bg-white">
           <img [src]="avatar" alt="Avatar" class="avatar-image icon-avatar bg-white rounded-5 ms-3" style="z-index: 2; margin-left: 2.5rem; height: 38px; width: 38px; margin-right: -3rem;">
         </ng-container>
-        <ng-container *ngIf="!(item.icon === 'fas fa-user' && avatar)">
+        <ng-container *ngIf="!(item.icon === 'fa-solid fa-user' && avatar)">
           <i [routerLinkActive]="'active'" [routerLink]="item.route" class="{{ item.icon }}"></i>
         </ng-container>
         <span [routerLinkActive]="'active'" [routerLink]="item.route">

@@ -17,7 +17,7 @@ export class Gestante {
     abortions: number = 0;
     height: number = 0;
     weight: number = 0;
-    profilePhoto!: string
+    profilePhoto: string = '';
     pressaoArterial: number = 0;
     batimentosCardiacos: number = 0;
     examesRealizados: string = '';

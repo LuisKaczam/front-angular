@@ -54,7 +54,6 @@ infosBaby(babyId:number){
   getBebes(): void {
     this.serviceProfissional.listBebes(this.gestanteId).subscribe((response) =>{
       this.bebes = response;
-      console.log(this.bebes)
     })
   }
 

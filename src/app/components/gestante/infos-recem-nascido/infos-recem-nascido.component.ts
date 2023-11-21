@@ -13,15 +13,12 @@ import { Vacinas } from 'src/app/entities/Vacinas';
 export class InfosRecemNascidoComponent  implements OnInit{
   sideNavStatus = false;
   infosGestante = [] = new Array();
-  avatar:any = 'https://cdn-icons-png.flaticon.com/128/1946/1946429.png';
   vacinas: any;
+  vacinasBaby:any[] = [];
   bebe: any;
   currentStep = 1;
   bebeId!: number
   gestante:any;
-
-  
-  
 
 
 
@@ -42,6 +39,7 @@ export class InfosRecemNascidoComponent  implements OnInit{
     this.getBaby()
     this.getGestante();
     this.getVacinas();
+    this.getVacinasBaby();
   }
 
   noSideBar(): void {
@@ -57,7 +55,6 @@ export class InfosRecemNascidoComponent  implements OnInit{
   getBaby(){
     this.service.getOneBaby(this.bebeId).subscribe((response)=>{
       this.bebe = response;
-      console.log(this.bebe)
     })
   }
 
@@ -70,6 +67,11 @@ export class InfosRecemNascidoComponent  implements OnInit{
     });
 }
 
+getVacinasBaby(){
+  this.service.getVaccinesBaby(this.bebeId).subscribe((response)=>{
+    this.vacinasBaby = response;
+  })
+}
 
 
   showStep(step: number) {

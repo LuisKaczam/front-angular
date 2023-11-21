@@ -67,7 +67,6 @@ export class SidebarComponent implements OnInit {
           }
         }
       }
-      console.log(this.profissional);
       }
     })
   }

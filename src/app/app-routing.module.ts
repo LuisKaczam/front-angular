@@ -26,28 +26,31 @@ import { ProfileGestanteComponent } from './components/gestante/profile-gestante
 import { FormEditGestanteComponent } from './components/profissional/form-edit-gestante/form-edit-gestante.component';
 import { ListProfissionaisComponent } from './components/gestante/list-profissionais/list-profissionais.component';
 import { InfosProfissionalComponent } from './components/gestante/infos-profissional/infos-profissional.component';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
+import { NewVaccineComponent } from './components/profissional/recem-nascido/vaccine/new-vaccine/new-vaccine.component';
 
 
 const routes: Routes = [
-  { path: '',  component: LoginGestanteComponent},
+  { path: '',   redirectTo: '/login-gestante', pathMatch: 'full' },
   { path: 'login-gestante',  component: LoginGestanteComponent},
   { path: 'login-profissional', component: LoginInterfaceComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent, canActivate: [authGuardProfissional] },
   { path: 'historico-gestante', component: HistoricoGestanteComponent, canActivate: [authGuardProfissional]},
   { path: 'calendario', component: CalendarComponent, canActivate: [authGuardProfissional]},
+  { path: 'new-vaccine', component: NewVaccineComponent, canActivate: [authGuardProfissional]},
   { path: 'perfil', component: ProfileComponent, canActivate: [authGuardProfissional]},
   { path: 'publicacoes', component: PublicationsComponent, canActivate: [authGuardProfissional]},
   { path: 'new-recem-nascido', component: RecemNascidoComponent, canActivate: [authGuardProfissional]},
   { path: 'infos-recem-nascido', component: BebeComponent, canActivate: [authGuardProfissional]},
   { path: 'edit-gestante', component: FormEditGestanteComponent, canActivate: [authGuardProfissional]},
-  { path: 'gestante', component: GestanteComponent, canActivate: [authGuardGestante]},
-  { path: 'infos-gestante', component: InfosGestanteComponent, canActivate: [authGuardGestante]},
-  { path: 'infos-meu-bebe', component: InfosRecemNascidoComponent, canActivate: [authGuardGestante]},
   { path: 'new-post', component: AddPostComponent, canActivate: [authGuardProfissional]},
   { path: 'new-consulta', component: NewConsultaComponent, canActivate: [authGuardProfissional]},
   { path: 'add-baby', component: NewRecemNascidoComponent, canActivate: [authGuardProfissional]},
   { path: 'list-recem-nascido', component: ListRecemNascidoComponent, canActivate: [authGuardProfissional]},
+  { path: 'gestante', component: GestanteComponent, canActivate: [authGuardGestante]},
+  { path: 'infos-gestante', component: InfosGestanteComponent, canActivate: [authGuardGestante]},
+  { path: 'infos-meu-bebe', component: InfosRecemNascidoComponent, canActivate: [authGuardGestante]},
   { path: 'list-gestante-babies', component: ListBabiesComponent, canActivate: [authGuardGestante]},
   { path: 'list-gestante-calendar', component: CalendarGestanteComponent, canActivate: [authGuardGestante]},
   { path: 'profile-gestante', component: ProfileGestanteComponent, canActivate: [authGuardGestante]},

@@ -1,16 +1,13 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireMessaging } from '@angular/fire/compat/messaging';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { PwaObject } from './entities/PwaObject';
-import { Observable } from 'rxjs';
 import { getMessaging, getToken } from 'firebase/messaging';
-import { SwPush } from '@angular/service-worker';
-import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { PwaObject } from './entities/PwaObject';
 
 @Injectable()
 export class PushNotificationService {
-  private token!: string;
-  private baseUrl = 'https://sisgestante-deploy.onrender.com';
+  private baseUrl = 'https://sisgestante-deploy-tb0m.onrender.com';
   private  vpaidKey ='BKeh0REEDpBSbAoiWhwlbojA0VF-Y3Fs8B1QkOALGqr6IsUYZ4UCuZhTs9PnQdSD01e_FwgpN99ufPjrLVxlBlM'
 
   constructor(private fireMsg: AngularFireMessaging, private http: HttpClient) {}

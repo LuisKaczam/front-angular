@@ -1,11 +1,6 @@
 <div class="container-fluid g-0 w-100 h-100">
-  <app-header-sidebar (sideNavToggled)="sideNavStatus = $event"></app-header-sidebar>
   <main class="container-fluid h-100">
     <div class="row">
-      <div class="col-lg-3 col-xl-2 d-none d-lg-block">
-        <app-sidebar [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
-          [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
-      </div>
       <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
         (click)="noSideBar()">
         <div class="row justify-content-center mb-3">
@@ -33,7 +28,15 @@
                 <h4 class="text-center mb-2">Vacinas</h4>
                 <ul class="list-unstyled mt-2 mb-3">
                   <li *ngFor="let vaccine of vacinas" (click)="toggleDetails(vaccine)" class="mt-2 mb-3">
-                    <span class="vaccine-name">{{ vaccine.nome }}</span>
+                    <div class="d-flex justify-content-between">
+                     <span class="vaccine-name">{{ vaccine.nome }}</span>
+                     <span class="ms-4 btn btn-danger text-white">
+                      <a title="Deletar" (click)="deleteVacina(vaccine.id, vaccine.link)">
+                        <i class="fa-solid fa-trash-can"></i>
+                        Deletar
+                      </a>
+                    </span>
+                    </div>
                     <div class="vaccine-details" [ngClass]="{'show': vaccine.expanded}">
                       <div class="d-flex justify-content-between ">
                         <span class="vaccine-name">Idade recomendada:</span>
@@ -44,21 +47,53 @@
                         <span *ngIf="vaccine.idadeNecessaria == 12" class="vaccine-date"> 1 Ano </span>
                      </div>
                       <div class="d-block">
-                        <a [href]="vaccine.link" target="_blank">
+                        <a [href]="vaccine.link" class="pdf" target="_blank">
                           <i class="fa-solid fa-file-pdf"></i>
                           Informações</a>
                       </div>
                     </div>
                   </li>
+                  <div *ngIf="vacinasBaby.length > 0">
+                    <li *ngFor="let vaccine of vacinasBaby" (click)="toggleDetails(vaccine)">
+                      <div class="d-flex justify-content-between">
+                        <span class="vaccine-name">{{ vaccine.nome }}</span>
+                        <span class="ms-4 btn btn-danger text-white">
+                         <a title="Deletar" (click)="deleteVacina(vaccine.id, vaccine.link)">
+                           <i class="fa-solid fa-trash-can"></i>
+                           Deletar
+                         </a>
+                       </span>
+                       </div>
+                      <div class="vaccine-details" [ngClass]="{'show': vaccine.expanded}">
+                        <div class="d-flex justify-content-between ">
+                          <span class="vaccine-name">Idade recomendada:</span>
+                          <span *ngIf="vaccine.idadeNecessaria == 0" class="vaccine-date"> Ao nascer</span>
+                          <span *ngIf="vaccine.idadeNecessaria == 1" class="vaccine-date"> 1º Mês</span>
+                          <span *ngIf="vaccine.idadeNecessaria == 2" class="vaccine-date"> 2º Mês</span>
+                          <span *ngIf="vaccine.idadeNecessaria == 9" class="vaccine-date"> 9º Mês</span>
+                          <span *ngIf="vaccine.idadeNecessaria == 12" class="vaccine-date"> 1 Ano </span>
+                          <span *ngIf="vaccine.idadeNecessaria > 2 && vaccine.idadeNecessaria !== 9 && vaccine.idadeNecessaria < 12" class="vaccine-date"> {{vaccine.idadeNecessaria}}º Mês</span>
+                       </div>
+                        <div class="d-block">
+                          <a [href]="vaccine.link" class="pdf" target="_blank">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            Informações</a>
+                        </div>
+                      </div>
+                    </li>
+                    </div>
                 </ul>
+              </div>
+              <div class="text-end rounded mb-5">
+                <button class="btn add-btn" (click)="newVaccine()">
+                  <i class="fa-solid fa-plus"></i>
+                  Adicionar Vacina
+                </button>
               </div>
             </div>
           </div>
         </div>
         <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}" (click)="noSideBar()"></div>
-        <div class="d-lg-none d-fixed mt-3">
-          <app-bottom-navigation></app-bottom-navigation>
-        </div>
       </div>
     </div>
   </main>

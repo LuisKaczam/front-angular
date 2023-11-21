@@ -18,12 +18,16 @@ export class ProfileGestanteComponent {
   avatar:any = 'https://cdn-icons-png.flaticon.com/128/1946/1946429.png';
   inputEmail!: FormGroup;
   inputPassword!: FormGroup;
+  inputPhone!: FormGroup;
   passwordSuccess:boolean = false;
+  phoneSuccess:boolean = false;
   emailSuccess:boolean = false;
   emailModal:boolean = false;
   passwordModal:boolean = false;
+  phoneModal:boolean = false;
   deleteModal:boolean = false;
   passwordError: boolean = false;
+  phoneError: boolean = false;
   babies: any[] = [];
 
   
@@ -40,6 +44,10 @@ export class ProfileGestanteComponent {
     this.inputEmail = new FormGroup({
       newEmail: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required])
+    });
+
+    this.inputPhone = new FormGroup({
+      phone: new FormControl('', [Validators.required, Validators.minLength(14)])
     });
 
     this.inputPassword = new FormGroup({
@@ -67,7 +75,6 @@ export class ProfileGestanteComponent {
     );
 
     document.getElementById('close')?.addEventListener('click', ()=>{
-      console.log("Aqui")
         this.inputEmail = new FormGroup({
           newEmail: new FormControl('', [Validators.required, Validators.email]),
           password: new FormControl('', [Validators.required])
@@ -109,8 +116,13 @@ export class ProfileGestanteComponent {
 
   onModalOpen() {
     this.emailModal = true;
-    }
+ }
 
+ onModalPhoneOpen() {
+  this.phoneModal = true;
+  }
+
+   
   onModalPasswordOpen() {
    this.passwordModal = true;
    }
@@ -145,14 +157,46 @@ export class ProfileGestanteComponent {
       const btnClose = document.getElementById('closePassword');
       btnClose?.click();
   }
+  }
+
+  onModalPhoneClose() {
+    const modal = document.getElementById('phoneModal');
+    if (modal) {
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden', 'true');
+      modal.style.display = 'none';
+      document.body.classList.remove('modal-open');
+      this.emailModal = false;
+      
+      const btnClose = document.getElementById('closePhone');
+      btnClose?.click();
+  }
   
+  }
+
+  formatarTelefone(event: any) {
+    let telefone = event.target.value;
+    telefone = telefone.replace(/\D/g, '');
+    let formattedTelefone = '';
+
+    for (let i = 0; i < telefone.length; i++) {
+      if (i === 0) {
+        formattedTelefone += '(';
+      } else if (i === 2) {
+        formattedTelefone += ') ';
+      } else if (i === telefone.length - 4) {
+        formattedTelefone += '-';
+      }
+      formattedTelefone += telefone[i];
+    }
+
+    this.inputPhone.get('phone')!.setValue(formattedTelefone);
   }
 
   updatePassword(){
     const formUpdatePassword = this.inputPassword;
-    const newPassword = formUpdatePassword.get('newPassword')!;
+    const newPassword = formUpdatePassword.get('nassword')!;
     const oldPassword = this.gestante.usuario.password;
-    const confirm =formUpdatePassword.get('confirmPassword')!;
 
     if(formUpdatePassword.invalid){
       return;
@@ -213,13 +257,44 @@ export class ProfileGestanteComponent {
     }
   }
 
+  updatePhone(){
+    const formUpdatePhone = this.inputPhone;
+    const newPhone = formUpdatePhone.get('phone')!;
+    if(formUpdatePhone.invalid){
+      return;
+    }else{
+      const updateGestante = new Gestante()
+      updateGestante.name = this.gestante.usuario.name;
+      updateGestante.cpf = this.gestante.usuario.cpf;
+      updateGestante.email = this.gestante.usuario.email;
+      updateGestante.password = this.gestante.usuario.password;
+      updateGestante.id = this.gestante.usuario.id;
+      updateGestante.profilePhoto = this.gestante.usuario.profilePhoto;
+      updateGestante.phone = newPhone.value;
+      this.service.updateGestante(updateGestante, this.gestante.usuario.id).pipe(
+        catchError((error)=>{
+          console.log(error);
+        if(error){
+          this.phoneError = true;
+        }
+        return[]
+      })
+      ).subscribe((response) =>{
+        if(response){
+          this.phoneSuccess = true;
+          setTimeout(() => {
+            document.getElementById('closePhone')?.click();
+          }, 5000);
+        }
+      })
+    }
+  }
   
 
   getGestante(){
     this.service.getGestante().subscribe(response=>{
       if(response){
-      this.gestante = response;
-     
+        this.gestante = response;
       }
     })
   }
@@ -241,6 +316,7 @@ export class ProfileGestanteComponent {
         updateGestante.email = this.gestante.usuario.email;
         updateGestante.password = this.gestante.usuario.password;
         updateGestante.id = this.gestante.usuario.id;
+        updateGestante.phone = this.gestante.usuario.phone;
         this.service.updateUserPhoto(updateGestante, file, nameId);
       };
     }

@@ -210,6 +210,8 @@ export class HomeComponent implements OnInit{
   }
   }
 
+  
+
   deleteGestante( key:number, name:string, event:any){
     event.stopPropagation();
     this.key = key;

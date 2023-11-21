@@ -1,11 +1,6 @@
 <div class="container-fluid g-0 w-100 h-100">
-  <app-header-sidebar (sideNavToggled)="sideNavStatus = $event"></app-header-sidebar>
   <main class="container-fluid h-100">
     <div class="row">
-      <div class="col-lg-3 col-xl-2 d-none d-lg-block">
-        <app-sidebar [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
-          [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
-      </div>
       <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus} " (click)="noSideBar()">
         <div class="row justify-content-center">
           <div class="col-10 col-md-4">
@@ -14,13 +9,11 @@
             </div>
             <div class="container">
               <form (ngSubmit)="submitForm()" [formGroup]="formUpdateGestante" #formUpdate="ngForm">
-            
                 <div class="mb-3">
                   <label for="weight" class="form-label">Peso Atual</label>
                   <input type="number" class="form-control" id="weight" min="0" formControlName="gestanteWeight" name="gestanteWeight" placeholder="Digite o peso da gestante" required>
                   <div *ngIf="formUpdateGestante.get('gestanteWeight')?.invalid && (formUpdateGestante.get('gestanteWeight')?.dirty || formUpdateGestante.get('gestanteWeight')?.touched) || formUpdateGestante.get('gestanteWeight')?.invalid && formUpdate.submitted" class="text-danger ms-1">
                     <div *ngIf="formUpdateGestante.get('gestanteWeight')?.hasError('required')">Campo obrigatório.</div>
-                    
                   </div>
                 </div>
                 <div class="mb-3">
@@ -30,7 +23,6 @@
                     <div *ngIf="formUpdateGestante.get('gestanteHeight')?.hasError('required')">Campo obrigatório.</div>
                   </div>
                 </div>
-              
                 <div class="mb-3">
                   <label for="numberOfPregnancies" class="form-label">Número de Gestações</label>
                   <input type="number" class="form-control" id="numberOfPregnancies" min="0" formControlName="numberOfPregnancies" name="numberOfPregnancies" placeholder="Digite o número de gestações" required>
@@ -38,7 +30,6 @@
                     <div *ngIf="formUpdateGestante.get('numberOfPregnancies')?.hasError('required')">Campo obrigatório.</div>
                   </div>
                 </div>
-              
                 <div class="mb-3">
                   <label for="normalDeliveries" class="form-label">Partos Normais</label>
                   <input type="number" class="form-control" id="normalDeliveries" min="0" formControlName="normalDeliveries" name="normalDeliveries" placeholder="Partos normais" required>
@@ -46,7 +37,6 @@
                     <div *ngIf="formUpdateGestante.get('normalDeliveries')?.hasError('required')">Campo obrigatório.</div>
                   </div>
                 </div>
-              
                 <div class="mb-3">
                   <label for="cesareanDeliveries" class="form-label">Cesáreas</label>
                   <input type="number" class="form-control" id="cesareanDeliveries" min="0" formControlName="cesareanDeliveries" name="cesareanDeliveries" placeholder="Cesáreas" required>
@@ -54,7 +44,6 @@
                     <div *ngIf="formUpdateGestante.get('cesareanDeliveries')?.hasError('required')">Campo obrigatório.</div>
                   </div>
                 </div>
-              
                 <div class="mb-3">
                   <label for="abortions" class="form-label">Abortos</label>
                   <input type="number" class="form-control" id="abortions" min="0" formControlName="abortions" name="abortions" placeholder="Abortos" required>
@@ -71,16 +60,12 @@
                   <button type="submit" class="w-50 btn btn-primary">Enviar</button>
                 </div>
               </form>
-              </div>
-            
-        </div>
+            </div>
+          </div>
         <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}"></div>
-        <div class="d-lg-none d-fixed mt-5">
-          <app-bottom-navigation></app-bottom-navigation>
-        </div>
       </div>
     </div>
-    </div>
+   </div>
  </main> 
 </div>
 

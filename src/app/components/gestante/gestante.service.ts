@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
 import { Observable, Subject, catchError, tap } from 'rxjs';
 import { Bebe } from 'src/app/entities/Bebe';
@@ -14,21 +13,17 @@ import { Profissional } from 'src/app/entities/Profissional';
 import { Vacinas } from 'src/app/entities/Vacinas';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GestanteService {
-  private baseUrl = 'https://sisgestante-deploy.onrender.com';
+  private baseUrl = 'https://sisgestante-deploy-tb0m.onrender.com';
   _refresh$ = new Subject<void>();
   _delete$ = new Subject<void>();
   _notification$ = new Subject<void>();
   _calendar$ = new Subject<void>();
   app = firebase.initializeApp(environment.firebase);
 
-  constructor(
-    private http: HttpClient,
-    private storage: AngularFireStorage,
-    private router: Router
-  ) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   loginGestante(email: string, password: string): Observable<any> {
     const gestanteLogin = { email, password };
@@ -42,10 +37,9 @@ export class GestanteService {
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
-    return this.http.get<Gestante>(
-      `${this.baseUrl}/gestantes/${id}/gestante`,
-      { headers: headers }
-    );
+    return this.http.get<Gestante>(`${this.baseUrl}/gestantes/${id}/gestante`, {
+      headers: headers,
+    });
   }
 
   listBebes(): Observable<any> {
@@ -54,9 +48,12 @@ export class GestanteService {
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
-    return this.http.get<Bebe[]>(`${this.baseUrl}/gestantes/${id}/list-babies`, {
-      headers: headers,
-    });
+    return this.http.get<Bebe[]>(
+      `${this.baseUrl}/gestantes/${id}/list-babies`,
+      {
+        headers: headers,
+      }
+    );
   }
 
   getOneBaby(id: number): Observable<any> {
@@ -82,25 +79,31 @@ export class GestanteService {
     );
   }
 
-  listArticles(profissionalId:number): Observable<any> {
+  listArticles(profissionalId: number): Observable<any> {
     const token = localStorage.getItem('token');
     const id = localStorage.getItem('id');
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
-    return this.http.get<Post[]>(`${this.baseUrl}/gestantes/${id}/list-gestante-articles/${profissionalId}`, { headers: headers });
+    return this.http.get<Post[]>(
+      `${this.baseUrl}/gestantes/${id}/list-gestante-articles/${profissionalId}`,
+      { headers: headers }
+    );
   }
 
-  listVideos(profissionalId:number): Observable<any> {
+  listVideos(profissionalId: number): Observable<any> {
     const token = localStorage.getItem('token');
     const id = localStorage.getItem('id');
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
-    return this.http.get<Post[]>(`${this.baseUrl}/gestantes/${id}/list-gestante-videos/${profissionalId}`, { headers: headers });
+    return this.http.get<Post[]>(
+      `${this.baseUrl}/gestantes/${id}/list-gestante-videos/${profissionalId}`,
+      { headers: headers }
+    );
   }
 
-  getProfissional(profissionalId:number): Observable<any> {
+  getProfissional(profissionalId: number): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
@@ -170,16 +173,14 @@ export class GestanteService {
     );
   }
 
-  getVaccines(){
+  getVaccines() {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
-    return this.http.get<Vacinas[]>(
-      `${this.baseUrl}/auth/list-vacinas`,
-      { headers: headers }
-    );
-
+    return this.http.get<Vacinas[]>(`${this.baseUrl}/auth/list-vacinas`, {
+      headers: headers,
+    });
   }
 
   updateNotifications(id: number, notificacao: Notificacoes): Observable<any> {
@@ -188,7 +189,11 @@ export class GestanteService {
       Authorization: 'Bearer ' + token,
     });
     return this.http
-      .put( `${this.baseUrl}/gestantes/${id}/update-notifications-gestante`, notificacao, { headers: headers })
+      .put(
+        `${this.baseUrl}/gestantes/${id}/update-notifications-gestante`,
+        notificacao,
+        { headers: headers }
+      )
       .pipe(
         tap(() => {
           this._notification$.next();
@@ -196,7 +201,7 @@ export class GestanteService {
       );
   }
 
-  async updateUserPhoto(gestante: any, image: File, nameId:string) {
+  async updateUserPhoto(gestante: any, image: File, nameId: string) {
     const storage = this.app.storage();
     const updateGestante = new Gestante();
     updateGestante.name = gestante.name;
@@ -204,6 +209,7 @@ export class GestanteService {
     updateGestante.cpf = gestante.cpf;
     updateGestante.password = gestante.password;
     updateGestante.id = gestante.id;
+    updateGestante.phone = gestante.phone
     if (gestante.profilePhoto != '' && gestante.profilePhoto != undefined) {
       this.deleteImageUrlByLink(gestante.profilePhoto);
       try {
@@ -214,12 +220,11 @@ export class GestanteService {
         const snapshot = await storageRef.put(image);
         const url = await snapshot.ref.getDownloadURL();
         updateGestante.profilePhoto = url;
-        this.updateGestante(
-          updateGestante,
-          gestante.usuario.id
-        ).subscribe(() => {
-          window.location.reload();
-        });
+        this.updateGestante(updateGestante, gestante.usuario.id).subscribe(
+          () => {
+            window.location.reload();
+          }
+        );
       } catch (error) {
         console.error('Erro ao atualizar foto de usuario. ', error);
       }
@@ -231,18 +236,16 @@ export class GestanteService {
         const snapshot = await storageRef.put(image);
         const url = await snapshot.ref.getDownloadURL();
         updateGestante.profilePhoto = url;
-        this.updateGestante(updateGestante, gestante.id).subscribe(
-          () => {
-            window.location.reload();
-          }
-        );
+        this.updateGestante(updateGestante, gestante.id).subscribe(() => {
+          window.location.reload();
+        });
       } catch (error) {
         console.error('Erro ao atualizar foto de usuario. ', error);
       }
     }
   }
 
-  async updateBabyPhoto(baby: any, image: File, nameId:string) {
+  async updateBabyPhoto(baby: any, image: File, nameId: string) {
     const storage = this.app.storage();
     const updateBaby = new Bebe();
     updateBaby.babyName = baby.babyName;
@@ -251,7 +254,7 @@ export class GestanteService {
     updateBaby.babyHeight = baby.babyHeight;
     updateBaby.babyWeight = baby.babyWeight;
     updateBaby.sex = baby.sex;
-  
+
     if (baby.photo != '' && baby.foto != undefined) {
       this.deleteImageUrlByLink(baby.photo);
       try {
@@ -262,10 +265,7 @@ export class GestanteService {
         const snapshot = await storageRef.put(image);
         const url = await snapshot.ref.getDownloadURL();
         updateBaby.photo = url;
-        this.updateBaby(
-          updateBaby,
-          baby.id
-        ).subscribe((response) => {
+        this.updateBaby(updateBaby, baby.id).subscribe((response) => {
           window.location.reload();
         });
       } catch (error) {
@@ -279,23 +279,21 @@ export class GestanteService {
         const snapshot = await storageRef.put(image);
         const url = await snapshot.ref.getDownloadURL();
         updateBaby.photo = url;
-        this.updateBaby(updateBaby, baby.id).subscribe(
-          () => {
-            window.location.reload();
-          }
-        );
+        this.updateBaby(updateBaby, baby.id).subscribe(() => {
+          window.location.reload();
+        });
       } catch (error) {
         console.error('Erro ao atualizar foto de usuario. ', error);
       }
     }
   }
 
-  updateEmail(email: string, password:string, id: number): Observable<any> {
+  updateEmail(email: string, password: string, id: number): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
-    const updateEmail = {email, password};
+    const updateEmail = { email, password };
     return this.http.put(
       `${this.baseUrl}/gestantes/update-email-gestante/${id}`,
       updateEmail,
@@ -304,48 +302,62 @@ export class GestanteService {
   }
 
   deleteImageUrlByLink(fileLink: string): Promise<any> {
-    
     const storage = this.app.storage().refFromURL(fileLink);
     return storage.delete();
   }
 
-  
-
-  deleteGestante(gestanteId: number, image: string, children: any[]) {
+  getVaccinesBaby(id: number) {
     const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + token,
+    });
+    return this.http.get<Vacinas[]>(`${this.baseUrl}/auth/${id}/bebe-vacinas`, {
+      headers: headers,
+    });
+  }
+
+  async deleteGestante(gestanteId: number, image: string, children: any[]) {
+    const token = localStorage.getItem('token');
+    let vacinas: any[] = [];
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
     const url = `${this.baseUrl}/gestantes/delete-gestante/${gestanteId}`;
     if (image != '' && image != undefined) {
-      this.deleteImageUrlByLink(image);
+      await this.deleteImageUrlByLink(image);
+    }
 
-    } 
-    
     if (children.length > 0) {
-      for(let i = 0; i < children.length; i++){
-        if(children[i].foto != '' && children[i].foto != undefined){
-          this.deleteImageUrlByLink(children[i].foto);
+      for (let i = 0; i < children.length; i++) {
+        if (children[i].foto != '' && children[i].foto != undefined) {
+          await this.deleteImageUrlByLink(children[i].foto);
+          this.getVaccinesBaby(children[i].id).subscribe((response) => {
+            vacinas = response;
+          });
         }
       }
+      if (vacinas.length > 0) {
+        for (let i = 0; i < vacinas.length; i++) {
+          if (vacinas[i].link.startsWith('https://firebasestorage')) {
+            await this.deleteImageUrlByLink(vacinas[i].link);
+          }
         }
-    
-        this.http.delete(url, { headers: headers }).subscribe(() => {
-            this.logout();
-           
-        });
       }
+    }
+
+    this.http.delete(url, { headers: headers }).subscribe(() => {
+      this.logout();
+    });
+  }
 
   updateGestante(gestante: Gestante, id: number): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
-    return this.http.put(
-      `${this.baseUrl}/gestantes/update/${id}`,
-      gestante,
-      { headers: headers }
-    );
+    return this.http.put(`${this.baseUrl}/gestantes/update/${id}`, gestante, {
+      headers: headers,
+    });
   }
 
   updateBaby(bebe: Bebe, bebeId: number): Observable<any> {
@@ -360,18 +372,22 @@ export class GestanteService {
     );
   }
 
-  updateUserPassword(email: string, password: string):Observable<any>{
-    const user = {email, password};
+  updateUserPassword(email: string, password: string): Observable<any> {
+    const user = { email, password };
     const url = `${this.baseUrl}/auth/update-password-gestante`;
     return this.http.put(url, user);
   }
 
-  updateGestantePassword(email: string, password: string, newPassword: string):Observable<any>{
+  updateGestantePassword(
+    email: string,
+    password: string,
+    newPassword: string
+  ): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
-    const user = {email, password, newPassword};
+    const user = { email, password, newPassword };
     const url = `${this.baseUrl}/gestantes/update-gestante-password`;
     return this.http.put(url, user, { headers: headers });
   }

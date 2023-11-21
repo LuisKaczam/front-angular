@@ -97,6 +97,7 @@ export class AddPostComponent implements OnInit {
 
       if(newPostForm.get('link')?.value == ''){
         newPostForm.get('link')?.setErrors({required: true});
+        return;
       }
 
       this.post.type = type.value;

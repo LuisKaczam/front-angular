@@ -114,7 +114,7 @@ export class FormRegisterGestanteComponent implements OnInit {
 
     const sum = normalDeliveries + cesareanDeliveries + abortions;
 
-    return sum <= numberOfPregnancies;
+    return sum === numberOfPregnancies;
   }
 
   getProfissional() {
@@ -234,7 +234,7 @@ export class FormRegisterGestanteComponent implements OnInit {
   }
 
   sendEmail(email: string, name:string){
-    const message = "Olá " + name + ", bem-vinda ao SisGestante! Para acessar seu perfil, utilize seu e-mail e CPF (sem pontuações o caracteres especiais) informados na sua primeira consulta." +
+    const message = "Olá " + name + ", bem-vinda ao SisGestante! Para acessar seu perfil, utilize seu e-mail e CPF (sem pontuações ou caracteres especiais) informados na sua primeira consulta." +
                     "\nLembre-se de alterar sua senha na aba 'Perfil' assim que possível." + "\n Desejo-lhe uma gestação tranquila e um ótimo pós-parto 🤱❤️" +
                      "\n\n Att. App SisGestante.";
     const sendEmail = new SendEmail();

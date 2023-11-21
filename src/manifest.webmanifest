@@ -2,13 +2,19 @@
   "name": "Sisgestante",
   "short_name": "Sisgestante",
   "theme_color": "#00B2FF",
-  "background_color": "#00B2FF",
+  "background_color": "#87e8ff",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
   
 
   "icons": [
+    {
+      "src": "assets/icons/icon-48x48.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
     {
       "src": "assets/icons/icon-72x72.png",
       "sizes": "72x72",

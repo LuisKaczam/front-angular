@@ -146,7 +146,7 @@ export class RegisterComponent implements OnInit {
           localStorage.setItem('id', id);
           localStorage.setItem('idUser', userId);
           await this.pushService.notificationSub();
-          this.router.navigateByUrl('/home');
+          this.router.navigate(['/home']);
             
         }
       });

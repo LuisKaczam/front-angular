@@ -1,12 +1,8 @@
 <div class="container-fluid g-0 w-100">
-  <app-header-gestante (sideNavToggled)="sideNavStatus = $event"></app-header-gestante>
   <main class="container-fluid h-100">
     <div class="row">
-      <div class="col-lg-3 col-xl-2 d-none d-lg-block">
-        <app-side-bar-gestante [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
-          [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-side-bar-gestante>
-      </div>
-      <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}" (click)="noSideBar()">
+      <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
+        (click)="noSideBar()">
         <div class="row justify-content-center mt-5">
           <div class="col-md-8">
             <div class="bg-white router-btns rounded-link d-flex w-100">
@@ -18,71 +14,86 @@
               </div>
             </div>
             <div class="card mx-auto shadow-sm mb-4">
-              <div class="card-body">
+              <div class="card-body w-100">
                 <div class="vaccine-list mt-4" *ngIf="currentStep === 1">
-                  <label class="d-flex justify-content-center align-items-center mb-2" for="userPhoto">
-                    <div class="avatar-container">
-                      <img *ngIf="!bebe?.foto" src="{{avatar}}" alt="{{ bebe.babyName}}" class="user-avatar profile-picture rounded-circle mt-2">
-                      <img *ngIf="bebe?.foto" src="{{bebe.foto}}" alt="{{ bebe.babyName}}" class="user-avatar mt-2 profile-picture rounded-circle">
-                      <span class="edit-icon">
-                        <i class="fas fa-camera"></i>
-                      </span>
+                  <div class="w-100 justify-content-center align-content-center text-center">
+                  <label class="profile-picture rounded-circle position-relative shadow-lg" for="userPhoto">
+                    <div class="edit-icon">
+                      <i class="fas fa-camera"></i>
                     </div>
+                    <img *ngIf="!bebe?.foto" src="https://cdn-icons-png.flaticon.com/128/1946/1946429.png" alt="{{ bebe.babyName}}" class="rounded-circle">
+                    <img *ngIf="bebe?.foto" src="{{bebe.foto}}" alt="{{ bebe.babyName}}" class="rounded-circle">
                   </label>
-                  <div class="text-center">
-                    <h5 class="mt-1 mb-2 fw-bold">{{ bebe?.nome}}</h5>
-                    <input type="file" name="userPhoto" id="userPhoto" class="invisible" (input)="onFileSelected($event)">
+                  <h2 class="mt-3">{{bebe?.nome}}</h2>
+                  <input type="file" name="userPhoto" id="userPhoto" class="invisible" (input)="onFileSelected($event)">
                   </div>
-                    <ul class="list-unstyled">
-                      <li>
-                        <div class="d-flex justify-content-between ">
-                          <span class="vaccine-name">Sexo:</span>
-                          <span>{{bebe?.sexo}}</span>
-                       </div>
-                      </li>
-                        <li>
-                          <div class="d-flex justify-content-between ">
-                             <span class="vaccine-name"> Data de Nascimento:</span>
-                             <span>{{bebe?.dataNascimento | date:'dd/MM/yyyy'}}</span>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="d-flex justify-content-between ">
-                             <span class="vaccine-name">Altura ao Nascer:</span>
-                             <span>{{bebe?.altura}}cm</span>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="d-flex justify-content-between ">
-                            <span class="vaccine-name">Peso ao Nascer:</span>
-                            <span>{{bebe?.peso}}Kg</span>
-                         </div>
-                        </li>
-                        <li>
-                          <div class="d-flex justify-content-between ">
-                            <span class="vaccine-name">Tipo Sanguíneo:</span>
-                            <span>{{bebe?.tipoSanguineo}}</span>
-                         </div>
-                        </li>
-                      </ul>
-                      
-                </div>
-                <div class="vaccine-list mt-4" *ngIf="currentStep === 2">
-                  <label class="d-flex justify-content-center align-items-center mb-2" for="userPhoto">
-                    <div class="avatar-container">
-                      <img *ngIf="!bebe?.foto" src="{{avatar}}" alt="{{ bebe.babyName}}" class="user-avatar profile-picture rounded-circle mt-2">
-                      <img *ngIf="bebe?.foto" src="{{bebe.foto}}" alt="{{ bebe.babyName}}" class="user-avatar mt-2 profile-picture rounded-circle">
-                      <span class="edit-icon">
-                        <i class="fas fa-camera"></i>
-                      </span>
+                <ul class="list-unstyled">
+                  <li>
+                    <div class="d-flex justify-content-between ">
+                      <span class="vaccine-name">Sexo:</span>
+                      <span>{{bebe?.sexo}}</span>
                     </div>
+                  </li>
+                  <li>
+                    <div class="d-flex justify-content-between ">
+                      <span class="vaccine-name"> Data de Nascimento:</span>
+                      <span>{{bebe?.dataNascimento | date:'dd/MM/yyyy'}}</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="d-flex justify-content-between ">
+                      <span class="vaccine-name">Altura ao Nascer:</span>
+                      <span>{{bebe?.altura}}cm</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="d-flex justify-content-between ">
+                      <span class="vaccine-name">Peso ao Nascer:</span>
+                      <span>{{bebe?.peso}}Kg</span>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="d-flex justify-content-between ">
+                      <span class="vaccine-name">Tipo Sanguíneo:</span>
+                      <span>{{bebe?.tipoSanguineo}}</span>
+                    </div>
+                  </li>
+                </ul>
+
+              </div>
+              <div class="vaccine-list mt-4" *ngIf="currentStep === 2">
+                <div class="w-100 justify-content-center align-content-center text-center">
+                  <label class="profile-picture rounded-circle position-relative shadow-lg" for="userPhoto">
+                    <div class="edit-icon">
+                      <i class="fas fa-camera"></i>
+                    </div>
+                    <img *ngIf="!bebe?.foto" src="https://cdn-icons-png.flaticon.com/128/1946/1946429.png" alt="{{ bebe.babyName}}" class="rounded-circle">
+                    <img *ngIf="bebe?.foto" src="{{bebe.foto}}" alt="{{ bebe.babyName}}" class="rounded-circle">
                   </label>
-                  <div class="text-center">
-                    <h5 class="mt-1 mb-2 fw-bold">{{ bebe?.nome}}</h5>
-                    <input type="file" name="userPhoto" id="userPhoto" class="invisible" (input)="onFileSelected($event)">
+                  <h2 class="mt-3">{{bebe?.nome}}</h2>
+                  <input type="file" name="userPhoto" id="userPhoto" class="invisible" (input)="onFileSelected($event)">
                   </div>
-                  <ul class="list-unstyled">
-                    <li *ngFor="let vaccine of vacinas" (click)="toggleDetails(vaccine)">
+                <ul class="list-unstyled">
+                  <li *ngFor="let vaccine of vacinas" (click)="toggleDetails(vaccine)">
+                    <span class="vaccine-name">{{ vaccine.nome }}</span>
+                    <div class="vaccine-details" [ngClass]="{'show': vaccine.expanded}">
+                      <div class="d-flex justify-content-between ">
+                        <span class="vaccine-name">Idade recomendada:</span>
+                        <span *ngIf="vaccine.idadeNecessaria == 0" class="vaccine-date"> Ao nascer</span>
+                        <span *ngIf="vaccine.idadeNecessaria == 1" class="vaccine-date"> 1º Mês</span>
+                        <span *ngIf="vaccine.idadeNecessaria == 2" class="vaccine-date"> 2º Mês</span>
+                        <span *ngIf="vaccine.idadeNecessaria == 9" class="vaccine-date"> 9º Mês</span>
+                        <span *ngIf="vaccine.idadeNecessaria == 12" class="vaccine-date"> 1 Ano </span>
+                      </div>
+                      <div class="d-block">
+                        <a [href]="vaccine.link" target="_blank">
+                          <i class="fa-solid fa-file-pdf"></i>
+                          Informações</a>
+                      </div>
+                    </div>
+                  </li>
+                  <div *ngIf="vacinasBaby.length > 0">
+                    <li *ngFor="let vaccine of vacinasBaby" (click)="toggleDetails(vaccine)">
                       <span class="vaccine-name">{{ vaccine.nome }}</span>
                       <div class="vaccine-details" [ngClass]="{'show': vaccine.expanded}">
                         <div class="d-flex justify-content-between ">
@@ -92,7 +103,10 @@
                           <span *ngIf="vaccine.idadeNecessaria == 2" class="vaccine-date"> 2º Mês</span>
                           <span *ngIf="vaccine.idadeNecessaria == 9" class="vaccine-date"> 9º Mês</span>
                           <span *ngIf="vaccine.idadeNecessaria == 12" class="vaccine-date"> 1 Ano </span>
-                       </div>
+                          <span
+                            *ngIf="vaccine.idadeNecessaria > 2 && vaccine.idadeNecessaria !== 9 && vaccine.idadeNecessaria < 12"
+                            class="vaccine-date"> {{vaccine.idadeNecessaria}}º Mês</span>
+                        </div>
                         <div class="d-block">
                           <a [href]="vaccine.link" target="_blank">
                             <i class="fa-solid fa-file-pdf"></i>
@@ -100,17 +114,15 @@
                         </div>
                       </div>
                     </li>
-                  </ul>
-                </div>
+                  </div>
+                </ul>
               </div>
             </div>
           </div>
         </div>
-        <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}"></div>
-        <div class="d-lg-none d-fixed">
-          <app-bottom-navbar-gestante></app-bottom-navbar-gestante>
-        </div>
       </div>
+      <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}"></div>
     </div>
-  </main>
+</div>
+</main>
 </div>

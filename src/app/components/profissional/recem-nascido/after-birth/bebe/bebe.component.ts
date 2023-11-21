@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SidebarService } from 'src/app/components/sidebar/sidebar.service';
 import { ProfissionalService } from '../../../profissional.service';
 
@@ -13,10 +13,11 @@ export class BebeComponent implements OnInit{
   bebeId:number = 0;
   baby: any;
   vacinas: any;
+  vacinasBaby:any[] = [];
 
  
 
-  constructor(private sideBarService: SidebarService, private route: ActivatedRoute, private profissionalService: ProfissionalService) {
+  constructor(private sideBarService: SidebarService, private route: ActivatedRoute, private router: Router, private profissionalService: ProfissionalService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -29,13 +30,30 @@ export class BebeComponent implements OnInit{
     })
     this.getBaby();
     this.getVacinas();
+    this.getVaccinesBaby();
   }
 
   noSideBar(): void {
     if (this.sideBarService.isSideNavOpen()) {
       this.sideBarService.toggleSideNav();
     }
-   
+  }
+
+
+  newVaccine(){
+    this.router.navigate(['/new-vaccine'], { queryParams: { id: this.bebeId, name: this.baby.nome } });
+  }
+
+  getVaccinesBaby(){
+    this.profissionalService.getVaccinesBaby(this.bebeId).subscribe((response)=>{
+      const vacinasSet = new Set(response); 
+      this.vacinasBaby = Array.from(vacinasSet);
+      this.vacinas.sort((a: { idadeNecessaria: number; }, b: { idadeNecessaria: number; }) => a.idadeNecessaria - b.idadeNecessaria);
+    })
+  }
+
+  deleteVacina(vacinaId: number, link:string){
+    this.profissionalService.deleteVaccines(vacinaId, this.bebeId, link);
   }
 
   toggleDetails(vaccine: any): void {
@@ -45,7 +63,6 @@ export class BebeComponent implements OnInit{
   getBaby(){
     this.profissionalService.getOneBaby(this.bebeId).subscribe((response) =>{
       this.baby = response;
-      console.log(this.baby)
     } )
   }
 
@@ -54,7 +71,6 @@ export class BebeComponent implements OnInit{
         const vacinasSet = new Set(response); 
         this.vacinas = Array.from(vacinasSet);
         this.vacinas.sort((a: { idadeNecessaria: number; }, b: { idadeNecessaria: number; }) => a.idadeNecessaria - b.idadeNecessaria);
-        console.log(this.vacinas);
     });
 }
 

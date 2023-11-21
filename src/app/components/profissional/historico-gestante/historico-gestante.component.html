@@ -1,11 +1,6 @@
 <div class="container-fluid g-0 w-100 h-100">
-    <app-header-sidebar (sideNavToggled)="sideNavStatus = $event"></app-header-sidebar>
     <main class="container-fluid h-100">
       <div class="row">
-        <div class="col-lg-3 col-xl-2 d-none d-lg-block">
-          <app-sidebar [sideNavStatus]="sideNavStatus" class="bg-white shadow-lg h-100"
-            [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
-        </div>
         <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}" (click)="noSideBar()">
           <div class="row justify-content-center mb-5">
             <div class="col-md-8 mt-2 mb-5">
@@ -87,9 +82,6 @@
             </div>
           </div>
           <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}" (click)="noSideBar()"></div>
-          <div class="d-lg-none d-fixed mt-5">
-            <app-bottom-navigation></app-bottom-navigation>
-          </div>
         </div>
       </div>
     </main>
