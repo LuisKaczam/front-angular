@@ -56,6 +56,10 @@ export class InfosGestanteComponent implements OnInit {
       }
     }
   }
+
+  clickCloseNotification(){
+    this.pushService._updateIconNotification$.next();
+  }
   
   getPwaObj(){
     const key = localStorage.getItem('idUser');

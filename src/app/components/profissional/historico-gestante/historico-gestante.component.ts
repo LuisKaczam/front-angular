@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SidebarService } from '../../sidebar/sidebar.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfissionalService } from '../profissional.service';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-historico-gestante',
@@ -16,7 +17,7 @@ export class HistoricoGestanteComponent implements OnInit{
 
 
 
-  constructor(private sideBarService: SidebarService, private route: ActivatedRoute, private router: Router, private profissionalService: ProfissionalService) {
+  constructor(private sideBarService: SidebarService, private pushNotification: PushNotificationService, private route: ActivatedRoute, private router: Router, private profissionalService: ProfissionalService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -31,6 +32,10 @@ export class HistoricoGestanteComponent implements OnInit{
     this.getOneGestante();
 
     this.getConsultas();
+  }
+
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
   }
 
   newConsulta(): void {

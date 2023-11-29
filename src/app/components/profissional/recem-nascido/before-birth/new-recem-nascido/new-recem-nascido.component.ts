@@ -4,6 +4,7 @@ import { SidebarService } from 'src/app/components/sidebar/sidebar.service';
 import { ProfissionalService } from '../../../profissional.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Bebe } from 'src/app/entities/Bebe';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-new-recem-nascido',
@@ -17,7 +18,7 @@ export class NewRecemNascidoComponent {
   formBebe!:FormGroup;
 
 
-  constructor(private sideBarService: SidebarService, private service: ProfissionalService, private router: Router, private route: ActivatedRoute){
+  constructor(private sideBarService: SidebarService, private pushNotification: PushNotificationService, private service: ProfissionalService, private router: Router, private route: ActivatedRoute){
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -45,6 +46,10 @@ noWhitespaceValidator(): ValidatorFn {
       ? { whitespace: true }
       : null;
   };
+}
+
+clickCloseNotification(){
+  this.pushNotification._updateIconNotification$.next();
 }
 
 registerNewBaby(){

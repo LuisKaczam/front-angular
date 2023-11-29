@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProfissionalService } from '../profissional/profissional.service';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-bottom-navigation',
@@ -19,9 +20,13 @@ export class BottomNavigationComponent implements OnInit {
 ];
 
   
-  constructor(private router: Router, private service: ProfissionalService) {}
+  constructor(private router: Router, private service: ProfissionalService, private pushNotification: PushNotificationService) {}
   ngOnInit(): void {
     this.getProfissional()
+  }
+
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
   }
 
   navigateTo(item: any) {

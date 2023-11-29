@@ -19,7 +19,7 @@
             <span *ngIf="allNotifications.length == 0 " class="text-dark-emphasis"> Nenhuma notificação. </span>
             <ul class="list-unstyled" *ngFor="let notificacao of allNotifications" style="max-height: 400px;">
               <hr>
-              <a href="{{notificacao.linkProfissional}}"><li>{{notificacao.tituloProfissional}}</li>
+              <a style="text-decoration: none; color: inherit; cursor: pointer;" class="hoverNotification" href="{{notificacao.linkProfissional}}"><li>{{notificacao.tituloProfissional}}</li>
               <li>{{notificacao.descricaoProfissional}}</li></a>
               <hr>
             </ul>

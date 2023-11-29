@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Vacinas } from 'src/app/entities/Vacinas';
 import { FileHandle } from 'src/app/Files/FileHandle';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-new-vaccine',
@@ -25,7 +26,7 @@ export class NewVaccineComponent {
   errorVaccine:boolean = false;
 
 
-  constructor(private sideBarService: SidebarService, private service: ProfissionalService, private route: ActivatedRoute, private router: Router){
+  constructor(private sideBarService: SidebarService, private pushNotification: PushNotificationService,  private service: ProfissionalService, private route: ActivatedRoute, private router: Router){
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -48,6 +49,10 @@ export class NewVaccineComponent {
       this.service._errorVaccine.subscribe(()=>{
         this.errorVaccine = true;
       })
+  }
+
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
   }
 
 

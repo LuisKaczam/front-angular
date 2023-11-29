@@ -1,4 +1,4 @@
-<div class="container-fluid g-0 w-100 h-100">
+<div class="container-fluid g-0 w-100 h-100" (click)="clickCloseNotification()">
     <main class="container-fluid h-100">
       <div class="row">
         <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus} " (click)="noSideBar()">
@@ -7,7 +7,7 @@
               <div class="text-center  side-text">
                 <h2>Nova Publicação</h2>
               </div>
-              <form [formGroup]="newPostForm" (ngSubmit)="registerPost()">
+              <form [formGroup]="newPostForm" (ngSubmit)="registerPost()" #postForm="ngForm">
                 <div class="form-group mb-3">
                   <label for="type">Tipo de Post</label>
                   <select class="form-control form-select" id="type" formControlName="type">
@@ -15,17 +15,17 @@
                     <option value="video">Vídeo</option>
                     <option value="article">Artigo</option>
                   </select>
-                  <div *ngIf="type.invalid && (type.dirty || type.touched)" class="text-danger ms-1">
-                    <div *ngIf="type.errors?.['required']">Campo obrigatório.</div>
+                  <div *ngIf="newPostForm.get('type')?.invalid && (newPostForm.get('type')?.dirty || newPostForm.get('type')?.touched) || newPostForm.get('type')?.invalid && postForm.submitted" class="text-danger ms-1">
+                    <div *ngIf="newPostForm.get('type')?.hasError('required')">Campo obrigatório.</div>
                   </div>
                 </div>
                 <div class="form-group mb-3">
                   <label for="title">Título</label>
                   <input type="text" class="form-control futuristic-input" id="title" formControlName="title" placeholder="Título">
-                  <div *ngIf="title.invalid && (title.dirty || title.touched)" class="text-danger ms-1">
-                    <div *ngIf="title.errors?.['required']">Campo obrigatório.</div>
-                    <div *ngIf="title.errors?.['minlength']">O título deve possuir no mínimo 4 caracteres.</div>
-                    <div *ngIf="title.errors?.['maxlength']">O título deve possuir no máximo 40 caracteres.</div>
+                  <div *ngIf="newPostForm.get('title')?.invalid && (newPostForm.get('title')?.dirty || newPostForm.get('title')?.touched) || newPostForm.get('title')?.invalid && postForm.submitted" class="text-danger ms-1">
+                    <div *ngIf="newPostForm.get('title')?.hasError('required')">Campo obrigatório.</div>
+                    <div *ngIf="newPostForm.get('title')?.hasError('minlength')">O título deve possuir no mínimo 4 caracteres.</div>
+                    <div *ngIf="newPostForm.get('title')?.hasError('maxlength')">O título deve possuir no máximo 40 caracteres.</div>
                   </div>
                 </div>
                 <div class="form-group mb-3">
@@ -42,13 +42,13 @@
                           <span>Arquivo Selecionado: {{fileName}}</span>
                       </label>
                   </label>
-                  <div *ngIf="link.invalid && (link.dirty || link.touched)" class="text-danger ms-1">
-                    <div *ngIf="link.errors?.['required']">Campo obrigatório.</div>
-                    <div *ngIf="link.errors?.['imgError']">Formato de imagem inválido.</div>
+                  <div *ngIf="newPostForm.get('link')?.invalid && (newPostForm.get('link')?.dirty || newPostForm.get('link')?.touched) || newPostForm.get('link')?.invalid && postForm.submitted" class="text-danger ms-1">
+                    <div *ngIf="newPostForm.get('link')?.hasError('required')">Campo obrigatório.</div>
+                    <div  *ngIf="newPostForm.get('link')?.hasError('imgError')">Formato de imagem inválido.</div>
                   </div>
                 </div>
                 <div class="form-group text-end mb-5">
-                  <button type="submit" class="btn text-end" style="background-color: #00B2FF;; color: white">Salvar <i class="fa-regular fa-floppy-disk ms-2 me-2"></i></button>
+                  <button type="submit" class="btn text-end" style="background-color: #00B2FF; color: white">Salvar <i class="fa-regular fa-floppy-disk ms-2 me-2"></i></button>
                 </div>
               </form>
           </div>

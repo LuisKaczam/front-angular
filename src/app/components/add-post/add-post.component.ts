@@ -5,6 +5,7 @@ import { Post } from 'src/app/entities/Posts';
 import { ProfissionalService } from '../profissional/profissional.service';
 import { Profissional } from 'src/app/entities/Profissional';
 import { FileHandle } from 'src/app/Files/FileHandle';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-add-post',
@@ -23,7 +24,7 @@ export class AddPostComponent implements OnInit {
   profissional:any;
 
 
-  constructor(private sideBarService: SidebarService, private service: ProfissionalService){
+  constructor(private sideBarService: SidebarService, private service: ProfissionalService, private pushNotification: PushNotificationService){
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -47,29 +48,12 @@ export class AddPostComponent implements OnInit {
       })
      }
 
-     get type(){
-      return this.newPostForm.get('type')!;
-    }
-
-     get title(){
-      return this.newPostForm.get('title')!;
-    }
-
-    get author(){
-      return this.newPostForm.get('author')!;
-    }
-
-    get link(){
-      return this.newPostForm.get('link')!;
-    }
 
     fileDropped(fileHandle: FileHandle){
       this.files = fileHandle.file;
       this.fileName = this.files.name;
       this.imageType = this.files.type;
       this.fileSize = this.files.size;
-      console.log(this.imageType);
-      console.log(this.fileSize);
     }
 
     arquivoSelecionado(event: any) {
@@ -95,6 +79,8 @@ export class AddPostComponent implements OnInit {
         return;
       }
 
+      
+
       if(newPostForm.get('link')?.value == ''){
         newPostForm.get('link')?.setErrors({required: true});
         return;
@@ -112,6 +98,10 @@ export class AddPostComponent implements OnInit {
     if (this.sideBarService.isSideNavOpen()) {
       this.sideBarService.toggleSideNav();
     }
+  }
+
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
   }
 
 }

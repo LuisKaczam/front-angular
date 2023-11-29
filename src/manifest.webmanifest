@@ -2,7 +2,7 @@
   "name": "Sisgestante",
   "short_name": "Sisgestante",
   "theme_color": "#00B2FF",
-  "background_color": "#87e8ff",
+  "background_color": "#00B2FF",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",

@@ -1,4 +1,4 @@
-<div class="container-fluid g-0 w-100 h-100">
+<div class="container-fluid g-0 w-100 h-100" (click)="clickCloseNotification()">
   <main class="container-fluid h-100">
     <div class="row">
       <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
@@ -22,12 +22,12 @@
                   <li *ngFor="let day of week" class="day-name">{{ day | slice:0:3 }}</li>
                 </ol>
                 <ol class="days-of-month">
-                  <li class="item border"
-                      [style.gridColumnStart]="first ? day.indexWeek : 'auto'"
-                      *ngFor="let day of monthSelect; let first = first; let i = index"
-                      [ngClass]="{ 'eventDay': isEventDay(day.value) }" (click)="clickDay(day, dateSelect.getFullYear())" data-bs-toggle="modal" data-bs-target="#formCalendar">
-                    {{ day.value }}
-                  </li>
+                  <li class="item border"  (click)="clickDay(day, dateSelect.getFullYear())" (click)="clickDay(day, dateSelect.getFullYear())" data-bs-toggle="modal" data-bs-target="#formCalendar"
+                  [style.gridColumnStart]="first ? day.indexWeek : 'auto'"
+                  *ngFor="let day of monthSelect; let first = first; let i = index"
+                  [ngClass]="{ 'eventDay': isEventDay(day) }">
+                {{ day.value }}
+              </li>
                 </ol>
               </div>
           </div>
@@ -56,22 +56,24 @@
         <div class="text-center mt-2" *ngIf="calendarEvents.length == 0">
           <span>Nenhuma consulta agendada.</span>
         </div>
-        <ul class="list-unstyled" style="max-height: 400px; overflow-y: auto;" *ngFor="let calendar of calendarEvents">
-          <hr>
-          <li class="d-flex align-items-center mb-3">
-            <div class="event-icon">
-              <i class="fa fa-calendar"></i>
-            </div>
-            <div class="ms-3 shadow-sm">
-              <h5 class="mb-1">{{calendar.nomeEvento}}</h5>
-              <p class="mb-0">{{calendar.data  | date:'dd/MM/yyyy'}}</p>
-              <p class="mb-0">{{calendar.hora}}</p>
-              <p class="mb-0">{{calendar.descricao}}</p>
-              <p class="mb-0">{{calendar.gestante?.usuario.name}}</p>
-            </div>
-          </li>
-          <hr>
-        </ul>
+        <div style="max-height: 250px; overflow-y: auto;" class="shadow-sm">
+          <ul class="list-unstyled" *ngFor="let calendar of calendarEvents">
+            <hr>
+            <li class="d-flex align-items-center mb-3">
+              <div class="event-icon">
+                <i class="fa fa-calendar"></i>
+              </div>
+              <div class="ms-3">
+                <h5 class="mb-1">{{calendar.nomeEvento}}</h5>
+                <p class="mb-0">{{calendar.data  | date:'dd/MM/yyyy'}}</p>
+                <p class="mb-0">{{calendar.hora}}</p>
+                <p class="mb-0">{{calendar.descricao}}</p>
+                <p class="mb-0">{{calendar.gestante?.usuario.name}}</p>
+              </div>
+            </li>
+            <hr>
+          </ul>
+          </div>
       </div>
       </div>
       <div class="sidebar-overlay" [ngClass]="{'overlay-active': sideNavStatus}" (click)="noSideBar()"></div>
@@ -114,7 +116,7 @@
           </div>
           <div class="mb-3" *ngIf="gestantes.length > 0">
             <label for="calendarParticipant" class="form-label">Participante</label>
-            <select class="form-select wrapper" id="calendarParticipant" (change)=" getSelectedGestante($event)" formControlName="calendarParticipant">
+            <select class="form-select wrapper" id="calendarParticipant" (change)="getSelectedGestante($event)" formControlName="calendarParticipant">
               <option value="" disabled selected>Selecione uma gestante</option>
               <option *ngFor="let gestante of gestantes" [value]="gestante.usuario.id + ' ' + gestante.id">{{gestante?.usuario?.name}}</option>
             </select>            
@@ -199,7 +201,8 @@
                         <td>{{ date.data | date: 'dd/MM/yyyy'}}</td>
                         <td>{{ date.hora }}</td>
                         <td>{{ date.nomeEvento }}</td>
-                        <td>{{ date.gestante?.usuario.name }}</td>
+                        <td *ngIf="date.gestante !== null">{{ date.gestante?.usuario.name }}</td>
+                        <td *ngIf="date.gestante === null">--</td>
                         <td>{{ date.descricao }}</td>
                       </tr>
                 </tbody>

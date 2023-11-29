@@ -1,4 +1,4 @@
-<div class="container-fluid g-0 w-100 h-100">
+<div class="container-fluid g-0 w-100 h-100" (click)="clickCloseNotification()">
   <main class="container-fluid h-100">
     <div class="row">
         <div class="display-area mt-1 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
@@ -28,20 +28,28 @@
                   <div *ngIf="postVideos">
                     <div *ngFor="let video of postVideos" class="contact-item mb-3">
                       <div class="d-flex align-items-center">
-                        <img [src]="video.link" alt="User" class="user-avatar mt-2">
-                        <div class="contact-info">
-                          <h6 class="ms-2 mt-2 user-name">{{ video.titulo }}</h6>
-                        </div>
+                        <a href="{{ video.link }}" target="_blank" alt="User" class="d-flex">
+                          <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-circle-play mt-3 ms-2"></i>
+                            <div class="contact-info d-flex">
+                              <h6 class="ms-2 mt-2 user-name" style="margin-top: 2.5rem;">{{ video.titulo }}</h6>
+                            </div>
+                          </div>
+                        </a>                      
                       </div>
                     </div>
                   </div>
                   <div *ngIf="postArticles">
                     <div *ngFor="let article of postArticles" class="contact-item mb-3">
                       <div class="d-flex align-items-center">
-                        <img [src]="article.link" alt="User" class="user-avatar mt-2">
-                        <div class="contact-info">
-                          <h6 class="ms-2 mt-2 user-name">{{ article.titulo }}</h6>
-                        </div>
+                        <a href="{{ article.link }}" target="_blank" alt="User" class="d-flex">
+                          <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-file-lines mt-3 ms-2"></i>
+                            <div class="contact-info d-flex">
+                              <h6 class="ms-2  mt-2  user-name" style="margin-top: 2.5rem;">{{ article.titulo }}</h6>
+                            </div>
+                          </div>
+                        </a>      
                       </div>
                     </div>
                   </div>

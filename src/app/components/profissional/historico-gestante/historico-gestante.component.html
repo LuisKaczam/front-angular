@@ -1,4 +1,4 @@
-<div class="container-fluid g-0 w-100 h-100">
+<div class="container-fluid g-0 w-100 h-100" (click)="clickCloseNotification()">
     <main class="container-fluid h-100">
       <div class="row">
         <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}" (click)="noSideBar()">
@@ -30,8 +30,8 @@
                     <span><strong>Abortos:</strong> {{gestante.abortions}}</span>
                     </div>
                   </div>
-                  <div class="w-25 btn-edit" style="margin-top: -2.1rem;" (click)="navigateToUpdateGestante()">
-                    <span><i class="fa-solid fa-edit me-2"></i>Editar</span>
+                  <div class="w-25" style="margin-top: -2.1rem;">
+                    <span class="btn btn-primary btn-edit" (click)="navigateToUpdateGestante()"><i class="fa-solid fa-edit me-2"></i>Editar</span>
                   </div>
                 </div>
                 <hr>

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ValidatePasswordService } from 'src/app/validate-password.service';
 import { catchError } from 'rxjs';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-profile',
@@ -33,7 +34,7 @@ export class ProfileComponent implements OnInit{
 
   
 
-  constructor(private sideBarService: SidebarService, private service: ProfissionalService, private router: Router) {
+  constructor(private sideBarService: SidebarService, private pushNotification: PushNotificationService, private service: ProfissionalService, private router: Router) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -77,7 +78,6 @@ export class ProfileComponent implements OnInit{
     );
 
     document.getElementById('close')?.addEventListener('click', ()=>{
-      console.log("Aqui")
         this.inputEmail = new FormGroup({
           newEmail: new FormControl('', [Validators.required, Validators.email]),
           password: new FormControl('', [Validators.required])
@@ -177,6 +177,10 @@ export class ProfileComponent implements OnInit{
   
   }
 
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
+  }
+
   updatePhone(){
     const formUpdatePhone = this.inputPhone;
     const newPhone = formUpdatePhone.get('phone')!;
@@ -233,9 +237,10 @@ export class ProfileComponent implements OnInit{
     const formUpdatePassword = this.inputPassword;
     const newPassword = formUpdatePassword.get('newPassword')!;
     const oldPassword = this.profissional.usuario.password;
-    const confirm =formUpdatePassword.get('confirmPassword')!;
+    console.log("Aqui 1")
 
     if(formUpdatePassword.invalid){
+      console.log("Invailido")
       return;
     }else{
       this.service.updateProfissionalPassword(this.profissional.usuario.email, oldPassword, newPassword.value).pipe(
@@ -250,7 +255,7 @@ export class ProfileComponent implements OnInit{
         if(response){
           this.passwordSuccess = true;
           setTimeout(() => {
-            document.getElementById('closePassword')?.click();
+            window.location.reload()
           }, 5000);
         }
       })

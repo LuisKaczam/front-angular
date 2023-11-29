@@ -160,7 +160,7 @@
         </div>
       </div>      
       <div class="mb-3">
-        <label for="numberOfPregnancies" class="form-label">Número de Gestações</label>
+        <label for="numberOfPregnancies" class="form-label">Número de Gestações Anteriores</label>
         <input type="number" class="form-control" id="numberOfPregnancies" formControlName="numberOfPregnancies" name="numberOfPregnancies" placeholder="Digite número de gestações" required>
         <div *ngIf="formRegisterGestante.get('numberOfPregnancies')?.invalid && (formRegisterGestante.get('numberOfPregnancies')?.dirty || formRegisterGestante.get('numberOfPregnancies')?.touched) || formRegisterGestante.get('numberOfPregnancies')?.invalid && registerFormGestante.submitted" class="text-danger ms-1">
           <div *ngIf="formRegisterGestante.get('numberOfPregnancies')?.hasError('required')">Campo obrigatório.</div>

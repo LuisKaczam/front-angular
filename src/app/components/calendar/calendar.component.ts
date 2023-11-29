@@ -176,14 +176,14 @@ export class CalendarComponent implements OnInit {
       calendarDescription: new FormControl('', Validators.required),
     });
   }
-
+  clickCloseNotification(){
+    this.pushService._updateIconNotification$.next();
+  }
   getSelectedGestante(event: any) {
     const selectedValue = event.target.value;
     const values = selectedValue.split(' ');
     this.userId = parseInt(values[0]);
     this.gestanteId = parseInt(values[1]);
-    console.log(this.gestanteId);
-    console.log('user', this.userId);
   }
 
   registerDate() {

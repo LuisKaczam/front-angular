@@ -3,6 +3,7 @@ import { SidebarService } from '../sidebar/sidebar.service';
 import { ProfissionalService } from '../profissional/profissional.service';
 import { Router } from '@angular/router';
 import { Notificacoes } from 'src/app/entities/Notificacoes';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-header-sidebar',
@@ -18,9 +19,7 @@ export class HeaderSidebarComponent implements OnInit{
 
  
 
-  constructor(private sideBarService: SidebarService, 
-    private profissionalService: ProfissionalService,
-    private router: Router) {}
+  constructor(private sideBarService: SidebarService, private profissionalService: ProfissionalService, private pushNotification: PushNotificationService) {}
 
   ngOnInit(): void {
     this.getNotifications();
@@ -32,6 +31,10 @@ export class HeaderSidebarComponent implements OnInit{
     this.profissionalService._notification$.subscribe(() =>{
       this.getNotifications();
       this.getUnreadNotifications();
+    })
+
+    this.pushNotification._updateIconNotification$.subscribe(()=>{
+      this.closeNotificationsMenu();
     })
    
   }
@@ -48,6 +51,7 @@ export class HeaderSidebarComponent implements OnInit{
   closeNotificationsMenu() {
     this.isNotificationsOpen = false;
   }
+  
 
   getNotifications(){
     this.profissionalService.getAllNotifications().subscribe((response) =>{

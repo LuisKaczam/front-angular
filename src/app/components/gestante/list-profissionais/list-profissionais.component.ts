@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SidebarService } from '../../sidebar/sidebar.service';
 import { GestanteService } from '../gestante.service';
 import { Router } from '@angular/router';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-list-profissionais',
@@ -13,7 +14,7 @@ export class ListProfissionaisComponent {
   profissionaisArray: any;
 
 
-  constructor(private sideBarService: SidebarService, private service: GestanteService, private router:Router) {
+  constructor(private sideBarService: SidebarService, private service: GestanteService, private router:Router, private pushNotification: PushNotificationService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -30,6 +31,10 @@ export class ListProfissionaisComponent {
     if (this.sideBarService.isSideNavOpen()) {
       this.sideBarService.toggleSideNav();
     }
+  }
+
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
   }
 
   getProfissionais(){

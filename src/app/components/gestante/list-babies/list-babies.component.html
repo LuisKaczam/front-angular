@@ -1,7 +1,7 @@
-<div class="container-fluid g-0 w-100 h-100">
+<div class="container-fluid g-0 w-100 h-100" (click)="clickCloseNotification()">
   <main class="container-fluid h-100">
     <div class="row">
-      <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus} " (click)="noSideBar()">
+      <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}" (click)="noSideBar()">
         <div class="row justify-content-center" *ngIf="babiesArray">
           <div class="w-100 ms-auto">
             <div class="text-center mt-2" *ngIf="babiesArray.length == 0">

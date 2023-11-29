@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Gestante } from 'src/app/entities/Gestante';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError } from 'rxjs';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-new-consulta',
@@ -18,7 +19,7 @@ export class NewConsultaComponent implements OnInit{
   formConsulta!:FormGroup;
 
 
-  constructor(private sideBarService: SidebarService, private service: ProfissionalService, private router: Router, private route: ActivatedRoute){
+  constructor(private sideBarService: SidebarService, private pushNotification: PushNotificationService, private service: ProfissionalService, private router: Router, private route: ActivatedRoute){
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -38,6 +39,10 @@ ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.gestanteId = +params['id'];
     });
+}
+
+clickCloseNotification(){
+  this.pushNotification._updateIconNotification$.next();
 }
 
 registerNewConsulta(){

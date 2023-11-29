@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProfissionalService } from '../profissional/profissional.service';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -38,15 +39,19 @@ export class SidebarComponent implements OnInit {
     },
   ]
  avatar:string='';
- private profissional:any
+profissional:any
 
+
+
+  constructor(private router: Router, private service: ProfissionalService, private pushNotification:PushNotificationService){}
 
   ngOnInit(): void {
-      this.getProfissional();
-  }
+    this.getProfissional();
+}
 
-
-  constructor(private router: Router, private service: ProfissionalService){}
+clickCloseNotification(){
+  this.pushNotification._updateIconNotification$.next();
+}
 
   navigateToPage(route: string): void {
     this.router.navigateByUrl(route);

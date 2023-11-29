@@ -2,13 +2,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 import { getMessaging, getToken } from 'firebase/messaging';
-import { Observable } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { PwaObject } from './entities/PwaObject';
 
 @Injectable()
 export class PushNotificationService {
   private baseUrl = 'https://sisgestante-deploy-tb0m.onrender.com';
-  private  vpaidKey ='BKeh0REEDpBSbAoiWhwlbojA0VF-Y3Fs8B1QkOALGqr6IsUYZ4UCuZhTs9PnQdSD01e_FwgpN99ufPjrLVxlBlM'
+  private  vpaidKey ='BKeh0REEDpBSbAoiWhwlbojA0VF-Y3Fs8B1QkOALGqr6IsUYZ4UCuZhTs9PnQdSD01e_FwgpN99ufPjrLVxlBlM';
+  _notification$ = new Subject<void>();
+  _updateIconNotification$ = new Subject<void>();
 
   constructor(private fireMsg: AngularFireMessaging, private http: HttpClient) {}
 
@@ -46,7 +48,11 @@ export class PushNotificationService {
   
 
   receiveNotification(){
-    this.fireMsg.messages.subscribe((payload)=>{
+    this.fireMsg.messages.pipe(
+      tap(() => {
+        this._notification$.next();
+      })
+    ).subscribe((payload)=>{
       this.showNotification(payload);
     })
   }

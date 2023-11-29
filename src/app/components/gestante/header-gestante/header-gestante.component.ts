@@ -5,6 +5,7 @@ import { ProfissionalService } from '../../profissional/profissional.service';
 import { Router } from '@angular/router';
 import { GestanteService } from '../gestante.service';
 import { Subscription } from 'rxjs';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-header-gestante',
@@ -18,18 +19,18 @@ export class HeaderGestanteComponent implements OnInit{
   notificationsSub!: Subscription
   unread:any[] = [];
   numberOfNotifications: number = 0;
+  
 
  
 
   constructor(private sideBarService: SidebarService, 
     private gestanteService: GestanteService,
-    private profissionalService: ProfissionalService,
-    private router: Router) {}
+    private pushNotification: PushNotificationService) {}
 
   ngOnInit(): void {
     this.getNotifications();
     this.getUnreadNotifications();
-    this.notificationsSub = this.profissionalService._notificationGestante$.subscribe(() =>{
+    this.pushNotification._notification$.subscribe(() =>{
       this.getNotifications();
       this.getUnreadNotifications();
     })
@@ -38,7 +39,9 @@ export class HeaderGestanteComponent implements OnInit{
       this.getNotifications();
       this.getUnreadNotifications();
     })
-   
+    this.pushNotification._updateIconNotification$.subscribe(()=>{
+      this.closeNotificationsMenu();
+    })
   }
 
   toggleNotificationsMenu() {

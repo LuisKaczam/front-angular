@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ProfissionalService } from '../../profissional/profissional.service';
 import { catchError } from 'rxjs';
 import { SendEmail } from 'src/app/entities/recoveryPassword';
-import { GestanteService } from '../gestante.service';
-import { SwPush } from '@angular/service-worker';
 import { PushNotificationService } from 'src/app/push-notification.service';
+import { ProfissionalService } from '../../profissional/profissional.service';
+import { GestanteService } from '../gestante.service';
 
 @Component({
   selector: 'app-login-gestante',
@@ -20,7 +19,7 @@ export class LoginGestanteComponent {
   errorEmail:boolean = false;
   confirmEmail:boolean = false;
 
-  constructor(private router: Router, private service: ProfissionalService, private gestanteService:GestanteService, private swPush: SwPush, private pushService: PushNotificationService){}
+  constructor(private router: Router, private service: ProfissionalService, private gestanteService:GestanteService, private pushService: PushNotificationService){}
 
 
   ngOnInit(): void {
@@ -51,7 +50,10 @@ export class LoginGestanteComponent {
       document.body.classList.remove('modal-open');
 
   }
-  
+  }
+
+  clickCloseNotification(){
+    this.pushService._updateIconNotification$.next();
   }
 
   generateRandomPassword(): string {

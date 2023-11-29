@@ -1,4 +1,4 @@
-<div class="container-fluid g-0 w-100 h-100">
+<div class="container-fluid g-0 w-100 h-100" (click)="clickCloseNotification()">
   <main class="container-fluid h-100">
     <div class="row">
       <div class="display-area mt-3 p-4 w-100 h-100" [ngClass]="{'display-area-shrink': sideNavStatus}"
@@ -19,14 +19,16 @@
             <div class="card rounded-lg mx-auto shadow-sm">
               <div class="card-body text-center">
                 <div class="contacts-list">
-                  <div *ngIf="postVideos">
+                  <div *ngIf="postVideos.length > 0">
                     <div *ngFor="let video of postVideos" class="contact-item mb-3">
-                      <div class="d-flex align-items-center">
-                        <img [src]="video.link" alt="User" class="user-avatar mt-2">
-                        <div class="contact-info">
-                          <h6 class="ms-2 mt-2 user-name">{{ video.titulo }}</h6>
+                      <a href="{{ video.link }}" target="_blank" alt="User" class="d-flex">
+                        <div class="d-flex align-items-center">
+                          <i class="fa-solid fa-circle-play mt-3 ms-2"></i>
+                          <div class="contact-info d-flex">
+                            <h6 class="ms-2 mt-2 user-name" style="margin-top: 2.5rem;">{{ video.titulo }}</h6>
+                          </div>
                         </div>
-                      </div>
+                      </a>                      
                       <div class="d-flex justify-content-end">
                         <span class="mr-3">
                           <a title="Compartilhar" (click)="onModalOpen(video)" data-bs-toggle="modal"
@@ -36,7 +38,7 @@
                           </a>
                         </span>
                         <span class="ms-4 btn btn-danger">
-                          <a title="Deletar" (click)="deleteVideo(video.id, video.link, video.titulo)">
+                          <a href="#" title="Deletar" (click)="onModalDeleteOpen(video.id, video.link, video.titulo, $event)" data-bs-toggle="modal" data-bs-target="#deleteModal">
                             <i class="fa-solid fa-trash-can"></i>
                             Deletar
                           </a>
@@ -44,24 +46,26 @@
                       </div>
                     </div>
                   </div>
-                  <div *ngIf="postArticles">
+                  <div *ngIf="postArticles.length > 0">
                     <div *ngFor="let article of postArticles" class="contact-item mb-3">
-                      <div class="d-flex align-items-center">
-                        <img [src]="article.link" alt="User" class="user-avatar mt-2">
-                        <div class="contact-info">
-                          <h6 class="ms-2 mt-2 user-name">{{ article.titulo }}</h6>
+                      <a href="{{ article.link }}" target="_blank" alt="User" class="d-flex">
+                        <div class="d-flex align-items-center">
+                          <i class="fa-solid fa-file-lines mt-3 ms-2"></i>
+                          <div class="contact-info d-flex">
+                            <h6 class="ms-2  mt-2  user-name" style="margin-top: 2.5rem;">{{ article.titulo }}</h6>
+                          </div>
                         </div>
-                      </div>
+                      </a>      
                       <div class="d-flex justify-content-end">
                         <span class="mr-3">
-                          <a title="Editar" (click)="onModalOpen(article)" data-bs-toggle="modal"
+                          <a title="Compartilhar" (click)="onModalOpen(article)" data-bs-toggle="modal"
                             data-bs-target="#formPosts">
                             <i class="fa-solid fa-share-nodes"></i>
                             Compartilhar
                           </a>
                         </span>
-                        <span class="ms-4">
-                          <a title="Deletar" (click)="deleteArticle(article.id, article.link, article.titulo)">
+                        <span class="ms-4 btn btn-danger">
+                          <a href="#" title="Deletar" (click)="onModalDeleteArticleOpen(article.id, article.link, article.titulo, $event)" data-bs-toggle="modal" data-bs-target="#deleteAricleModal">
                             <i class="fa-solid fa-trash-can"></i>
                             Deletar
                           </a>
@@ -146,3 +150,40 @@
   </div>
 </div>
 
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="deleteModalLabel">Deletar Publicação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Tem certeza que deseja deletar {{deleteName}}?</p>
+                <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal" aria-label="Close"
+                (click)="deleteVideo()" id="deleteBtn">Sim</button>
+                <button type="button" class="btn btn-primary" style="color: white"
+                    data-bs-dismiss="modal" aria-label="Close">Não</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteAricleModal" tabindex="-1" aria-labelledby="deleteArticleModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100" id="deleteModalLabel">Deletar Publicação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Tem certeza que deseja deletar {{deleteName}}?</p>
+                <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal" aria-label="Close"
+                (click)="deleteArticle()" id="deleteBtn">Sim</button>
+                <button type="button" class="btn btn-primary" style="color: white"
+                    data-bs-dismiss="modal" aria-label="Close">Não</button>
+            </div>
+        </div>
+    </div>
+</div>

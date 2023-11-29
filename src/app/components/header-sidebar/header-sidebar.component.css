@@ -21,6 +21,10 @@
     font-size: 0.6rem;
   }
 
+  .hoverNotification:hover{
+    background-color: rgba(222, 222, 222, 0.255);
+  }
+
   .notifications-wrapper {
     overflow:auto;
      max-height:250px;

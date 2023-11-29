@@ -18,7 +18,7 @@
             <div class="card-body" style="max-height: 350px;">
               <span *ngIf="allNotifications.length == 0" class="text-dark-emphasis"> Nenhuma notificação. </span>
               <ul class="list-unstyled" *ngFor="let notificacao of allNotifications" style="max-height: 400px;">
-                <a href="{{notificacao.linkGestante}}"><li>{{notificacao.tituloGestante}}</li>
+                <a style="text-decoration: none; color: inherit; cursor: pointer;" class="hoverNotification" href="{{notificacao.linkGestante}}"><li>{{notificacao.tituloGestante}}</li>
                 <li>{{notificacao.descricaoGestante}}</li></a>
                 <hr>
               </ul>

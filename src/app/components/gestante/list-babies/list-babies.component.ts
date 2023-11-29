@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SidebarService } from '../../sidebar/sidebar.service';
 import { GestanteService } from '../gestante.service';
 import { Router } from '@angular/router';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-list-babies',
@@ -13,7 +14,7 @@ export class ListBabiesComponent implements OnInit{
   babiesArray: any;
 
 
-  constructor(private sideBarService: SidebarService, private service: GestanteService, private router:Router) {
+  constructor(private sideBarService: SidebarService, private pushNotification: PushNotificationService, private service: GestanteService, private router:Router) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -24,6 +25,10 @@ export class ListBabiesComponent implements OnInit{
   ngOnInit(): void {
       this.noSideBar();
       this.getBabies()
+  }
+
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
   }
 
   noSideBar(): void {

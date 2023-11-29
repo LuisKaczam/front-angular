@@ -5,6 +5,7 @@ import { SidebarService } from '../../sidebar/sidebar.service';
 import { ProfissionalService } from '../profissional.service';
 import { Gestante } from 'src/app/entities/Gestante';
 import { catchError } from 'rxjs';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-form-edit-gestante',
@@ -36,7 +37,7 @@ export class FormEditGestanteComponent implements OnInit {
    
   }
 
-  constructor(private router: Router, private route:ActivatedRoute, private sideBarService: SidebarService, private serviceProfissional: ProfissionalService) {
+  constructor(private router: Router, private pushNotification: PushNotificationService, private route:ActivatedRoute, private sideBarService: SidebarService, private serviceProfissional: ProfissionalService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -93,7 +94,9 @@ getGestante(){
    })).subscribe(()=>{
     this.router.navigate(['/historico-gestante'], { queryParams: { id: this.gestanteId }});
    })
+  }
 
-
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
   }
 }

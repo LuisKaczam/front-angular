@@ -13,11 +13,8 @@ export class AppComponent implements OnInit, AfterContentInit {
   sideNavStatus = false;
   userRole!: string;
 
-  constructor(
-    private pushService: PushNotificationService,
-    private router: Router,
-    private sideBarService: SidebarService
-  ) {
+  constructor(private pushService: PushNotificationService, private router: Router, 
+    private sideBarService: SidebarService, private pushNotification: PushNotificationService) {
     this.sideBarService.getSideNavStatus().subscribe((status) => {
       this.sideNavStatus = status;
     });
@@ -44,6 +41,8 @@ export class AppComponent implements OnInit, AfterContentInit {
       this.pushService.notificationSub();
     }
   }
+
+ 
 
   noSideBar(): void {
     if (this.sideBarService.isSideNavOpen()) {

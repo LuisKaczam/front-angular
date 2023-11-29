@@ -7,6 +7,10 @@
     border-radius: 15%;
   }
 
+  .hoverNotification:hover{
+    background-color: rgba(222, 222, 222, 0.255);
+  }
+
   .notification-badge {
     position: absolute;
     top: -5px;

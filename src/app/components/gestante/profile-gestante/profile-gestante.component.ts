@@ -6,6 +6,7 @@ import { SidebarService } from '../../sidebar/sidebar.service';
 import { GestanteService } from '../gestante.service';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-profile-gestante',
@@ -32,7 +33,7 @@ export class ProfileGestanteComponent {
 
   
 
-  constructor(private sideBarService: SidebarService, private service: GestanteService, private router: Router) {
+  constructor(private sideBarService: SidebarService, private pushNotification: PushNotificationService, private service: GestanteService, private router: Router) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -195,10 +196,12 @@ export class ProfileGestanteComponent {
 
   updatePassword(){
     const formUpdatePassword = this.inputPassword;
-    const newPassword = formUpdatePassword.get('nassword')!;
+    const newPassword = formUpdatePassword.get('newPassword')!;
     const oldPassword = this.gestante.usuario.password;
+    console.log("Aqui 1")
 
     if(formUpdatePassword.invalid){
+      console.log("Invailido")
       return;
     }else{
       this.service.updateGestantePassword(this.gestante.usuario.email, oldPassword, newPassword.value).pipe(
@@ -213,7 +216,7 @@ export class ProfileGestanteComponent {
         if(response){
           this.passwordSuccess = true;
           setTimeout(() => {
-            document.getElementById('closePassword')?.click();
+            window.location.reload()
           }, 5000);
         }
       })
@@ -255,6 +258,10 @@ export class ProfileGestanteComponent {
         }
       }))
     }
+  }
+
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
   }
 
   updatePhone(){

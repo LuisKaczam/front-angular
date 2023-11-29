@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SidebarService } from 'src/app/components/sidebar/sidebar.service';
 import { ProfissionalService } from '../../../profissional.service';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-bebe',
@@ -17,7 +18,7 @@ export class BebeComponent implements OnInit{
 
  
 
-  constructor(private sideBarService: SidebarService, private route: ActivatedRoute, private router: Router, private profissionalService: ProfissionalService) {
+  constructor(private sideBarService: SidebarService, private pushNotification: PushNotificationService, private route: ActivatedRoute, private router: Router, private profissionalService: ProfissionalService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -33,12 +34,15 @@ export class BebeComponent implements OnInit{
     this.getVaccinesBaby();
   }
 
+  
   noSideBar(): void {
     if (this.sideBarService.isSideNavOpen()) {
       this.sideBarService.toggleSideNav();
     }
   }
-
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
+  }
 
   newVaccine(){
     this.router.navigate(['/new-vaccine'], { queryParams: { id: this.bebeId, name: this.baby.nome } });

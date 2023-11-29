@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SidebarService } from '../../sidebar/sidebar.service';
 import { GestanteService } from '../gestante.service';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-infos-profissional',
@@ -19,7 +20,7 @@ export class InfosProfissionalComponent {
   
 
 
-  constructor(private router: Router, private sideBarService: SidebarService, private service: GestanteService, private route: ActivatedRoute) {
+  constructor(private router: Router, private sideBarService: SidebarService, private service: GestanteService, private route: ActivatedRoute, private pushNotification: PushNotificationService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -33,6 +34,10 @@ export class InfosProfissionalComponent {
     this.getArticles();
     this.getVideos();
     
+  }
+
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
   }
 
   getProfissional(){

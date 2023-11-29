@@ -4,6 +4,7 @@ import { SidebarService } from '../../sidebar/sidebar.service';
 import { GestanteService } from '../gestante.service';
 import { Bebe } from 'src/app/entities/Bebe';
 import { Vacinas } from 'src/app/entities/Vacinas';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-infos-recem-nascido',
@@ -25,7 +26,7 @@ export class InfosRecemNascidoComponent  implements OnInit{
  
 
 
-  constructor(private router: Router, private route: ActivatedRoute, private sideBarService: SidebarService, private service: GestanteService) {
+  constructor(private router: Router, private pushNotification: PushNotificationService, private route: ActivatedRoute, private sideBarService: SidebarService, private service: GestanteService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -48,6 +49,10 @@ export class InfosRecemNascidoComponent  implements OnInit{
     }
   }
 
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
+  }
+
   toggleDetails(consulta: any): void {
     consulta.expanded = !consulta.expanded;
   }
@@ -66,6 +71,8 @@ export class InfosRecemNascidoComponent  implements OnInit{
         console.log(this.vacinas);
     });
 }
+
+
 
 getVacinasBaby(){
   this.service.getVaccinesBaby(this.bebeId).subscribe((response)=>{

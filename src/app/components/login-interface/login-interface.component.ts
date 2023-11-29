@@ -42,6 +42,10 @@ export class LoginInterfaceComponent implements OnInit {
     this.passwordModal = true;
   }
 
+  clickCloseNotification(){
+    this.pushService._updateIconNotification$.next();
+  }
+  
   onModalClose() {
     const modal = document.getElementById('passwordModal');
     this.confirmEmail = false;
@@ -184,7 +188,7 @@ export class LoginInterfaceComponent implements OnInit {
             this.router.navigate(['/home']);
           }
         }            
-        
       );
   }
+  
   }

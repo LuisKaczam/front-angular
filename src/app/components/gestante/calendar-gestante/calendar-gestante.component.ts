@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SidebarService } from '../../sidebar/sidebar.service';
 import { GestanteService } from '../gestante.service';
 import { formatDate } from '@angular/common';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-calendar-gestante',
@@ -20,7 +21,7 @@ export class CalendarGestanteComponent {
   choosed: boolean = false;
 
 
-  constructor(private sideBarService: SidebarService, private service: GestanteService) {
+  constructor(private sideBarService: SidebarService, private service: GestanteService, private pushNotification: PushNotificationService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -35,10 +36,11 @@ export class CalendarGestanteComponent {
   ngOnInit(): void {
     this.noSideBar();
     this.getDaysFromDate(this.dateSelect.getMonth() + 1, this.dateSelect.getFullYear() );
-    this.listCalendario();
+    this.listCalendario();   
+  }
 
-
-   
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
   }
 
  

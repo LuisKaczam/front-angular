@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SidebarService } from 'src/app/components/sidebar/sidebar.service';
 import { ProfissionalService } from '../../../profissional.service';
 import { ModalService } from 'src/app/components/modals/modal.service';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-list-recem-nascido',
@@ -18,7 +19,7 @@ export class ListRecemNascidoComponent {
   gestanteId:number = 0;
 
 
-  constructor(private router: Router, private route: ActivatedRoute, private sideBarService: SidebarService, private serviceProfissional: ProfissionalService, private modalService: ModalService) {
+  constructor(private router: Router, private route: ActivatedRoute, private pushNotification: PushNotificationService, private sideBarService: SidebarService, private serviceProfissional: ProfissionalService, private modalService: ModalService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -45,6 +46,9 @@ infosBaby(babyId:number){
   this.router.navigate(['/infos-recem-nascido'], { queryParams: { id: babyId }}); 
 }
  
+clickCloseNotification(){
+  this.pushNotification._updateIconNotification$.next();
+}
 
   noSideBar(): void {
     if (this.sideBarService.isSideNavOpen()) {

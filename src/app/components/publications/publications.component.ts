@@ -25,7 +25,12 @@ export class PublicationsComponent implements OnInit {
   gestantesSelecionadas: any[] = [];
   isRegisterGestante: boolean = false;
   selectAllChecked: boolean = false;
-  post = new Post();
+  post:any;
+  deleteModalArticle:boolean = false;
+  deleteModalVideo:boolean = false;
+  deleteName!: string;
+  key!:number;
+  deleteFile!:string
 
   constructor(
     private sideBarService: SidebarService,
@@ -41,16 +46,31 @@ export class PublicationsComponent implements OnInit {
     this.getArticles();
     this.getVideos();
     this.getGestantes();
-    this.subscription = this.service._refresh$.subscribe(() => {
+    this.service._refresh$.subscribe(() => {
       this.getArticles();
       this.getVideos();
     });
   }
 
-  deleteVideo(id: number, file: string, postName: string) {
-    if (confirm('Deseja realmente deletar: ' + postName)) {
-      this.service.deleteVideos(id, file);
-    }
+  onModalDeleteOpen(id: number, file: string, postName: string, event:any) {
+    event.stopPropagation();
+    this.key = id;
+    this.deleteName = postName;
+    this.deleteModalVideo = true;
+    this.deleteFile = file;
+  }
+
+  onModalDeleteArticleOpen(id: number, file: string, postName: string, event:any) {
+    event.stopPropagation();
+    this.key = id;
+    this.deleteName = postName;
+    this.deleteModalArticle = true;
+    this.deleteFile = file;
+  }
+
+  deleteVideo() {
+      this.service.deleteVideos(this.key, this.deleteFile);
+    
   }
 
   getGestantes() {
@@ -59,11 +79,10 @@ export class PublicationsComponent implements OnInit {
     });
   }
 
-  deleteArticle(id: number, file: string, postName: string) {
-    if (confirm('Deseja realmente deletar: ' + postName)) {
-      this.service.deleteArticles(id, file);
-    }
-  }
+  deleteArticle() {
+    this.service.deleteArticles(this.key, this.deleteFile);
+  
+}
 
   searchGestantes() {
     if(this.gestantes.length > 0 ){
@@ -86,7 +105,7 @@ export class PublicationsComponent implements OnInit {
     }
   }
 
-  onModalOpen(post: Post) {
+  onModalOpen(post: any) {
     this.isRegisterGestante = true;
     this.post = post;
   }
@@ -109,56 +128,43 @@ export class PublicationsComponent implements OnInit {
     for (let index = 0; index < numGestantes; index++) {
       const gestante = this.gestantesSelecionadas[index];
   
-      this.service.sharePost(this.post, gestante.id)
-        .subscribe(() => {
-          const notificacao = new Notificacoes();
-          notificacao.descricaoProfissional = `Você compartilhou uma postagem com ${gestante.usuario.name}`;
-          notificacao.tipoProfissional = "Postagem";
-          notificacao.tituloProfissional = "Nova postagem";
-          notificacao.tipoGestante = "Evento";
-          notificacao.tituloGestante = "Nova Postagem";
-          notificacao.descricaoGestante = "Nova Postagem";
-          notificacao.lidaGestante = false;
-          notificacao.lidaProfissional = false;
-          notificacao.linkGestante = 'https://sisgestante-d38c4.web.app/infos-meu-profissional?id=' + profissionalId;
-          notificacao.linkProfissional = 'https://sisgestante-d38c4.web.app/publicacoes';
+      this.service.sharePost(this.post, gestante.id).subscribe(() => {
+        const notificacao = new Notificacoes();
+        notificacao.descricaoProfissional = `compartilhado com ${gestante.usuario.name}`;
+        notificacao.tipoProfissional = "Postagem";
+        notificacao.tituloProfissional = `Novo Post ${this.post.titulo}`;
+        notificacao.tipoGestante = "Po";
+        notificacao.tituloGestante = `Novo Post ${this.post.titulo}`;
+        notificacao.descricaoGestante = "Nova Postagem";
+        notificacao.lidaGestante = false;
+        notificacao.lidaProfissional = false;
+        notificacao.linkGestante = 'https://sisgestante-d38c4.web.app/infos-meu-profissional?id=' + profissionalId;
+        notificacao.linkProfissional = 'https://sisgestante-d38c4.web.app/publicacoes';
   
-          this.service.newNotification(notificacao, gestante.id)
-            .subscribe(() => {
-              this.pushService.getPwaObject(gestante.usuario.id)
-              .subscribe(async (response) => {
-                const pwaObject = response;
-                if (pwaObject) {
-                  for (let i = 0; i < pwaObject.length; i++) {
-                    console.log(pwaObject);
-
-                    this.service
-                      .sendPushNotification(
-                        notificacao.tituloGestante,
-                        notificacao.descricaoGestante,
-                        pwaObject[i]
-                      )
-                      .pipe(
-                        catchError((error) => {
-                          console.error(
-                            'Falha ao enviar notificação push',
-                            error
-                          );
-                          return [];
-                        })
-                      )
-                      .subscribe(() => {
-                        window.location.reload();
-                      });
-                  }
-                } else {
-                 window.location.reload();
-                }
-              });
-            });
+        this.service.newNotification(notificacao, gestante.id).subscribe(() => {
+          this.pushService.getPwaObject(gestante.usuario.id).subscribe(async (response) => {
+            const pwaObject = response;
+            if (pwaObject) {
+              for (let i = 0; i < pwaObject.length; i++) {
+                this.service
+                  .sendPushNotification(
+                    notificacao.tituloGestante,
+                    notificacao.descricaoGestante,
+                    pwaObject[i]
+                  )
+                  .subscribe(() => {
+                    window.location.reload();
+                  });
+              }
+            } else {
+              window.location.reload();
+            }
+          });
         });
+      });
     }
   }
+  
   
   
   
@@ -167,12 +173,14 @@ export class PublicationsComponent implements OnInit {
   getVideos() {
     this.service.listVideos().subscribe((response) => {
       this.postVideos = response;
+      console.log(this.postVideos)
     });
   }
 
   getArticles() {
     this.service.listArticles().subscribe((response) => {
       this.postArticles = response;
+      console.log(this.postArticles)
     });
   }
 
@@ -224,5 +232,8 @@ export class PublicationsComponent implements OnInit {
     console.log(this.gestantesSelecionadas)
   }
   
-  
+  clickCloseNotification(){
+    this.pushService._updateIconNotification$.next();
+  }
+
 }

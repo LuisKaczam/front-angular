@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GestanteService } from '../gestante.service';
+import { PushNotificationService } from 'src/app/push-notification.service';
 
 @Component({
   selector: 'app-bottom-navbar-gestante',
@@ -14,11 +15,15 @@ export class BottomNavbarGestanteComponent implements OnInit {
   hasBaby: boolean = false;
   list: any[] = [];
 
-  constructor(private router: Router, private service: GestanteService) {}
+  constructor(private router: Router, private pushNotification: PushNotificationService, private service: GestanteService) {}
 
   ngOnInit(): void {
     this.getGestante();
     this.getBabies();
+  }
+
+  clickCloseNotification(){
+    this.pushNotification._updateIconNotification$.next();
   }
 
   getBabies() {
