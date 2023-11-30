@@ -44,7 +44,6 @@
     color: #00B2FF;
   }
   
-  /* Hide the original sidebar on small screens */
   @media (max-width: 767px) {
     app-sidebar {
       display: none;

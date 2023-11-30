@@ -92,7 +92,6 @@ export class LoginInterfaceComponent implements OnInit {
         else {
           console.error('Erro ao alterar senha: :', errorResponse);
         }
-        console.log(errorResponse);
       return [];
     })
     
@@ -114,7 +113,6 @@ export class LoginInterfaceComponent implements OnInit {
             else {
               console.error('Erro ao enviar e-mail: ', errorResponse);
             }
-            console.log(errorResponse);
           return [];
         })
         

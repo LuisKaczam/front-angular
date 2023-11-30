@@ -388,7 +388,6 @@ export class GestanteService {
       Authorization: 'Bearer ' + token,
     });
     const user = { email, password, newPassword };
-    console.log("Aqui 2")
     const url = `${this.baseUrl}/gestantes/update-gestante-password`;
     return this.http.put(url, user, { headers: headers });
   }

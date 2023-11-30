@@ -198,15 +198,13 @@ export class ProfileGestanteComponent {
     const formUpdatePassword = this.inputPassword;
     const newPassword = formUpdatePassword.get('newPassword')!;
     const oldPassword = this.gestante.usuario.password;
-    console.log("Aqui 1")
 
     if(formUpdatePassword.invalid){
-      console.log("Invailido")
       return;
     }else{
       this.service.updateGestantePassword(this.gestante.usuario.email, oldPassword, newPassword.value).pipe(
         catchError((error)=>{
-          console.log(error);
+          console.error("Falha ao atualizar senha: ", error);
         if(error){
           this.passwordError = true;
         }
@@ -280,7 +278,7 @@ export class ProfileGestanteComponent {
       updateGestante.phone = newPhone.value;
       this.service.updateGestante(updateGestante, this.gestante.usuario.id).pipe(
         catchError((error)=>{
-          console.log(error);
+          console.error("Falha ao atualizar usuario: ", error);
         if(error){
           this.phoneError = true;
         }

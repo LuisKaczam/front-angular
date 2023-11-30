@@ -60,7 +60,6 @@ export class HeaderGestanteComponent implements OnInit{
   getNotifications(){
     this.gestanteService.getAllNotifications().subscribe((response) =>{
       this.allNotifications = response
-      console.log(this.allNotifications);
       
     });
     
@@ -83,7 +82,6 @@ export class HeaderGestanteComponent implements OnInit{
         updateNotifications.tituloGestante = this.allNotifications[i].tituloGestante;
         updateNotifications.lidaGestante = true;
         this.gestanteService.updateNotifications(this.allNotifications[i].id, updateNotifications).subscribe((response)=>{
-          console.log("update");
         })
     }
     }

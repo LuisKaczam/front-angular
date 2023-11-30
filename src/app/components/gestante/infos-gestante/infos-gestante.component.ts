@@ -67,7 +67,6 @@ export class InfosGestanteComponent implements OnInit {
     if(id != 0){
       this.pushService.getPwaObject(id).subscribe((response)=>{
         this.pwaObj = response;
-        console.log(this.pwaObj);
       })
     }
    
@@ -93,7 +92,6 @@ export class InfosGestanteComponent implements OnInit {
     this.service.getGestante().subscribe((response) => {
       this.infosGestante = response;
       const dum = new Date(this.infosGestante.gestanteDum);
-      console.log(this.infosGestante)
       dum.setDate(dum.getDate() + 7);
       dum.setMonth(dum.getMonth() - 3);
       this.dum = dum;
@@ -103,7 +101,6 @@ export class InfosGestanteComponent implements OnInit {
   getConsultas(){
     this.service.getConsultas().subscribe((response)=>{
       this.consultas = response;
-      console.log(this.consultas)
     })
   }
 

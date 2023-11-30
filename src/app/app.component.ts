@@ -57,7 +57,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     const bottomProfissional = document.getElementById('bottom-profissional');
     const role = localStorage.getItem('role');
 
-    if (this.router.url === '/login-gestante' ||this.router.url === '/' ||this.router.url === '/login-profissional' ||this.router.url === '/register' ||this.router.url === '' ||this.router.url === '/not-found') {
+    if (this.router.url === '/login-gestante' ||this.router.url === '/' ||this.router.url === '/login-profissional' ||this.router.url === '/register' ||this.router.url === '') {
       headerGestante?.classList.add('d-none');
       headerProfissional?.classList.add('d-none');
       bottomGestante?.classList.add('d-none');
@@ -65,7 +65,6 @@ export class AppComponent implements OnInit, AfterContentInit {
     } else {
       if (role) {
         this.userRole = role;
-        console.log("Role ", this.userRole)
         if (role === 'GESTANTE') {
           headerProfissional?.classList.add('d-none');
           bottomProfissional?.classList.add('d-none');

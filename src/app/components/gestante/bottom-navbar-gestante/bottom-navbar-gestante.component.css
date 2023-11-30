@@ -44,9 +44,8 @@
     color: #00B2FF;
   }
   
-  /* Hide the original sidebar on small screens */
   @media (max-width: 767px) {
-    app-sidebar {
+    app-side-bar-gestante {
       display: none;
     }
   }

@@ -6,6 +6,7 @@ import { ProfissionalService } from '../profissional.service';
 import { Gestante } from 'src/app/entities/Gestante';
 import { catchError } from 'rxjs';
 import { PushNotificationService } from 'src/app/push-notification.service';
+import { EncondingParamsService } from 'src/app/enconding-params.service';
 
 @Component({
   selector: 'app-form-edit-gestante',
@@ -19,12 +20,25 @@ export class FormEditGestanteComponent implements OnInit {
   gestante = new Gestante();
   updateError: boolean = false;
 
+  constructor(private router: Router, private cryptService: EncondingParamsService, private pushNotification: PushNotificationService, private route:ActivatedRoute, private sideBarService: SidebarService, private serviceProfissional: ProfissionalService) {
+    this.sideBarService.getSideNavStatus().subscribe(status => {
+      this.sideNavStatus = status;
+    });
+   
+    this.route.queryParams.subscribe((params) => {
+      const encodedValue = params['id'];
+      if (encodedValue) {
+        this.gestanteId = parseInt(this.cryptService.decode(encodedValue));
+        if (this.gestanteId === 0) {
+          window.history.back();
+        }
+      }
+    });
+    
+  }
   
   ngOnInit(): void {
-    this.noSideBar()
-    this.route.queryParams.subscribe(params => {
-      this.gestanteId = parseInt(params['id']);
-    });
+    this.noSideBar();
     this.formUpdateGestante = new FormGroup({
       gestanteWeight:new FormControl('', [Validators.required, Validators.min(0)]),
       gestanteHeight: new FormControl('', [Validators.required, Validators.min(0)]),
@@ -37,13 +51,7 @@ export class FormEditGestanteComponent implements OnInit {
    
   }
 
-  constructor(private router: Router, private pushNotification: PushNotificationService, private route:ActivatedRoute, private sideBarService: SidebarService, private serviceProfissional: ProfissionalService) {
-    this.sideBarService.getSideNavStatus().subscribe(status => {
-      this.sideNavStatus = status;
-    });
-   
-    
-  }
+
 
   noSideBar(): void {
     if (this.sideBarService.isSideNavOpen()) {
@@ -51,9 +59,9 @@ export class FormEditGestanteComponent implements OnInit {
     }
   }
 getGestante(){
+  if(this.gestanteId !== 0){
   this.serviceProfissional.getOneGestante(this.gestanteId).subscribe((response)=>{
     this.gestante = response;
-    console.log(this.gestante)
     if (this.gestante) {
       this.formUpdateGestante.get('gestanteWeight')?.setValue(this.gestante.weight);
       this.formUpdateGestante.get('gestanteHeight')?.setValue(this.gestante.height);
@@ -64,6 +72,9 @@ getGestante(){
 
     }
   })
+}else{
+  window.history.back();
+}
 }
 
   submitForm() {

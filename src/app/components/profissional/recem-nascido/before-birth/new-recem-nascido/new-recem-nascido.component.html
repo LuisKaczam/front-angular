@@ -7,6 +7,11 @@
             <div class="text-center  side-text">
               <h2>Novo(a) Bebê</h2>
             </div>
+            <div *ngIf="idError == true" class="alert alert-danger" role="alert">
+              <div class="text-danger text-center">
+                <span>Falha ao cadastrar bebê.</span>
+              </div>
+            </div>
             <form (ngSubmit)="registerNewBaby()" [formGroup]="formBebe" #registerBaby="ngForm">
               <div class="mb-3">
                 <label for="babyName" class="form-label">Nome</label>

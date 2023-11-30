@@ -14,6 +14,7 @@ import { Notificacoes } from 'src/app/entities/Notificacoes';
 import { SendEmail } from 'src/app/entities/recoveryPassword';
 import { PwaObject } from 'src/app/entities/PwaObject';
 import { Vacinas } from 'src/app/entities/Vacinas';
+import { EncondingParamsService } from 'src/app/enconding-params.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,7 @@ export class ProfissionalService {
   _calendar$ = new Subject<void>();
   _errorVaccine = new Subject<void>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private cryptService: EncondingParamsService) {}
 
   registerProfissional(profissional: Profissional): Observable<any> {
     return this.http.post(
@@ -47,7 +48,6 @@ export class ProfissionalService {
     const notificationUrl = {endpoint, expirationTime, keys
     };
 
-    console.log('teste', notificationUrl);
 
     return this.http.post(`${this.baseUrl}/auth/notification-url/${id}`, notificationUrl);
   }
@@ -64,7 +64,6 @@ export class ProfissionalService {
 
   newNotification( notificacao: Notificacoes, gestanteId:number): Observable<any> {
     const token = localStorage.getItem('token');
-    console.log("esse ", gestanteId);
     const profissionalId = localStorage.getItem('id');
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
@@ -178,7 +177,10 @@ export class ProfissionalService {
         const url = await snapshot.ref.getDownloadURL();
         newVaccine.link = url;
         this.registerVacinas(newVaccine, babyId).subscribe(() => {
-          this.router.navigate(['/infos-recem-nascido'], { queryParams: { id: babyId }}); 
+          const encondeId = this.cryptService.encode(String(babyId));
+          if(encondeId){
+            this.router.navigate(['/infos-recem-nascido'], { queryParams: { id: babyId }}); 
+            }
         });
       } catch (error) {
         console.error('Nao foi possivel realizar postagem: ', error);
@@ -426,7 +428,6 @@ export class ProfissionalService {
     
     this.http.delete(url, { headers: headers }).subscribe((response) => {
       if (response) {
-        console.log(response);
         localStorage.removeItem('id');
         localStorage.removeItem('token');
         this.router.navigate(['login-profissional']);
@@ -673,7 +674,6 @@ export class ProfissionalService {
       Authorization: 'Bearer ' + token,
     });
     await this.deleteImageUrlByLink(fileLink);
-    console.log(id);
     const url = `${this.baseUrl}/profissionais/delete-videos/${id}`;
     return this.http
       .delete(url, {

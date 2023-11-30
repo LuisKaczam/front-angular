@@ -47,7 +47,6 @@ import { NgxPrintModule } from 'ngx-print';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PushNotificationService } from './push-notification.service';
 import { GlobalErrorHandler } from 'global-error-handler';
-import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { NewVaccineComponent } from './components/profissional/recem-nascido/vaccine/new-vaccine/new-vaccine.component';
 
 
@@ -74,7 +73,7 @@ import { NewVaccineComponent } from './components/profissional/recem-nascido/vac
     GestanteComponent,
     InfosGestanteComponent,
     InfosRecemNascidoComponent, 
-    LoginGestanteComponent, AddPostComponent, DropDirective, NewConsultaComponent, NewRecemNascidoComponent, ListRecemNascidoComponent, HeaderGestanteComponent, SideBarGestanteComponent, BottomNavbarGestanteComponent, ListBabiesComponent, CalendarGestanteComponent, ProfileGestanteComponent, ListProfissionaisComponent, InfosProfissionalComponent, NotFoundPageComponent, NewVaccineComponent, 
+    LoginGestanteComponent, AddPostComponent, DropDirective, NewConsultaComponent, NewRecemNascidoComponent, ListRecemNascidoComponent, HeaderGestanteComponent, SideBarGestanteComponent, BottomNavbarGestanteComponent, ListBabiesComponent, CalendarGestanteComponent, ProfileGestanteComponent, ListProfissionaisComponent, InfosProfissionalComponent, NewVaccineComponent, 
   
   ],
   imports: [

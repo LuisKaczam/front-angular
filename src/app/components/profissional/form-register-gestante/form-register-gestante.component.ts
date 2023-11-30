@@ -120,7 +120,6 @@ export class FormRegisterGestanteComponent implements OnInit {
   getProfissional() {
     this.service.getProfissional().subscribe((response) => {
       this.profissional = response;
-      console.log(this.profissional);
     });
   }
 
@@ -252,7 +251,6 @@ export class FormRegisterGestanteComponent implements OnInit {
         else {
           console.error('Erro ao Cadastrar:', errorResponse);
         }
-        console.log(errorResponse);
       return [];
     })
     
@@ -312,7 +310,6 @@ export class FormRegisterGestanteComponent implements OnInit {
       
       this.service.getProfissional().subscribe((response) => {
         this.gestante.idProfissional = response.id;
-        console.log(this.gestante.idProfissional);
         this.service
           .registerGestante(this.gestante)
           .pipe(
@@ -349,7 +346,6 @@ export class FormRegisterGestanteComponent implements OnInit {
                   } else {
                     console.error('Erro ao Cadastrar:', errorResponse);
                   }
-                  console.log(errorResponse);
                 }
               }
               return [];

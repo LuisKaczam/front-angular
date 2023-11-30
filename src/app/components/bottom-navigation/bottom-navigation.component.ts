@@ -40,7 +40,6 @@ export class BottomNavigationComponent implements OnInit {
       if(this.profissional.usuario.profilePhoto != ''){
         this.avatar = this.profissional.usuario.profilePhoto;
       }
-      console.log(this.profissional);
       }
     })
   }

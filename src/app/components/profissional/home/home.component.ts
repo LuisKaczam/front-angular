@@ -7,6 +7,7 @@ import { ProfissionalService } from '../profissional.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PwaObject } from 'src/app/entities/PwaObject';
 import { PushNotificationService } from 'src/app/push-notification.service';
+import { EncondingParamsService } from 'src/app/enconding-params.service';
 
 @Component({
   selector: 'app-home',
@@ -38,7 +39,8 @@ export class HomeComponent implements OnInit {
     private sideBarService: SidebarService,
     private pushService: PushNotificationService,
     private serviceProfissional: ProfissionalService,
-    private modalService: ModalService
+    private modalService: ModalService, 
+    private cryptService: EncondingParamsService
   ) {
     this.sideBarService.getSideNavStatus().subscribe((status) => {
       this.sideNavStatus = status;
@@ -53,7 +55,6 @@ export class HomeComponent implements OnInit {
     this.modalService.closeModalEvent.subscribe(() => {
       document.getElementById('btn-close')?.addEventListener('click', () => {
         this.onModalClose();
-        console.log('click');
       });
     });
 
@@ -75,7 +76,6 @@ export class HomeComponent implements OnInit {
     if (id != 0) {
       this.pushService.getPwaObject(id).subscribe((response) => {
         this.pwaObject = response;
-        console.log(this.pwaObject);
       });
     }
   }
@@ -108,7 +108,6 @@ export class HomeComponent implements OnInit {
       for (let i = 0; i < data.length; i++) {
         this.gestantes[i] = data[i];
       }
-      console.log(this.gestantes);
     });
   }
 
@@ -119,23 +118,30 @@ export class HomeComponent implements OnInit {
   }
 
   navigateToHistorico(gestanteId: number): void {
-    this.router.navigate(['/historico-gestante'], {
-      queryParams: { id: gestanteId },
-    });
+    const encondeId = this.cryptService.encode(String(gestanteId));
+    if(encondeId){
+      this.router.navigate(['/historico-gestante'], {
+        queryParams: { id: encondeId },
+      });
+    }
+  
   }
 
   navigateToBebe(gestanteId: number): void {
     this.serviceProfissional.listBebes(gestanteId).subscribe((response) => {
       this.bebes = response;
+      const encondeId = this.cryptService.encode(String(gestanteId));
+    if(encondeId){
       if (this.bebes.length > 0) {
         this.router.navigate(['/list-recem-nascido'], {
-          queryParams: { id: gestanteId },
+          queryParams: { id: encondeId },
         });
       } else {
         this.router.navigate(['/new-recem-nascido'], {
-          queryParams: { id: gestanteId },
+          queryParams: { id: encondeId },
         });
       }
+    }
     });
   }
 
@@ -182,10 +188,9 @@ export class HomeComponent implements OnInit {
       .pipe(
         catchError((errorResponse) => {
           if (errorResponse) {
-            console.log(errorResponse.error);
+            console.error("Falha ao recuperar gestante: ", errorResponse.error);
             if (errorResponse.error === 'A gestante ja esta na lista.') {
               this.errorPresent = true;
-              console.log(this.errorPresent);
             } else {
               this.errorCpf = true;
             }

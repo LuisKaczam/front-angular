@@ -13,6 +13,11 @@
                     <span>Uma vacina já foi cadastrada com o nome: {{nome.value}}</span>
                   </div>
                 </div>
+                <div *ngIf="errorVaccine == true" class="alert alert-danger" role="alert">
+                  <div class="text-danger text-center">
+                    <span>Falha ao cadastrar nova vacina.</span>
+                  </div>
+                </div>
                 <div class="form-group mb-3">
                   <label for="nome">Nome</label>
                   <input type="text" class="form-control futuristic-input" id="nome" formControlName="nome" placeholder="Nome">

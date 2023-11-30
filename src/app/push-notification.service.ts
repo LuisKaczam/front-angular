@@ -27,21 +27,12 @@ export class PushNotificationService {
   
                 if (!existingTokens.includes(token)) {
                   this.newUrlNotification(token).subscribe(() => {
-                    console.log('Token cadastrado:', token);
                   });
-                } else {
-                  console.log('Token já cadastrado:', token);
-                }
+                } 
               });
-            } else {
-              console.log('Sem token');
             }
           });
-        } else if (permission === 'denied') {
-          console.log('Permissão para notificações foi negada.');
-        } else if (permission === 'default') {
-          console.log('A caixa de diálogo de permissão foi fechada sem escolha.');
-        }
+        } 
       });
     }
   }
@@ -89,14 +80,12 @@ export class PushNotificationService {
 
   newUrlNotification(token: any): Observable<any> {
     const id = localStorage.getItem('idUser');
-    console.log('id ', id);
     const notificationUrl = { token };
     const pinToken = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + pinToken,
     });
 
-    console.log('New URL Notification:', notificationUrl);
 
     return this.http.post(`${this.baseUrl}/auth/notification-url/${id}`, notificationUrl, { headers: headers });
   }
@@ -109,7 +98,6 @@ export class PushNotificationService {
 
     const notification = { token };
 
-    console.log('Update URL Notification:', notification);
 
     return this.http.put(`${this.baseUrl}/auth/update-notification-url/${id}`, notification, { headers: headers });
   }

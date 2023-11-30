@@ -11,6 +11,7 @@
             <div class="flex-grow-1">
               <div class="d-inline-grid">
                   <span><strong>Email: </strong>{{profissional?.usuario?.email}}</span>
+                  <span><strong>Telefone: </strong> {{ profissional?.usuario.phone }}</span>
               </div>
             </div>
           </div>
@@ -18,13 +19,14 @@
         <div class="row justify-content-center">
           <div class="col-md-8 text-center text-md-end">
             <div class="text-center mt-2" *ngIf="postVideos.length == 0 && postArticles.length == 0">
-              <span>Você não possui nenhuma postagem.</span>
+              <span>Nenhuma postagem foi compartilhada.</span>
             </div>
           </div>
           <div class="col-md-8" *ngIf="postArticles.length > 0 || postVideos.length > 0">
             <div class="card rounded-lg mx-auto shadow-sm">
               <div class="card-body text-center">
                 <div class="contacts-list">
+                  <h4 class="text-center mb-2">Publicações</h4>
                   <div *ngIf="postVideos">
                     <div *ngFor="let video of postVideos" class="contact-item mb-3">
                       <div class="d-flex align-items-center">

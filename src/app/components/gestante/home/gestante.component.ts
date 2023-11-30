@@ -8,7 +8,6 @@ import { PushNotificationService } from 'src/app/push-notification.service';
   styleUrls: ['./gestante.component.css']
 })
 export class GestanteComponent implements OnInit{
-
   sideNavStatus = false;
 
 

@@ -197,7 +197,7 @@ export class ProfileComponent implements OnInit{
       updateProfissional.profilePhoto = this.profissional.usuario.profilePhoto
       this.service.updateProfissional(updateProfissional, this.profissional.usuario.id).pipe(
         catchError((error)=>{
-          console.log(error);
+          console.error("Erro ao atualizar usuario: ", error);
         if(error){
           this.phoneError = true;
         }
@@ -237,15 +237,13 @@ export class ProfileComponent implements OnInit{
     const formUpdatePassword = this.inputPassword;
     const newPassword = formUpdatePassword.get('newPassword')!;
     const oldPassword = this.profissional.usuario.password;
-    console.log("Aqui 1")
 
     if(formUpdatePassword.invalid){
-      console.log("Invailido")
       return;
     }else{
       this.service.updateProfissionalPassword(this.profissional.usuario.email, oldPassword, newPassword.value).pipe(
         catchError((error)=>{
-          console.log(error);
+          console.error("Erro ao atualizar senha: ", error);
         if(error){
           this.passwordError = true;
         }
@@ -308,7 +306,6 @@ export class ProfileComponent implements OnInit{
       if(this.profissional.usuario.profilePhoto != ''){
         this.avatar = this.profissional.usuario.profilePhoto;
       }
-      console.log(this.profissional);
       }
     })
   }

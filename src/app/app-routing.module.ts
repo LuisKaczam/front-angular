@@ -26,7 +26,6 @@ import { ProfileGestanteComponent } from './components/gestante/profile-gestante
 import { FormEditGestanteComponent } from './components/profissional/form-edit-gestante/form-edit-gestante.component';
 import { ListProfissionaisComponent } from './components/gestante/list-profissionais/list-profissionais.component';
 import { InfosProfissionalComponent } from './components/gestante/infos-profissional/infos-profissional.component';
-import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { NewVaccineComponent } from './components/profissional/recem-nascido/vaccine/new-vaccine/new-vaccine.component';
 
 

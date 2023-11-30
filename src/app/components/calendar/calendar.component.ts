@@ -193,7 +193,6 @@ export class CalendarComponent implements OnInit {
     const name = calendarForm.get('calendarName');
     const participant = calendarForm.get('calendarParticipant')!;
     const description = calendarForm.get('calendarDescription');
-    console.log('gesta: ', this.gestanteId);
 
     if (calendarForm.invalid) {
       return;
@@ -208,9 +207,9 @@ export class CalendarComponent implements OnInit {
         const notificacao = new Notificacoes();
         notificacao.descricaoProfissional = 'Você marcou um novo evento.';
         notificacao.tipoProfissional = 'Evento';
-        notificacao.tituloProfissional = 'Novo Evento';
+        notificacao.tituloProfissional = 'Nova consulta: ' + name?.value;
         notificacao.tipoGestante = 'Evento';
-        notificacao.tituloGestante = 'Novo evento';
+        notificacao.tituloGestante = 'Nova consulta: ' + name?.value;
         notificacao.lidaGestante = false;
         notificacao.lidaProfissional = false;
         notificacao.descricaoGestante = 'Nova consulta marcada';
@@ -299,7 +298,6 @@ export class CalendarComponent implements OnInit {
       return;
     }
     for (let i = 0; i < this.calendarEvents.length; i++) {
-      console.log(this.calendarEvents[i].data);
       if (
         this.calendarEvents[i].data >= begin.value &&
         this.calendarEvents[i].data <= end.value
@@ -307,7 +305,6 @@ export class CalendarComponent implements OnInit {
         this.datesArray[i] = this.calendarEvents[i];
       }
     }
-    console.log(this.datesArray);
     if (begin.value > end.value) {
       this.datesError = true;
       return;

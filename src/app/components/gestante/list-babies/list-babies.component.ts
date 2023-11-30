@@ -3,6 +3,7 @@ import { SidebarService } from '../../sidebar/sidebar.service';
 import { GestanteService } from '../gestante.service';
 import { Router } from '@angular/router';
 import { PushNotificationService } from 'src/app/push-notification.service';
+import { EncondingParamsService } from 'src/app/enconding-params.service';
 
 @Component({
   selector: 'app-list-babies',
@@ -14,13 +15,11 @@ export class ListBabiesComponent implements OnInit{
   babiesArray: any;
 
 
-  constructor(private sideBarService: SidebarService, private pushNotification: PushNotificationService, private service: GestanteService, private router:Router) {
+  constructor(private sideBarService: SidebarService, private cryptService: EncondingParamsService, private pushNotification: PushNotificationService, private service: GestanteService, private router:Router) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
   }
-
- 
 
   ngOnInit(): void {
       this.noSideBar();
@@ -46,7 +45,11 @@ export class ListBabiesComponent implements OnInit{
   }
 
   infosBaby(babyId:number){
-    this.router.navigate(['/infos-meu-bebe'], { queryParams: { id: babyId }}); 
+    const encondeId = this.cryptService.encode(String(babyId));
+    if(encondeId){
+      this.router.navigate(['/infos-meu-bebe'], { queryParams: { id: encondeId }}); 
+    }
+   
   }
 
 }

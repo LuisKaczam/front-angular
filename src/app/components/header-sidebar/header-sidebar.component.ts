@@ -78,7 +78,6 @@ export class HeaderSidebarComponent implements OnInit{
         updateNotifications.tituloProfissional = this.allNotifications[i].tituloProfissional;
         updateNotifications.lidaProfissional = true;
         this.profissionalService.updateNotifications(this.allNotifications[i].id, updateNotifications).subscribe((response)=>{
-          console.log("update");
         })
     }
     }

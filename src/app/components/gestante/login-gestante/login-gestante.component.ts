@@ -90,7 +90,6 @@ export class LoginGestanteComponent {
         else {
           console.error('Erro ao Cadastrar:', errorResponse);
         }
-        console.log(errorResponse);
       return [];
     })
     
@@ -112,7 +111,6 @@ export class LoginGestanteComponent {
             else {
               console.error('Erro ao enviar e-mail: ', errorResponse);
             }
-            console.log(errorResponse);
           return [];
         })
         

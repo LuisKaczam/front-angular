@@ -29,11 +29,12 @@
                 <ul class="list-unstyled mt-2 mb-3">
                   <li *ngFor="let vaccine of vacinas" (click)="toggleDetails(vaccine)" class="mt-2 mb-3">
                     <div class="d-flex justify-content-between">
-                     <span class="vaccine-name">{{ vaccine.nome }}</span>
+                     <span class="vaccine-name" (mouseover)="showFullText = true" (mouseout)="showFullText = false">
+                      {{ vaccine.nome.length > 23 ? (showFullText ? vaccine.nome : vaccine.nome.slice(0, 23) + '...') : vaccine.nome }}</span>
                      <span class="ms-4 btn btn-danger text-white">
                       <a title="Deletar" (click)="deleteVacina(vaccine.id, vaccine.link)">
                         <i class="fa-solid fa-trash-can"></i>
-                        Deletar
+                       <span class="d-none d-sm-inline">Deletar</span> 
                       </a>
                     </span>
                     </div>

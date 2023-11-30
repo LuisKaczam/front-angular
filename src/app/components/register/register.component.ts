@@ -130,7 +130,6 @@ export class RegisterComponent implements OnInit {
               } else {
                 console.error('Erro ao Cadastrar:', errorResponse);
               }
-              console.log(errorResponse);
             }
           }
           return [];

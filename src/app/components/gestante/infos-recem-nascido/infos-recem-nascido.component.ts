@@ -5,6 +5,7 @@ import { GestanteService } from '../gestante.service';
 import { Bebe } from 'src/app/entities/Bebe';
 import { Vacinas } from 'src/app/entities/Vacinas';
 import { PushNotificationService } from 'src/app/push-notification.service';
+import { EncondingParamsService } from 'src/app/enconding-params.service';
 
 @Component({
   selector: 'app-infos-recem-nascido',
@@ -26,17 +27,24 @@ export class InfosRecemNascidoComponent  implements OnInit{
  
 
 
-  constructor(private router: Router, private pushNotification: PushNotificationService, private route: ActivatedRoute, private sideBarService: SidebarService, private service: GestanteService) {
+  constructor(private router: Router, private pushNotification: PushNotificationService, private cryptService: EncondingParamsService, private route: ActivatedRoute, private sideBarService: SidebarService, private service: GestanteService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
+    });
+    this.route.queryParams.subscribe((params) => {
+      const encodedValue = params['id'];
+      if (encodedValue) {
+        this.bebeId = parseInt(this.cryptService.decode(encodedValue));
+        
+        if (this.bebeId === 0) {
+          window.history.back();
+        }
+      }
     });
   }
   ngOnInit(): void {
     this.noSideBar();
     this.showStep(this.currentStep);
-    this.route.queryParams.subscribe(params => {
-      this.bebeId = parseInt(params['id']);
-    })
     this.getBaby()
     this.getGestante();
     this.getVacinas();
@@ -58,9 +66,14 @@ export class InfosRecemNascidoComponent  implements OnInit{
   }
 
   getBaby(){
-    this.service.getOneBaby(this.bebeId).subscribe((response)=>{
-      this.bebe = response;
-    })
+    if(this.bebeId !== 0){
+      this.service.getOneBaby(this.bebeId).subscribe((response)=>{
+        this.bebe = response;
+      })
+    }else{
+      window.history.back();
+    }
+   
   }
 
   getVacinas() {
@@ -68,16 +81,19 @@ export class InfosRecemNascidoComponent  implements OnInit{
         const vacinasSet = new Set(response); 
         this.vacinas = Array.from(vacinasSet);
         this.vacinas.sort((a: { idadeNecessaria: number; }, b: { idadeNecessaria: number; }) => a.idadeNecessaria - b.idadeNecessaria);
-        console.log(this.vacinas);
     });
 }
 
-
-
 getVacinasBaby(){
-  this.service.getVaccinesBaby(this.bebeId).subscribe((response)=>{
-    this.vacinasBaby = response;
-  })
+  if(this.bebeId !== 0){
+    this.service.getVaccinesBaby(this.bebeId).subscribe((response)=>{
+      this.vacinasBaby = response;
+    })
+  }else{
+    window.history.back();
+  }
+ 
+ 
 }
 
 
@@ -110,12 +126,8 @@ getVacinasBaby(){
       this.gestante = response;
     })
   }
- 
 
-
-  navigateToBebe(): void {
-    this.router.navigateByUrl('infos-recem-nascido');
-  }
+  
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SidebarService } from '../../sidebar/sidebar.service';
 import { GestanteService } from '../gestante.service';
 import { PushNotificationService } from 'src/app/push-notification.service';
+import { EncondingParamsService } from 'src/app/enconding-params.service';
 
 @Component({
   selector: 'app-infos-profissional',
@@ -20,16 +21,23 @@ export class InfosProfissionalComponent {
   
 
 
-  constructor(private router: Router, private sideBarService: SidebarService, private service: GestanteService, private route: ActivatedRoute, private pushNotification: PushNotificationService) {
+  constructor(private router: Router, private sideBarService: SidebarService, private cryptService: EncondingParamsService, private service: GestanteService, private route: ActivatedRoute, private pushNotification: PushNotificationService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
+    });
+    this.route.queryParams.subscribe((params) => {
+      const encodedValue = params['id'];
+      if (encodedValue) {
+        this.profissionalId = parseInt(this.cryptService.decode(encodedValue));
+
+        if (this.profissionalId === 0) {
+          window.history.back();
+        }
+      }
     });
   }
   ngOnInit(): void {
     this.noSideBar();
-    this.route.queryParams.subscribe(params => {
-      this.profissionalId = parseInt(params['id']);
-    });
     this.getProfissional();
     this.getArticles();
     this.getVideos();
@@ -41,23 +49,36 @@ export class InfosProfissionalComponent {
   }
 
   getProfissional(){
-    this.service.getProfissional(this.profissionalId).subscribe((response)=>{
-      this.profissional = response;
-      console.log(this.postVideos);
-    })
+    if(this.profissionalId !== 0){
+      this.service.getProfissional(this.profissionalId).subscribe((response)=>{
+        this.profissional = response;
+      })
+    }else{
+      window.history.back();
+    }
+   
   }
 
   getVideos(){
-    this.service.listVideos(this.profissionalId).subscribe((response)=>{
-      this.postVideos = response;
-      console.log(this.postVideos);
-    })
+    if(this.profissionalId !== 0){
+      this.service.listVideos(this.profissionalId).subscribe((response)=>{
+        this.postVideos = response;
+      })
+    }else{
+      window.history.back();
+    }
+    
   }
 
   getArticles(){
-    this.service.listArticles(this.profissionalId).subscribe((response)=>{
-      this.postArticles = response;
-    })
+    if(this.profissionalId !== 0){
+      this.service.listArticles(this.profissionalId).subscribe((response)=>{
+        this.postArticles = response;
+      });
+    }else{
+      window.history.back();
+    }
+    
   }
 
   noSideBar(): void {

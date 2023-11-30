@@ -3,6 +3,7 @@ import { SidebarService } from '../../sidebar/sidebar.service';
 import { GestanteService } from '../gestante.service';
 import { Router } from '@angular/router';
 import { PushNotificationService } from 'src/app/push-notification.service';
+import { EncondingParamsService } from 'src/app/enconding-params.service';
 
 @Component({
   selector: 'app-list-profissionais',
@@ -14,7 +15,7 @@ export class ListProfissionaisComponent {
   profissionaisArray: any;
 
 
-  constructor(private sideBarService: SidebarService, private service: GestanteService, private router:Router, private pushNotification: PushNotificationService) {
+  constructor(private sideBarService: SidebarService, private service: GestanteService, private cryptService: EncondingParamsService, private router:Router, private pushNotification: PushNotificationService) {
     this.sideBarService.getSideNavStatus().subscribe(status => {
       this.sideNavStatus = status;
     });
@@ -46,7 +47,10 @@ export class ListProfissionaisComponent {
   }
 
   infosProfissional(profissionalId:number){
-    this.router.navigate(['/infos-meu-profissional'], { queryParams: { id: profissionalId }}); 
+    const encondeId = this.cryptService.encode(String(profissionalId));
+    if(encondeId){
+      this.router.navigate(['/infos-meu-profissional'], { queryParams: { id: encondeId }}); 
+      }
   }
 
 }

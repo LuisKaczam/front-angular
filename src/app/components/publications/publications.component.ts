@@ -84,19 +84,25 @@ export class PublicationsComponent implements OnInit {
   
 }
 
-  searchGestantes() {
-    if(this.gestantes.length > 0 ){
+searchGestantes() {
+  if (this.gestantes.length > 0) {
     if (this.searchTerm === '') {
       this.filteredGestantes = this.gestantes;
-      this.foundedGestante = false; 
+      this.foundedGestante = false;
     } else {
-      this.filteredGestantes = this.gestantes.filter(gestante =>
-        gestante.usuario.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
+      this.filteredGestantes = this.gestantes.filter((gestante) => {
+        const searchTermLower = this.searchTerm.toLowerCase();
+        const nameLower = gestante.usuario.name.toLowerCase();
+        return (
+          nameLower.startsWith(searchTermLower) ||
+          nameLower.includes(searchTermLower)
+        );
+      });
       this.foundedGestante = this.filteredGestantes.length === 0;
     }
   }
-  }
+}
+
 
 
   noSideBar(): void {
@@ -173,14 +179,12 @@ export class PublicationsComponent implements OnInit {
   getVideos() {
     this.service.listVideos().subscribe((response) => {
       this.postVideos = response;
-      console.log(this.postVideos)
     });
   }
 
   getArticles() {
     this.service.listArticles().subscribe((response) => {
       this.postArticles = response;
-      console.log(this.postArticles)
     });
   }
 
@@ -198,7 +202,6 @@ export class PublicationsComponent implements OnInit {
       }
       selectCard?.classList.remove('selectedborder');
     }
-    console.log(gestante);
       if(this.gestantesSelecionadas.length > 0){
         sendBtn?.classList.remove('invisible');
        
@@ -229,7 +232,6 @@ export class PublicationsComponent implements OnInit {
       }else{
         sendBtn?.classList.add('invisible');
       }
-    console.log(this.gestantesSelecionadas)
   }
   
   clickCloseNotification(){
