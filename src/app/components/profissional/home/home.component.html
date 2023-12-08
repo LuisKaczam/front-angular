@@ -16,7 +16,7 @@
                 </button>
                 <button class="btn add-btn mt-md-0 mt-2" (click)="onCpfModalOpen()" data-bs-toggle="modal" data-bs-target="#cpfModal">
                   <i class="fa-solid fa-user-clock"></i>
-                  Reinserir Gestante
+                  Recuperar Gestante
                 </button>
               </div>
             </div>
@@ -114,7 +114,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-center w-100" id="cpfModalLabel">Adicionar Gestante Reincidente</h5>
+                <h5 class="modal-title text-center w-100" id="cpfModalLabel">Recuperar Gestante</h5>
                 <button type="button" class="btn-close" id="closeCpf" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
@@ -130,10 +130,10 @@
                           <div *ngIf="inputCpf.get('cpf')?.hasError('required')">Campo obrigatório.</div>
                         </div>
                         <div *ngIf="errorCpf === true" class="text-danger ms-1">CPF não encontrado.</div>
-                          <div *ngIf="errorPresent === true" class="text-danger ms-1">essa gestante já está na sua lista.</div>
+                          <div *ngIf="errorPresent === true" class="text-danger ms-1">Essa gestante já está na sua lista.</div>
                     </div>
                     <div class="mb-2">
-                        <button type="submit" class="btn btn-primary mt-2" style="color: white">Reinserir</button>
+                        <button type="submit" class="btn btn-primary mt-2" style="color: white">Recuperar</button>
                     </div>
                 </form>
               </div>

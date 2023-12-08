@@ -11,7 +11,7 @@
             <div class="flex-grow-1">
               <div class="d-inline-grid">
                   <span><strong>Email: </strong>{{profissional?.usuario?.email}}</span>
-                  <span><strong>Telefone: </strong> {{ profissional?.usuario.phone }}</span>
+                  <span *ngIf="profissional?.usuario?.phone !== null"><strong>Telefone: </strong> {{ profissional?.usuario.phone }}</span>
               </div>
             </div>
           </div>

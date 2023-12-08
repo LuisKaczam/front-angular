@@ -14,8 +14,12 @@
                   <img *ngIf="!gestante?.usuario?.profilePhoto" src="{{avatar}}"  alt="{{gestante?.usuario?.name}}" class="avatar-img rounded-circle mt-0" title="{{gestante?.usuario?.name}}">
               </label>
     <h2 class="mt-3">{{gestante?.usuario?.name}}</h2>
-    <p><strong>Email: </strong>{{gestante?.usuario?.email}}</p>
-    <p><strong>Telefone: </strong> {{gestante?.usuario.phone }}</p>
+    <div class="flex-grow-1">
+      <div class="d-inline-grid">
+    <span><strong>Email: </strong>{{gestante?.usuario?.email}}</span>
+    <span><strong>Telefone: </strong> {{gestante?.usuario.phone }}</span>
+      </div>
+    </div>
     <hr>
     <input type="file" name="userPhoto" id="userPhoto" class="invisible" (input)="onFileSelected($event)">
                 <div class="list-group list-group-flush">

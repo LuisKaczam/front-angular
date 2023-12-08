@@ -13,8 +13,12 @@
                             <img src="{{avatar}}" alt="{{profissional?.usuario?.name}}" class="avatar-img rounded-circle mt-0" title="{{profissional?.usuario?.name}}">
                         </label>
               <h2 class="mt-3">{{profissional?.usuario?.name}}</h2>
-              <p><strong>Email: </strong>{{profissional?.usuario?.email}}</p>
-              <p><strong>Telefone: </strong> {{ profissional?.usuario.phone }}</p>
+              <div class="flex-grow-1">
+                <div class="d-inline-grid">
+              <span><strong>Email: </strong>{{profissional?.usuario?.email}}</span>
+              <span *ngIf="profissional?.usuario?.phone !== null"><strong>Telefone: </strong> {{ profissional?.usuario.phone }}</span>
+                </div>
+              </div>
               <hr>
               <input type="file" name="userPhoto" id="userPhoto" class="invisible" (input)="onFileSelected($event)">
               <div class="list-group list-group-flush">

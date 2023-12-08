@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Gestante } from 'src/app/entities/Gestante';
 import { ProfissionalService } from '../profissional.service';
-import { catchError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { Profissional } from 'src/app/entities/Profissional';
 import { ModalService } from '../../modals/modal.service';
@@ -307,53 +307,43 @@ export class FormRegisterGestanteComponent implements OnInit {
       this.gestante.weight = weight?.value;
       this.gestante.normalDeliveries = normalDeliveries?.value;
       this.gestante.numberOfPregnancies = numberOfPregnancies?.value;
-      
-      this.service.getProfissional().subscribe((response) => {
-        this.gestante.idProfissional = response.id;
-        this.service
-          .registerGestante(this.gestante)
-          .pipe(
-            catchError((errorResponse) => {
-              if (errorResponse.error === 'E-mail já em uso.') {
+      this.service.getProfissional().pipe(
+        switchMap((response) => {
+          this.gestante.idProfissional = response.id;
+          return this.service.registerGestante(this.gestante);
+        }),
+        catchError((errorResponse) => {
+          if (errorResponse.error === 'E-mail já em uso.') {
+            this.errorEmail = true;
+            this.showStep(1);
+          } else if (errorResponse.error === 'CPF Inválido.') {
+            this.errorCpf = true;
+            this.showStep(2);
+          } else if (errorResponse.error.errors) {
+            for (const error of errorResponse.error.errors) {
+              if (error.defaultMessage === 'Name is mandatory') {
+                this.errorName = true;
+                this.showStep(1);
+              } else if (error.defaultMessage === 'Email is invalid') {
                 this.errorEmail = true;
                 this.showStep(1);
-              }
-              if (errorResponse.error === 'CPF Inválido.') {
+              } else if (error.defaultMessage === 'CPF is invalid') {
                 this.errorCpf = true;
                 this.showStep(2);
+              } else {
+                console.error('Erro ao Cadastrar:', errorResponse);
               }
-              if (errorResponse.error.errors) {
-                for (let i = 0; i < errorResponse.error.errors.length; i++) {
-                  if (
-                    errorResponse.error.errors[i].defaultMessage ===
-                    'Name is mandatory'
-                  ) {
-                    this.errorName = true;
-                    this.showStep(1);
-                  } else if (
-                    errorResponse.error.errors[i].defaultMessage ===
-                    'Email is invalid'
-                  ) {
-                    this.errorEmail = true;
-                    this.showStep(1);
-                  } else if (
-                    errorResponse.error.errors[i].defaultMessage ===
-                    'CPF is invalid'
-                  ) {
-                    this.errorCpf = true;
-                    this.showStep(1);
-                    this.showStep(2);
-                  } else {
-                    console.error('Erro ao Cadastrar:', errorResponse);
-                  }
-                }
-              }
-              return [];
-            })
-          )
-          .subscribe(() => {
-            this.sendEmail(email?.value, name?.value);
-          });
+            }
+          } else {
+            console.error('Erro ao Cadastrar:', errorResponse);
+          }
+      
+          console.log(errorResponse);
+      
+          return [];
+        })
+      ).subscribe(() => {
+        this.sendEmail(email?.value, name?.value);
       });
     }
   }

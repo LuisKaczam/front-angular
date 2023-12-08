@@ -39,6 +39,7 @@
             *ngIf="formRegisterGestante.get('gestanteEmail')?.invalid && (formRegisterGestante.get('gestanteEmail')?.dirty || formRegisterGestante.get('gestanteEmail')?.touched) || formRegisterGestante.get('gestanteEmail')?.invalid && registerFormGestante.submitted"
             class="text-danger ms-1">
             <div *ngIf="formRegisterGestante.get('gestanteEmail')?.hasError('required')">Campo obrigatório.</div>
+            <div *ngIf="formRegisterGestante.get('gestanteEmail')?.hasError('email')">E-mail inválido.</div>
             <div *ngIf="formRegisterGestante.get('gestanteEmail')?.hasError('emailInUse')">Este e-mail já está em uso.
             </div>
           </div>
